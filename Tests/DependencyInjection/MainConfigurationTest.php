@@ -76,7 +76,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -101,7 +101,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -126,7 +126,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -157,7 +157,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -199,10 +199,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         'paypal_express_checkout_nvp_payment' => array(
                             'create_instruction_from_model_action' => 'foo',
                             'api' => array(
-                                'username' => 'aUsername',
-                                'password' => 'aPassword',
-                                'signature' => 'aSignature',
-                                'sandbox' => true
+                                'options' => array(
+                                    'username' => 'aUsername',
+                                    'password' => 'aPassword',
+                                    'signature' => 'aSignature',
+                                    'sandbox' => true
+                                )
                             )
                         )
                     )
