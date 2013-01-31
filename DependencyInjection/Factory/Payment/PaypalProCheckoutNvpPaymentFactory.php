@@ -12,6 +12,9 @@ use Symfony\Component\Config\FileLocator;
 
 use Payum\Exception\RuntimeException;
 
+/**
+ * @author Ton Sharp <Forma-PRO@66ton99.org.ua>
+ */
 class PaypalProCheckoutNvpPaymentFactory implements PaymentFactoryInterface
 {
     /**
@@ -83,8 +86,8 @@ class PaypalProCheckoutNvpPaymentFactory implements PaymentFactoryInterface
                     ->scalarNode('password')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('partner')->isRequired()->cannotBeEmpty()->end()
                     ->scalarNode('vendor')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('tender')->defaultValue('C')->end()
-                    ->scalarNode('trxtype')->defaultValue('S')->end()
+                    ->scalarNode('tender')->defaultValue('C')->cannotBeEmpty()->end()
+                    ->scalarNode('trxtype')->defaultValue('S')->cannotBeEmpty()->end()
                     ->booleanNode('sandbox')->defaultTrue()->end()
                 ->end()
             ->end()

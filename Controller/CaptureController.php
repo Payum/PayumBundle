@@ -2,6 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Exception\LogicException;
+use Payum\Domain\ModelInterface;
 use Payum\Request\RedirectUrlInteractiveRequest;
 use Payum\Request\InteractiveRequestInterface;
 use Payum\Request\CaptureRequest;
@@ -11,16 +12,20 @@ use Payum\Bundle\PayumBundle\Request\ResponseInteractiveRequest;
 
 class CaptureController extends Controller
 {
-    public function doAction($contextName, $modelId)
+    public function doAction($contextName, $model)
     {
         if (false == $this->getPayum()->hasContext($contextName)) {
             throw $this->createNotFoundException(sprintf('Payment context %s not found', $contextName));
         }
         
         $context = $this->getPayum()->getContext($contextName);
-        
-        if (false == $model = $context->getStorage()->findModelById($modelId)) {
-            throw $this->createNotFoundException(sprintf('Request with id %s not found', $modelId));
+
+        if (false == $model instanceof ModelInterface) {
+            $model = $context->getStorage()->findModelById($model);
+        }
+
+        if (false == $model) {
+            throw $this->createNotFoundException(sprintf('Request with id %s not found', $model));
         }
         
         if ($interactiveRequest = $context->getPayment()->execute(new CaptureRequest($model))) {
