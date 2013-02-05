@@ -44,6 +44,13 @@ class PayumExtension extends Extension
                 }
             }
 
+            if (empty($storageServiceId)) {
+                $storageServiceId = 'payum.storage.null';
+                $container->setDefinition($storageServiceId, new Definition(
+                    '%payum.storage.null.class%'
+                ));
+            }
+
             $contextDefinition = new Definition();
             $contextDefinition->setClass('Payum\Bundle\PayumBundle\Context\LazyContext');
             $contextDefinition->setPublic(false);

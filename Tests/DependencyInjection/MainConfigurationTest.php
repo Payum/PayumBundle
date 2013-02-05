@@ -76,37 +76,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
                         'bar_storage' => array(
                             'bar_opt' => 'bar'
-                        )
-                    )
-                )
-            )
-        ));
-    }
-
-    /**
-     * @test
-     * 
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.contexts.a_context": One storage from the  storages available must be selected
-     */
-    public function throwIfNoneStorageSelected()
-    {
-        $configuration = new MainConfiguration($this->paymentFactories, $this->storageFactories);
-
-        $processor = new Processor();
-
-        $config = $processor->processConfiguration($configuration, array(
-            'payum' => array(
-                'contexts' => array(
-                    'a_context' => array(
-                        'foo_payment' => array(
-                            'foo_opt' => 'foo'
                         )
                     )
                 )
@@ -126,7 +101,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -157,7 +132,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $config = $processor->processConfiguration($configuration, array(
+        $processor->processConfiguration($configuration, array(
             'payum' => array(
                 'contexts' => array(
                     'a_context' => array(
@@ -199,10 +174,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         'paypal_express_checkout_nvp_payment' => array(
                             'create_instruction_from_model_action' => 'foo',
                             'api' => array(
-                                'username' => 'aUsername',
-                                'password' => 'aPassword',
-                                'signature' => 'aSignature',
-                                'sandbox' => true
+                                'options' => array(
+                                    'username' => 'aUsername',
+                                    'password' => 'aPassword',
+                                    'signature' => 'aSignature',
+                                    'sandbox' => true
+                                )
                             )
                         )
                     )
@@ -263,6 +240,29 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                             'model_class' => 'aClass',
                             'id_property' => 'aProp',
                         ),
+                        'foo_payment' => array(
+                            'foo_opt' => 'foo'
+                        )
+                    )
+                )
+            )
+        ));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPassConfigurationProcessingWithNullStorageFactory()
+    {
+
+        $configuration = new MainConfiguration($this->paymentFactories, array());
+
+        $processor = new Processor();
+
+        $processor->processConfiguration($configuration, array(
+            'payum' => array(
+                'contexts' => array(
+                    'a_context' => array(
                         'foo_payment' => array(
                             'foo_opt' => 'foo'
                         )
