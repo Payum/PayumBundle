@@ -25,8 +25,7 @@
         "payum/paypal-express-checkout-nvp": "0.1.*",
         "payum/paypal-pro-checkout-nvp": "0.1.*",
         "payum/be2bill": "0.1.*",
-        "payum/authorize-net-aim": "0.1.*",
-        "ajbdev/authorizenet-php-api": "dev-master@dev"
+        "payum/authorize-net-aim": "0.1.*"
     },
     "suggest": {
         "payum/paypal-express-checkout-nvp": "If you want to use paypal express checkout nvp gateway",
