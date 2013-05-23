@@ -2,6 +2,7 @@
 namespace Payum\Bundle\PayumBundle;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\OmnipayPaymentFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\SaferpayPaymentFactory;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PaypalExpressCheckoutNvpPaymentFactory;
@@ -24,6 +25,7 @@ class PayumBundle extends Bundle
         $extension->addPaymentFactory(new PaypalProCheckoutNvpPaymentFactory);
         $extension->addPaymentFactory(new Be2BillPaymentFactory);
         $extension->addPaymentFactory(new AuthorizeNetAimPaymentFactory);
+        $extension->addPaymentFactory(new SaferpayPaymentFactory);
         $extension->addPaymentFactory(new OmnipayPaymentFactory);
 
         $extension->addStorageFactory(new FilesystemStorageFactory);
