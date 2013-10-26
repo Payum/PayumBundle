@@ -1,15 +1,15 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\Tests\EventListener;
 
+use Payum\Bundle\PayumBundle\EventListener\InteractiveRequestListener;
+use Payum\Bundle\PayumBundle\Request\ResponseInteractiveRequest;
+use Payum\Request\RedirectUrlInteractiveRequest;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-
-use Payum\Bundle\PayumBundle\EventListener\InteractiveRequestListener;
-use Payum\Bundle\PayumBundle\Request\ResponseInteractiveRequest;
-use Payum\Request\RedirectUrlInteractiveRequest;
 
 class InteractiveRequestListenerTest extends \PHPUnit_Framework_TestCase
 {

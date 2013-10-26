@@ -1,21 +1,22 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface StorageFactoryInterface
 {
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param string $contextName
-     * @param string $modelClass
-     * @param string $paymentServiceId
-     * @param array $config
+     * @param ContainerBuilder $container
+     * @param string           $contextName
+     * @param string           $modelClass
+     * @param string           $paymentId
+     * @param array            $config
      *
      * @return string The context serviceId
      */
-    function create(ContainerBuilder $container, $contextName, $modelClass, $paymentId, array $config);
+    public function create(ContainerBuilder $container, $contextName, $modelClass, $paymentId, array $config);
 
     /**
      * The storage name, 
@@ -23,12 +24,10 @@ interface StorageFactoryInterface
      * 
      * @return string
      */
-    function getName();
+    public function getName();
 
     /**
-     * @param \Symfony\Component\Config\Definition\Builder\NodeDefinition $builder
-     * 
-     * @return void
+     * @param ArrayNodeDefinition $builder
      */
-    function addConfiguration(ArrayNodeDefinition $builder);
+    public function addConfiguration(ArrayNodeDefinition $builder);
 }

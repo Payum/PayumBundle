@@ -2,19 +2,19 @@
 namespace Payum\Bundle\PayumBundle\Security;
 
 use Payum\Exception\InvalidArgumentException;
+use Payum\Model\Token;
 use Payum\Model\TokenizedDetails;
 use Payum\Security\HttpRequestVerifierInterface;
-use Payum\Model\Token;
 use Payum\Security\TokenInterface;
 use Payum\Storage\StorageInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\Request;
 
 class HttpRequestVerifier implements HttpRequestVerifierInterface
 {
     /**
-     * @var \Payum\Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $tokenStorage;
 
@@ -31,7 +31,7 @@ class HttpRequestVerifier implements HttpRequestVerifierInterface
      */
     public function verify($httpRequest)
     {
-        if (false == $httpRequest instanceof Request) {
+        if (!$httpRequest instanceof Request) {
             throw new InvalidArgumentException(sprintf(
                 'Invalid request given. Expected %s but it is %s',
                 'Symfony\Component\HttpFoundation\Request',
@@ -39,14 +39,14 @@ class HttpRequestVerifier implements HttpRequestVerifierInterface
             ));
         }
 
-        if (false === $hash = $httpRequest->attributes->get('payum_token', $httpRequest->get('payum_token', false))) {
+        if (!$hash = $httpRequest->attributes->get('payum_token', $httpRequest->get('payum_token', null))) {
             throw new NotFoundHttpException('Token parameter not set in request');
         }
 
         if ($hash instanceof Token) {
             $token = $hash;
         } else {
-            if (false == $token = $this->tokenStorage->findModelById($hash)) {
+            if (!$token = $this->tokenStorage->findModelById($hash)) {
                 throw new NotFoundHttpException(sprintf('A token with hash `%s` could not be found.', $hash));
             }
 

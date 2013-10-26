@@ -1,15 +1,13 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\ArrayNode;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PaymentFactoryInterface;
-
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Exception\LogicException;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class MainConfiguration implements ConfigurationInterface
 {
@@ -76,7 +74,7 @@ class MainConfiguration implements ConfigurationInterface
                             }
                         }
                 
-                        if (0 == count($selectedPayments)) {
+                        if (0 === count($selectedPayments)) {
                             throw new LogicException(sprintf(
                                 'One payment from the %s payments available must be selected',
                                 implode(', ', array_keys($selectedPayments))
@@ -118,7 +116,7 @@ class MainConfiguration implements ConfigurationInterface
                 ->validate()
                     ->ifTrue(function($v) {
                         foreach($v as $key => $value) {
-                            if (false == class_exists($key)) {
+                            if (!class_exists($key)) {
                                 throw new LogicException(sprintf(
                                     'The storage entry must be a valid model class. It is set %s',
                                     $key
@@ -137,7 +135,7 @@ class MainConfiguration implements ConfigurationInterface
         $storageNode
             ->validate()
                 ->ifTrue(function($v) {
-                    if (count($v) == 0) {
+                    if (0 === count($v)) {
                         throw new LogicException('At least one storage must be configured.');
                     }
                     if (count($v) > 1) {
@@ -168,14 +166,14 @@ class MainConfiguration implements ConfigurationInterface
             ->validate()
             ->ifTrue(function($v) {
                 foreach($v as $key => $value) {
-                    if (false == class_exists($key)) {
+                    if (!class_exists($key)) {
                         throw new LogicException(sprintf(
                             'The storage entry must be a valid model class. It is set %s',
                             $key
                         ));
                     }
 
-                    if (false == is_a($key, 'Payum\Security\TokenInterface', true)) {
+                    if (!is_a($key, 'Payum\Security\TokenInterface', true)) {
                         throw new LogicException('The token class must implement `Payum\Security\TokenInterface` interface');
                     }
 
@@ -195,9 +193,10 @@ class MainConfiguration implements ConfigurationInterface
         $storageNode
             ->validate()
             ->ifTrue(function($v) {
-                if (count($v) == 0) {
+                if (0 === count($v)) {
                     throw new LogicException('At least one storage must be configured.');
                 }
+
                 if (count($v) > 1) {
                     throw new LogicException('Only one storage per entry could be selected');
                 }

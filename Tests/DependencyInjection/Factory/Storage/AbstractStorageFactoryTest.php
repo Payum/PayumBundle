@@ -1,13 +1,13 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Storage;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory;
 
 class AbstractStorageFactoryTest extends \PHPUnit_Framework_TestCase
 {

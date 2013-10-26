@@ -1,16 +1,15 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Definition;
+use Payum\Exception\RuntimeException;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
-
-use Payum\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
 {
@@ -19,7 +18,7 @@ class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
      */
     public function create(ContainerBuilder $container, $contextName, array $config)
     {
-        if (false == class_exists('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory')) {
+        if (!class_exists('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory')) {
             throw new RuntimeException('Cannot find paypal express checkout payment factory class. Have you installed payum/paypal-express-checkout-nvp package?');
         }
 
@@ -43,18 +42,20 @@ class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
     public function addConfiguration(ArrayNodeDefinition $builder)
     {
         parent::addConfiguration($builder);
-        
-        $builder->children()
-            ->arrayNode('api')->isRequired()->children()
-                ->scalarNode('client')->defaultValue('payum.buzz.client')->cannotBeEmpty()->end()
-                ->arrayNode('options')->isRequired()->children()
-                    ->scalarNode('username')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('password')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('signature')->isRequired()->cannotBeEmpty()->end()
-                    ->booleanNode('sandbox')->defaultTrue()->end()
+
+        $builder
+            ->children()
+                ->arrayNode('api')->isRequired()->children()
+                    ->scalarNode('client')->defaultValue('payum.buzz.client')->cannotBeEmpty()->end()
+                    ->arrayNode('options')->isRequired()->children()
+                        ->scalarNode('username')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('password')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('signature')->isRequired()->cannotBeEmpty()->end()
+                        ->booleanNode('sandbox')->defaultTrue()->end()
+                    ->end()
                 ->end()
             ->end()
-        ->end();
+        ;
     }
 
     /**

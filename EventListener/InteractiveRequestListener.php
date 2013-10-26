@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\EventListener;
 
 use Payum\Bundle\PayumBundle\Request\ResponseInteractiveRequest;
@@ -15,12 +16,12 @@ class InteractiveRequestListener
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        if (false == $event->getException() instanceof InteractiveRequestInterface) {
+        if (!$event->getException() instanceof InteractiveRequestInterface) {
             return;
         }
 
         $interactiveRequest = $event->getException();
-            
+
         if ($interactiveRequest instanceof ResponseInteractiveRequest) {
             $event->setResponse($interactiveRequest->getResponse());
         } else if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
@@ -28,17 +29,16 @@ class InteractiveRequestListener
         }
 
         if ($event->getResponse()) {
-            if (false == $event->getResponse()->headers->has('X-Status-Code')) {
+            if (!$event->getResponse()->headers->has('X-Status-Code')) {
                 $event->getResponse()->headers->set('X-Status-Code', $event->getResponse()->getStatusCode());
             }
 
             return;
         }
-        
-        $ro = new \ReflectionObject($interactiveRequest);
+
         $event->setException(new LogicException(
-            sprintf('Cannot convert interactive request %s to symfony response.', $ro->getShortName()), 
-            null, 
+            sprintf('Cannot convert interactive request "%s" to Symfony Response.', basename(get_class($interactiveRequest))),
+            null,
             $interactiveRequest
         ));
     }

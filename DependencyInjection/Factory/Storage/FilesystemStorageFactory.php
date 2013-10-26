@@ -1,11 +1,12 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\Config\FileLocator;
 
 class FilesystemStorageFactory extends AbstractStorageFactory
 {
@@ -24,10 +25,12 @@ class FilesystemStorageFactory extends AbstractStorageFactory
     {
         parent::addConfiguration($builder);
         
-        $builder->children()
-            ->scalarNode('storage_dir')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('id_property')->isRequired()->cannotBeEmpty()->end()
-        ->end();
+        $builder
+            ->children()
+                ->scalarNode('storage_dir')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('id_property')->isRequired()->cannotBeEmpty()->end()
+            ->end()
+        ;
     }
 
     /**

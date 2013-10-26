@@ -1,10 +1,10 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -34,7 +34,7 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
 
         return $paymentId;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -60,8 +60,8 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
 
     /**
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      * 
      * @return Definition
      */
@@ -71,33 +71,32 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
         $paymentDefinition->setClass(
             $this->createContextParameter($container, $contextName, '%payum.payment.class%', 'payment.class')
         );
-        
+
         return $paymentDefinition;
     }
-    
 
     /**
      * @param ContainerBuilder $container
-     * @param string $contextName
-     * @param string $parameter
-     * @param string $contextParameter
+     * @param string           $contextName
+     * @param string           $parameter
+     * @param string           $contextParameter
      * 
      * @return string
      */
     protected function createContextParameter(ContainerBuilder $container, $contextName, $parameter, $contextParameter)
     {
         $contextParameter = sprintf('payum.context.%s.%s', $contextName, $contextParameter);
-        
+
         $container->setParameter($contextParameter, $parameter);
-        
+
         return "%{$contextParameter}%";
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCustomApis(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
@@ -110,10 +109,10 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCustomActions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
@@ -126,10 +125,10 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCustomExtensions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
@@ -142,50 +141,50 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addApis(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addActions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
     }
 
     /**
-     * @param Definition $paymentDefinition
+     * @param Definition       $paymentDefinition
      * @param ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addExtensions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
     }
 
     /**
-     * @param Definition $paymentDefinition
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param $contextName
-     * @param array $config
+     * @param Definition       $paymentDefinition
+     * @param ContainerBuilder $container
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCommonApis(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
     }
 
     /**
-     * @param Definition $paymentDefinition
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param string $contextName
-     * @param array $config
+     * @param Definition       $paymentDefinition
+     * @param ContainerBuilder $container
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCommonActions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
@@ -206,10 +205,10 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     }
 
     /**
-     * @param Definition $paymentDefinition
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param string $contextName
-     * @param array $config
+     * @param Definition       $paymentDefinition
+     * @param ContainerBuilder $container
+     * @param string           $contextName
+     * @param array            $config
      */
     protected function addCommonExtensions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {

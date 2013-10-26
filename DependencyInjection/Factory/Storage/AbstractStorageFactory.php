@@ -1,9 +1,9 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -20,9 +20,9 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
             strtolower(str_replace('\\', '', $modelClass))
         );
         $storageDefinition = $this->createStorage($container, $contextName, $modelClass, $paymentId, $config);
-        
+
         $container->setDefinition($storageId, $storageDefinition);
-        
+
         if ($config['payment_extension']['enabled']) {
             $this->addStorageExtension($container, $storageId, $paymentId);
         }
@@ -35,18 +35,20 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
      */
     public function addConfiguration(ArrayNodeDefinition $builder)
     {
-        $builder->children()
-            ->arrayNode('payment_extension')
-                ->addDefaultsIfNotSet()
-                ->treatNullLike(array('enabled' => true))
-                ->treatTrueLike(array('enabled' => true))
-                ->treatFalseLike(array('enabled' => false))
-                ->children()
-                    ->booleanNode('enabled')->defaultTrue()->end()
+        $builder
+            ->children()
+                ->arrayNode('payment_extension')
+                    ->addDefaultsIfNotSet()
+                    ->treatNullLike(array('enabled' => true))
+                    ->treatTrueLike(array('enabled' => true))
+                    ->treatFalseLike(array('enabled' => false))
+                    ->children()
+                        ->booleanNode('enabled')->defaultTrue()->end()
+                    ->end()
+                ->end()
                 ->end()
             ->end()
-            ->end()
-        ->end();
+        ;
     }
 
     /**
@@ -67,10 +69,11 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
     }
 
     /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     * @param array $config
-     *
-     * @return Definition
+     * @param ContainerBuilder $container
+     * @param string           $contextName
+     * @param string           $modelClass
+     * @param string           $paymentId
+     * @param array            $config
      */
     abstract protected function createStorage(ContainerBuilder $container, $contextName, $modelClass, $paymentId, array $config);
 }
