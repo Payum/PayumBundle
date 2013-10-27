@@ -1,16 +1,15 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
+use Payum\Exception\RuntimeException;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
-
-use Payum\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PayexPaymentFactory extends AbstractPaymentFactory
 {
@@ -19,7 +18,7 @@ class PayexPaymentFactory extends AbstractPaymentFactory
      */
     public function create(ContainerBuilder $container, $contextName, array $config)
     {
-        if (false == class_exists('Payum\Payex\PaymentFactory')) {
+        if (!class_exists('Payum\Payex\PaymentFactory')) {
             throw new RuntimeException('Cannot find payex payment factory class. Have you installed payum/payex package?');
         }
 
@@ -43,16 +42,18 @@ class PayexPaymentFactory extends AbstractPaymentFactory
     public function addConfiguration(ArrayNodeDefinition $builder)
     {
         parent::addConfiguration($builder);
-        
-        $builder->children()
-            ->arrayNode('api')->isRequired()->children()
-                ->arrayNode('options')->isRequired()->children()
-                    ->scalarNode('encryption_key')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('account_number')->isRequired()->cannotBeEmpty()->end()
-                    ->booleanNode('sandbox')->defaultTrue()->end()
+
+        $builder
+            ->children()
+                ->arrayNode('api')->isRequired()->children()
+                    ->arrayNode('options')->isRequired()->children()
+                        ->scalarNode('encryption_key')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('account_number')->isRequired()->cannotBeEmpty()->end()
+                        ->booleanNode('sandbox')->defaultTrue()->end()
+                    ->end()
                 ->end()
             ->end()
-        ->end();
+        ;
     }
 
     /**

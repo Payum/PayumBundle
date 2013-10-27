@@ -1,16 +1,15 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
+use Payum\Exception\RuntimeException;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
-
-use Payum\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class AuthorizeNetAimPaymentFactory extends AbstractPaymentFactory
 {
@@ -19,13 +18,13 @@ class AuthorizeNetAimPaymentFactory extends AbstractPaymentFactory
      */
     public function create(ContainerBuilder $container, $contextName, array $config)
     {
-        if (false == class_exists('Payum\AuthorizeNet\Aim\PaymentFactory')) {
+        if (!class_exists('Payum\AuthorizeNet\Aim\PaymentFactory')) {
             throw new RuntimeException('Cannot find Authorize.net payment factory class. Have you installed payum/authorize-net-aim package?');
         }
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/payment'));
         $loader->load('authorize_net_aim.xml');
-        
+
         return parent::create($container, $contextName, $config);
     }
 
@@ -43,7 +42,7 @@ class AuthorizeNetAimPaymentFactory extends AbstractPaymentFactory
     public function addConfiguration(ArrayNodeDefinition $builder)
     {
         parent::addConfiguration($builder);
-        
+
         $builder->children()
             ->arrayNode('api')->isRequired()->children()
                 ->arrayNode('options')->isRequired()->children()

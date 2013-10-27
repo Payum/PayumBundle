@@ -1,15 +1,15 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PaymentFactoryInterface;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
+use Payum\Exception\InvalidArgumentException;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
-
-use Payum\Exception\InvalidArgumentException;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PaymentFactoryInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 class PayumExtension extends Extension
@@ -47,16 +47,16 @@ class PayumExtension extends Extension
     }
 
     /**
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     protected function loadContexts(array $config, ContainerBuilder $container)
     {
         $paymentsServicesIds = array();
         $storagesServicesIds = array();
-        
+
         $defaultName = null;
-        
+
         foreach ($config as $contextName => $contextConfig) {
             //use first defined context as default.
             if (false == $defaultName) {
@@ -70,7 +70,7 @@ class PayumExtension extends Extension
                 $contextConfig[$paymentFactoryName]
             );
             $paymentsServicesIds[$contextName] = $paymentId;
-            
+
             foreach ($contextConfig['storages'] as $modelClass => $storageConfig) {
                 $storageFactoryName = $this->findSelectedStorageFactoryNameInStorageConfig($storageConfig);
                 $storageId = $this->storageFactories[$storageFactoryName]->create(
@@ -83,7 +83,7 @@ class PayumExtension extends Extension
                 $storagesServicesIds[$contextName][$modelClass] = $storageId;
             }
         }
-        
+
         $registryDefinition = $container->getDefinition('payum');
         $registryDefinition->replaceArgument(0, $paymentsServicesIds);
         $registryDefinition->replaceArgument(1, $storagesServicesIds);
@@ -92,7 +92,7 @@ class PayumExtension extends Extension
     }
 
     /**
-     * @param array $securityConfig
+     * @param array            $securityConfig
      * @param ContainerBuilder $container
      */
     protected function loadSecurity(array $securityConfig, ContainerBuilder $container)
@@ -116,9 +116,9 @@ class PayumExtension extends Extension
     }
 
     /**
-     * @param Factory\Storage\StorageFactoryInterface $factory
+     * @param StorageFactoryInterface $factory
      *
-     * @throws \Payum\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addStorageFactory(StorageFactoryInterface $factory)
     {
@@ -126,6 +126,7 @@ class PayumExtension extends Extension
         if (empty($factoryName)) {
             throw new InvalidArgumentException(sprintf('The storage factory %s has empty name', get_class($factory)));
         }
+
         if (array_key_exists($factoryName, $this->storageFactories)) {
             throw new InvalidArgumentException(sprintf('The storage factory with such name %s already registered', $factoryName));
         }
@@ -134,9 +135,9 @@ class PayumExtension extends Extension
     }
 
     /**
-     * @param Factory\Payment\PaymentFactoryInterface $factory
+     * @param PaymentFactoryInterface $factory
      *
-     * @throws \Payum\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function addPaymentFactory(PaymentFactoryInterface $factory)
     {
@@ -144,10 +145,11 @@ class PayumExtension extends Extension
         if (empty($factoryName)) {
             throw new InvalidArgumentException(sprintf('The payment factory %s has empty name', get_class($factory)));
         }
+
         if (isset($this->paymentFactories[$factoryName])) {
             throw new InvalidArgumentException(sprintf('The payment factory with such name %s already registered', $factoryName));
         }
-        
+
         $this->paymentFactories[$factory->getName()] = $factory;
     }
 

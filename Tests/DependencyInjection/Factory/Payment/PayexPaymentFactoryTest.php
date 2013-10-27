@@ -1,19 +1,19 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Payment;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PayexPaymentFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\PayexPaymentFactory;
 
 class PayexPaymentFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass() 
     {
-        if (false == class_exists('Payum\Payex\PaymentFactory')) {
+        if (!class_exists('Payum\Payex\PaymentFactory')) {
             throw new \PHPUnit_Framework_SkippedTestError('Skipped because payment library is not installed.');
         }
     }

@@ -1,9 +1,9 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\Tests\Registry;
 
-use Symfony\Component\DependencyInjection\Container;
-
 use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
+use Symfony\Component\DependencyInjection\Container;
 
 class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase 
 {

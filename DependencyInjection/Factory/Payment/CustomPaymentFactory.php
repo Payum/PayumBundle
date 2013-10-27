@@ -1,4 +1,5 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -33,8 +34,10 @@ class CustomPaymentFactory extends AbstractPaymentFactory
     {
         parent::addConfiguration($builder);
 
-        $builder->children()
-            ->scalarNode('service')->defaultValue(null)->end()
-        ->end();
+        $builder
+            ->children()
+                ->scalarNode('service')->defaultValue(null)->end()
+            ->end()
+        ;
     }
 }

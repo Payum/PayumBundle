@@ -1,19 +1,19 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\Request;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Payum\Request\BaseInteractiveRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResponseInteractiveRequest extends BaseInteractiveRequest
 {
     /**
-     * @var \Symfony\Component\HttpFoundation\Response
+     * @var Response
      */
     protected $response;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param Response $response
      */
     public function __construct(Response $response)
     {
@@ -21,7 +21,7 @@ class ResponseInteractiveRequest extends BaseInteractiveRequest
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getResponse()
     {
