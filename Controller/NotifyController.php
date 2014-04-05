@@ -12,6 +12,12 @@ class NotifyController extends PayumController
     {
         $payment = $this->getPayum()->getPayment($request->get('payment_name'));
 
+        // Convert JSON content to POST request
+        if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+            $data = json_decode($request->getContent(), true);
+            $request->request->replace(is_array($data) ? $data : array());
+        }
+
         $payment->execute(new NotifyRequest(array_replace(
             $request->query->all(),
             $request->request->all()
