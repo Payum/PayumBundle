@@ -45,6 +45,15 @@ class MainConfiguration implements ConfigurationInterface
         $tb = new TreeBuilder();
         $rootNode = $tb->root('payum');
 
+        $rootNode
+            ->children()
+                ->arrayNode('bridge')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->booleanNode('sylius')->defaultValue(false)
+        ;
+
+
         $securityNode = $rootNode
             ->children()
                 ->arrayNode('security')

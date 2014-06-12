@@ -129,5 +129,10 @@
         <service id="payum.form.type.credit_card" class="Payum\Bundle\PayumBundle\Form\Type\CreditCardType">
             <tag name="form.type" alias="payum_credit_card" />
         </service>
+
+        <service id="payum.form.type.context_choice" class="Payum\Bundle\PayumBundle\Form\Type\ContextChoiceType">
+            <argument>%payum.contexts%</argument>
+            <tag name="form.type" alias="payum_context_choice" />
+        </service>
     </services>
 </container>

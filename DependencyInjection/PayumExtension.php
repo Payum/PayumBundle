@@ -32,9 +32,13 @@ class PayumExtension extends Extension
 
         $config = $this->processConfiguration($mainConfig, $configs);
 
-        // load services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('payum.xml');
+
+        if ($config['bridge']['sylius']) {
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Bridge/Sylius/Resources/config'));
+            $loader->load('sylius.xml');
+        }
 
         $this->loadSecurity($config['security'], $container);
         $this->loadContexts($config['contexts'], $container);
@@ -82,12 +86,14 @@ class PayumExtension extends Extension
                 $storagesServicesIds[$contextName][$modelClass] = $storageId;
             }
         }
-        
+
         $registryDefinition = $container->getDefinition('payum');
         $registryDefinition->replaceArgument(0, $paymentsServicesIds);
         $registryDefinition->replaceArgument(1, $storagesServicesIds);
         $registryDefinition->replaceArgument(2, $defaultName);
         $registryDefinition->replaceArgument(3, $defaultName);
+
+        $container->setParameter('payum.contexts', array_keys($paymentsServicesIds));
     }
 
     /**
