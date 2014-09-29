@@ -6,7 +6,8 @@ The preferred way to install the library is using [composer](http://getcomposer.
 Run composer require to add dependencies to _composer.json_:
 
 ```bash
-php composer.phar require "payum/payum-bundle:*@stable" "payum/xxx:*@stable"
+php composer.phar require   "payum/payum-bundle" : "*@stable", 
+                            "payum/xxx" : "*@stable"
 ```
 
 _**Note**: Where payum/xxx is a payum package, for example it could be payum/paypal-express-checkout-nvp. Look at [supported payments](https://github.com/Payum/Core/blob/master/Resources/docs/supported-payments.md) to find out what you can use._
