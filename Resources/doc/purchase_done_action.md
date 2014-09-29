@@ -28,7 +28,7 @@ It is the route of url you will be redirected after capture done its job. Let's 
 
         $payment = $this->get('payum')->getPayment($token->getPaymentName());
 
-        $payment->execute($status = new GetHumanStatus($token));
+        $payment->execute($status = new SimpleStatusRequest($token));
         if ($status->isCaptured()) {
             $this->getUser()->addCredits(100);
             $this->get('session')->getFlashBag()->set(
