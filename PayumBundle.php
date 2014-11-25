@@ -5,6 +5,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\PayumActionsPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\PayumStorageExtensionsPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\Be2BillOnsitePaymentFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\Be2BillPaymentFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\BitcoindPaymentFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\KlarnaCheckoutPaymentFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\KlarnaInvoicePaymentFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Payment\OfflinePaymentFactory;
@@ -46,6 +47,7 @@ class PayumBundle extends Bundle
         $extension->addPaymentFactory(new KlarnaInvoicePaymentFactory);
         $extension->addPaymentFactory(new StripeJsPaymentFactory);
         $extension->addPaymentFactory(new StripeCheckoutPaymentFactory);
+        $extension->addPaymentFactory(new BitcoindPaymentFactory);
 
         $extension->addStorageFactory(new FilesystemStorageFactory);
         $extension->addStorageFactory(new DoctrineStorageFactory);

@@ -45,10 +45,7 @@ class BitcoindPaymentFactory extends AbstractPaymentFactory implements PrependEx
         parent::addConfiguration($builder);
         
         $builder->children()
-            ->scalarNode('rpcuser')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('rpcpassword')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('rpchost')->isRequired()->cannotBeEmpty()->end()
-            ->scalarNode('rpcport')->isRequired()->cannotBeEmpty()->end()
+            ->scalarNode('dsn')->isRequired()->cannotBeEmpty()->end()
         ->end();
     }
 
@@ -70,5 +67,18 @@ class BitcoindPaymentFactory extends AbstractPaymentFactory implements PrependEx
      */
     protected function addApis(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
+        $client = new DefinitionDecorator('payum.bitcoind.client.prototype');
+        $client->replaceArgument(0, $config['dsn']);
+        $client->setPublic(true);
+        $clientId = 'payum.context.'.$contextName.'.client';
+        $container->setDefinition($clientId, $client);
+
+        $bitcoind = new DefinitionDecorator('payum.bitcoind.bitcoind.prototype');
+        $bitcoind->replaceArgument(0, new Reference($clientId));
+        $bitcoind->setPublic(true);
+        $bitcoindId = 'payum.context.'.$contextName.'.bitcoind';
+        $container->setDefinition($bitcoindId, $bitcoind);
+
+        $paymentDefinition->addMethodCall('addApi', array(new Reference($bitcoindId)));
     }
 }
