@@ -40,20 +40,20 @@ class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
      */
     protected function createPaymentDefinition(ContainerBuilder $container, $contextName, array $config)
     {
-        if (false == class_exists('Payum\Paypal\ExpressCheckout\Nvp\PaymentBuilder')) {
+        if (false == class_exists('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory')) {
             throw new RuntimeException('Cannot find paypal express checkout payment factory class. Have you either installed payum/paypal-express-checkout-nvp or payum/payum package?');
         }
 
         $builder = new Definition();
-        $builder->setClass('Payum\Paypal\ExpressCheckout\Nvp\PaymentBuilder');
-        $builder->addMethodCall('set', array('api.options', 'username', $config['username']));
-        $builder->addMethodCall('set', array('api.options', 'password', $config['password']));
-        $builder->addMethodCall('set', array('api.options', 'signature', $config['signature']));
-        $builder->addMethodCall('set', array('api.options', 'sandbox', $config['sandbox']));
+        $builder->setClass('Payum\Core\PaymentBuilderInterface');
+        $builder->setFactoryClass('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory');
+        $builder->setFactoryMethod('createBuilder');
+        $builder->setArguments(array($config));
+        $builder->setPublic(false);
 
-        $builderId = 'payum.context.'.$contextName.'.payment_builder';
+        $builderId = 'payum.context.'.$contextName.'.builder';
 
-        $container->set($builderId, $builder);
+        $container->setDefinition($builderId, $builder);
 
         $payment = new Definition();
         $payment->setClass('Payum\Core\PaymentInterface');
