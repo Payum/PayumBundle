@@ -5,6 +5,7 @@ use Payum\Core\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
 {
@@ -44,21 +45,17 @@ class PaypalExpressCheckoutNvpPaymentFactory extends AbstractPaymentFactory
             throw new RuntimeException('Cannot find paypal express checkout payment factory class. Have you either installed payum/paypal-express-checkout-nvp or payum/payum package?');
         }
 
-        $builder = new Definition();
-        $builder->setClass('Payum\Core\PaymentBuilderInterface');
-        $builder->setFactoryClass('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory');
-        $builder->setFactoryMethod('createBuilder');
-        $builder->setArguments(array($config));
-        $builder->setPublic(false);
-
-        $builderId = 'payum.context.'.$contextName.'.builder';
-
-        $container->setDefinition($builderId, $builder);
+        $factory = new Definition();
+        $factory->setClass('Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory');
+        $factory->addArgument(new Reference('payum.builder_default'));
+        $factoryId = 'payum.context.'.$contextName.'.factory';
+        $container->setDefinition($factoryId, $factory);
 
         $payment = new Definition();
         $payment->setClass('Payum\Core\PaymentInterface');
-        $payment->setFactoryService($builderId);
-        $payment->setFactoryMethod('getPayment');
+        $payment->setFactoryService($factoryId);
+        $payment->setFactoryMethod('create');
+        $payment->addArgument($config);
 
         return $payment;
     }
