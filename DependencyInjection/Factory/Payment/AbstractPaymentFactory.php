@@ -42,7 +42,6 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     {
         $builder
             ->children()
-                ->booleanNode('obtain_credit_card')->defaultValue(true)->end()
                 ->arrayNode('actions')
                     ->useAttributeAsKey('key')
                     ->prototype('scalar')->end()
@@ -70,7 +69,7 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
     {
         $paymentDefinition = new Definition();
         $paymentDefinition->setClass(
-            $this->createContextParameter($container, $contextName, '%payum.payment.class%', 'payment.class')
+            $this->createContextParameter($container, $contextName, 'Payum\Core\Payment', 'payment.class')
         );
         
         return $paymentDefinition;
@@ -190,11 +189,6 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
      */
     protected function addCommonActions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
-        if ($config['obtain_credit_card']) {
-            $obtainCreditCardActionDefinition = $container->getDefinition('payum.action.obtain_credit_card');
-
-            $obtainCreditCardActionDefinition->addTag('payum.action', array('context' => $contextName));
-        }
     }
 
     /**
@@ -205,18 +199,18 @@ abstract class AbstractPaymentFactory implements PaymentFactoryInterface
      */
     protected function addCommonExtensions(Definition $paymentDefinition, ContainerBuilder $container, $contextName, array $config)
     {
-        $paymentDefinition->addMethodCall(
-            'addExtension', 
-            array(new Reference('payum.extension.endless_cycle_detector'))
-        );
-
-        $paymentDefinition->addMethodCall(
-            'addExtension',
-            array(new Reference('payum.extension.log_executed_actions'))
-        );
-        $paymentDefinition->addMethodCall(
-            'addExtension',
-            array(new Reference('payum.extension.logger'))
-        );
+//        $paymentDefinition->addMethodCall(
+//            'addExtension',
+//            array(new Reference('payum.extension.endless_cycle_detector'))
+//        );
+//
+//        $paymentDefinition->addMethodCall(
+//            'addExtension',
+//            array(new Reference('payum.extension.log_executed_actions'))
+//        );
+//        $paymentDefinition->addMethodCall(
+//            'addExtension',
+//            array(new Reference('payum.extension.logger'))
+//        );
     }
 }
