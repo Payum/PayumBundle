@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="payum.bitcoind.bitcoind.class">Nbobtc\Bitcoind\Bitcoind</parameter>
+        <parameter key="payum.bitcoind.client.class">Nbobtc\Bitcoind\Client</parameter>
+        <parameter key="payum.bitcoind.action.capture.class">Payum\Bitcoind\Action\CaptureAction</parameter>
+        <parameter key="payum.bitcoind.action.status.class">Payum\Bitcoind\Action\StatusAction</parameter>
+        <parameter key="payum.bitcoind.action.api.get_new_address.class">Payum\Bitcoind\Action\Api\GetNewAddressAction</parameter>
+    </parameters>
+
+    <services>
+        <service
+            id="payum.bitcoind.bitcoind.prototype"
+            class="%payum.bitcoind.bitcoind.class%"
+            abstract="true"
+            public="false"
+        >
+            <!-- It is template service. The real service will be created by BitcoindPaymentFactory -->
+            <argument />
+        </service>
+
+        <service
+            id="payum.bitcoind.client.prototype"
+            class="%payum.bitcoind.client.class%"
+            abstract="true"
+            public="false"
+        >
+            <!-- It is template service. The real service will be created by BitcoindPaymentFactory -->
+            <argument />
+        </service>
+
+        <service
+            id="payum.bitcoind.action.capture"
+            class="%payum.bitcoind.action.capture.class%"
+            public="false"
+        >
+            <tag name="payum.action" factory="bitcoind" />
+        </service>
+
+        <service
+            id="payum.bitcoind.action.status"
+            class="%payum.bitcoind.action.status.class%"
+            public="false"
+        >
+            <tag name="payum.action" factory="bitcoind" />
+        </service>
+
+        <service
+            id="payum.bitcoind.action.api.get_new_address"
+            class="%payum.bitcoind.action.api.get_new_address.class%"
+            public="false"
+        >
+            <tag name="payum.action" factory="bitcoind" />
+        </service>
+    </services>
+</container>
