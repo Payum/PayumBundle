@@ -32,6 +32,8 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $mainConfig = $this->getConfiguration($configs, $container);
 
         $config = $this->processConfiguration($mainConfig, $configs);
+        $container->setParameter('payum.template.layout', $config['templates']['layout']);
+        $container->setParameter('payum.template.obtain_credit_card', $config['templates']['obtain_credit_card']);
 
         // load services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -51,7 +53,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             'paths' => array(
                 TwigFactory::guessViewsPath('Payum\Core\Payment') => 'PayumCore',
                 TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
-            )
+            ),
         ));
 
         foreach ($this->paymentFactories as $factory) {
@@ -62,7 +64,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     protected function loadContexts(array $config, ContainerBuilder $container)
@@ -85,7 +87,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
             $container->getDefinition($paymentId)->addTag('payum.payment', array(
                 'factory' => $paymentFactoryName,
-                'context' => $contextName
+                'context' => $contextName,
             ));
         }
 
@@ -95,7 +97,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     protected function loadStorages(array $config, ContainerBuilder $container)
@@ -130,7 +132,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @param array $securityConfig
+     * @param array            $securityConfig
      * @param ContainerBuilder $container
      */
     protected function loadSecurity(array $securityConfig, ContainerBuilder $container)
@@ -162,7 +164,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if (array_key_exists($factoryName, $this->storageFactories)) {
             throw new InvalidArgumentException(sprintf('The storage factory with such name %s already registered', $factoryName));
         }
-        
+
         $this->storageFactories[$factoryName] = $factory;
     }
 
@@ -180,7 +182,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if (isset($this->paymentFactories[$factoryName])) {
             throw new InvalidArgumentException(sprintf('The payment factory with such name %s already registered', $factoryName));
         }
-        
+
         $this->paymentFactories[$factory->getName()] = $factory;
     }
 
