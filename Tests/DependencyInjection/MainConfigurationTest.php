@@ -13,19 +13,19 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
     protected $paymentFactories = array();
 
     protected $storageFactories = array();
-    
+
     protected function setUp()
     {
         $this->paymentFactories = array(
             new FooPaymentFactory(),
-            new BarPaymentFactory()
+            new BarPaymentFactory(),
         );
         $this->storageFactories = array(
             new FooStorageFactory(),
-            new BarStorageFactory()
+            new BarStorageFactory(),
         );
     }
-    
+
     /**
      * @test
      */
@@ -40,43 +40,47 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
     public function shouldPassConfigurationProcessing()
     {
         $configuration = new MainConfiguration($this->paymentFactories, $this->storageFactories);
-        
+
         $processor = new Processor();
-        
+
         $fooModelClass = get_class($this->getMock('stdClass'));
         $barModelClass = get_class($this->getMock('stdClass'));
 
         $processor->processConfiguration($configuration, array(
             'payum' => array(
+                'templates' => array(
+                    'layout' => 'layout.html.twig',
+                    'obtain_credit_card' => 'payment\obtainCreditCard.html.twig',
+                ),
                 'storages' => array(
                     $fooModelClass => array(
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                     ),
                     $barModelClass => array(
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
-                    )
+                    ),
                 ),
                 'security' => array(
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
-                        'foo_payment' => array( 
-                            'foo_opt' => 'foo'
+                        'foo_payment' => array(
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -96,7 +100,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'storages' => array(
                     $fooModelClass => array(
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                     ),
                 ),
@@ -104,12 +108,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
-            )
+            ),
         ));
 
         $this->assertTrue(isset($config['storages'][$fooModelClass]['payment']['all']));
@@ -141,7 +145,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                             'all' => false,
                         ),
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                     ),
                 ),
@@ -149,12 +153,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
-            )
+            ),
         ));
 
         $this->assertTrue(isset($config['storages'][$fooModelClass]['payment']['all']));
@@ -178,11 +182,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     $fooModelClass => array(
                         'payment' => array(
                             'contexts' => array(
-                                'foo', 'bar'
-                            )
+                                'foo', 'bar',
+                            ),
                         ),
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                     ),
                 ),
@@ -190,12 +194,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
-            )
+            ),
         ));
 
         $this->assertTrue(isset($config['storages'][$fooModelClass]['payment']['contexts']));
@@ -219,11 +223,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     $fooModelClass => array(
                         'payment' => array(
                             'factories' => array(
-                                'foo', 'bar'
-                            )
+                                'foo', 'bar',
+                            ),
                         ),
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                     ),
                 ),
@@ -231,12 +235,12 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
-            )
+            ),
         ));
 
         $this->assertTrue(isset($config['storages'][$fooModelClass]['payment']['factories']));
@@ -245,7 +249,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * 
+     *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @expectedExceptionMessage Invalid configuration for path "payum.storages": The storage entry must be a valid model class. It is set notExistClass
      */
@@ -260,7 +264,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'storages' => array(
                     'notExistClass' => array(
                         'foo_storage' => array(
-                            'foo_opt' => 'bar'
+                            'foo_opt' => 'bar',
                         ),
                     ),
                 ),
@@ -268,25 +272,25 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
     /**
      * @test
-     * 
+     *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @expectedExceptionMessage Invalid configuration for path "payum.storages.stdClass": Only one storage per entry could be selected
      */
@@ -301,30 +305,30 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'storages' => array(
                     'stdClass' => array(
                         'foo_storage' => array(
-                            'foo_opt' => 'bar'
+                            'foo_opt' => 'bar',
                         ),
                         'bar_storage' => array(
-                            'bar_opt' => 'bar'
-                        )
+                            'bar_opt' => 'bar',
+                        ),
                     ),
                 ),
                 'security' => array(
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -349,25 +353,25 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
     /**
      * @test
-     * 
+     *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      * @expectedExceptionMessage Invalid configuration for path "payum.contexts.a_context": One payment from the  payments available must be selected
      */
@@ -383,15 +387,15 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
-                    'a_context' => array()
-                )
-            )
+                    'a_context' => array(),
+                ),
+            ),
         ));
     }
 
@@ -410,19 +414,19 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
-                        )
-                    )
-                )
-            )
+                            'foo_opt' => 'foo',
+                        ),
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -444,22 +448,22 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'bar_payment' => array(
-                            'bar_opt' => 'bar'
+                            'bar_opt' => 'bar',
                         ),
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
-                        )
-                    )
-                )
-            )
+                            'foo_opt' => 'foo',
+                        ),
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -481,24 +485,24 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'Payum\Core\Model\Token' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
+                                'foo_opt' => 'foo',
+                            ),
                         ),
                         'stdClass' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -520,19 +524,19 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'stdClass' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -554,19 +558,19 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                     'token_storage' => array(
                         'foo' => array(
                             'foo_storage' => array(
-                                'foo_opt' => 'foo'
-                            )
-                        )
-                    )
+                                'foo_opt' => 'foo',
+                            ),
+                        ),
+                    ),
                 ),
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -587,11 +591,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 
@@ -614,11 +618,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'contexts' => array(
                     'a_context' => array(
                         'foo_payment' => array(
-                            'foo_opt' => 'foo'
+                            'foo_opt' => 'foo',
                         ),
-                    )
-                )
-            )
+                    ),
+                ),
+            ),
         ));
     }
 }

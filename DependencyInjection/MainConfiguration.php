@@ -41,7 +41,7 @@ class MainConfiguration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $paymentFactories = $this->paymentFactories;
-        
+
         $tb = new TreeBuilder();
         $rootNode = $tb->root('payum');
 
@@ -51,8 +51,20 @@ class MainConfiguration implements ConfigurationInterface
                     ->isRequired()
         ;
 
+        $rootNode
+            ->children()
+                ->arrayNode('templates')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('layout')->defaultValue('@PayumCore\layout.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('obtain_credit_card')->defaultValue('@PayumSymfonyBridge\obtainCreditCard.html.twig')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
         $this->addSecuritySection($securityNode);
-        
+
         $contextsPrototypeNode = $rootNode
             ->children()
                 ->arrayNode('contexts')
@@ -65,14 +77,14 @@ class MainConfiguration implements ConfigurationInterface
 
         $contextsPrototypeNode
                     ->validate()
-                    ->ifTrue(function($v) use($paymentFactories) {
+                    ->ifTrue(function ($v) use ($paymentFactories) {
                         $selectedPayments = array();
                         foreach ($v as $name => $value) {
                             if (isset($paymentFactories[$name])) {
                                 $selectedPayments[$name] = $paymentFactories[$name];
                             }
                         }
-                
+
                         if (0 == count($selectedPayments)) {
                             throw new LogicException(sprintf(
                                 'One payment from the %s payments available must be selected',
@@ -82,14 +94,14 @@ class MainConfiguration implements ConfigurationInterface
                         if (count($selectedPayments) > 1) {
                             throw new LogicException('Only one payment per context could be selected');
                         }
-                
+
                         return false;
                     })
                     ->thenInvalid('A message')
                 ->end()
             ->end()
         ;
-        
+
         return $tb;
     }
 
@@ -113,11 +125,11 @@ class MainConfiguration implements ConfigurationInterface
         $storageNode = $contextsPrototypeNode->children()
                 ->arrayNode('storages')
                 ->validate()
-                    ->ifTrue(function($v) {
+                    ->ifTrue(function ($v) {
                         $storages = $v;
                         unset($storages['payment']);
 
-                        foreach($storages as $key => $value) {
+                        foreach ($storages as $key => $value) {
                             if (false == class_exists($key)) {
                                 throw new LogicException(sprintf(
                                     'The storage entry must be a valid model class. It is set %s',
@@ -125,7 +137,7 @@ class MainConfiguration implements ConfigurationInterface
                                 ));
                             }
                         }
-                    
+
                         return false;
                     })
                     ->thenInvalid('A message')
@@ -136,7 +148,7 @@ class MainConfiguration implements ConfigurationInterface
 
         $storageNode
             ->validate()
-                ->ifTrue(function($v) {
+                ->ifTrue(function ($v) {
                     $storages = $v;
                     unset($storages['payment']);
 
@@ -146,7 +158,7 @@ class MainConfiguration implements ConfigurationInterface
                     if (count($storages) > 1) {
                         throw new LogicException('Only one storage per entry could be selected');
                     }
-                    
+
                     return false;
                 })
                 ->thenInvalid('A message')
@@ -169,7 +181,7 @@ class MainConfiguration implements ConfigurationInterface
                 ->end()
             ->end()
         ->end();
-        
+
         foreach ($this->storageFactories as $factory) {
             $factory->addConfiguration(
                 $storageNode->children()->arrayNode($factory->getName())
@@ -186,8 +198,8 @@ class MainConfiguration implements ConfigurationInterface
             ->arrayNode('token_storage')
             ->isRequired()
             ->validate()
-            ->ifTrue(function($v) {
-                foreach($v as $key => $value) {
+            ->ifTrue(function ($v) {
+                foreach ($v as $key => $value) {
                     if (false == class_exists($key)) {
                         throw new LogicException(sprintf(
                             'The storage entry must be a valid model class. It is set %s',
@@ -215,7 +227,7 @@ class MainConfiguration implements ConfigurationInterface
 
         $storageNode
             ->validate()
-            ->ifTrue(function($v) {
+            ->ifTrue(function ($v) {
                 if (count($v) == 0) {
                     throw new LogicException('At least one storage must be configured.');
                 }
