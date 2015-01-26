@@ -97,7 +97,7 @@ next, you have to add mapping of the basic entities you are extended, and config
 
 twig:
     paths:
-        %kernel.root_dir%/../vendor/payum/payum/src/Payum/Core/Resources/views: PayumCore
+        %kernel.root_dir%/../vendor/payum/core/Payum/Core/Resources/views: PayumCore
 
 doctrine:
     orm:
