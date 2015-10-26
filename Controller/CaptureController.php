@@ -33,8 +33,10 @@ class CaptureController extends PayumController
 
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
         $gateway->execute(new Capture($token));
-        
-        $this->getHttpRequestVerifier()->invalidate($token);
+
+        if (false == $request->query->get('noinvalidate')) {
+            $this->getHttpRequestVerifier()->invalidate($token);
+        }
         
         return $this->redirect($token->getAfterUrl());
     }
