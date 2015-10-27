@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Request\Sync;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SyncController extends PayumController
 {
@@ -13,9 +14,14 @@ class SyncController extends PayumController
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
 
         $gateway->execute(new Sync($token));
-        
-        $this->getHttpRequestVerifier()->invalidate($token);
-        
-        return $this->redirect($token->getAfterUrl());
+
+        if (false == $request->query->get('noinvalidate')) {
+            $this->getHttpRequestVerifier()->invalidate($token);
+        }
+
+        return $token->getAfterUrl() ?
+            $this->redirect($token->getAfterUrl()) :
+            new Response('', 204)
+        ;
     }
 }

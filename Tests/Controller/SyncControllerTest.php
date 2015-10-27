@@ -1,19 +1,19 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
-use Payum\Bundle\PayumBundle\Controller\RefundController;
+use Payum\Bundle\PayumBundle\Controller\SyncController;
 use Payum\Core\Model\Token;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
-class RefundControllerTest extends \PHPUnit_Framework_TestCase
+class SyncControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function shouldBeSubClassOfController()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Controller\RefundController');
+        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Controller\SyncController');
 
         $this->assertTrue($rc->isSubclassOf('Symfony\Bundle\FrameworkBundle\Controller\Controller'));
     }
@@ -21,7 +21,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldExecuteRefundRequest()
+    public function shouldExecuteSyncRequest()
     {
         $request = Request::create('/');
         $request->query->set('foo', 'fooVal');
@@ -47,7 +47,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Core\Request\Refund'))
+            ->with($this->isInstanceOf('Payum\Core\Request\Sync'))
         ;
 
         $registryMock = $this->getMock('Payum\Core\Registry\RegistryInterface');
@@ -62,7 +62,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $container->set('payum', $registryMock);
         $container->set('payum.security.http_request_verifier', $tokenVerifierMock);
 
-        $controller = new RefundController;
+        $controller = new SyncController;
         $controller->setContainer($container);
 
         $response = $controller->doAction($request);
@@ -74,7 +74,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldExecuteRefundRequestButNoInvalidateToken()
+    public function shouldExecuteSyncRequestButNoInvalidateToken()
     {
         $request = Request::create('/');
         $request->query->set('foo', 'fooVal');
@@ -100,7 +100,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Core\Request\Refund'))
+            ->with($this->isInstanceOf('Payum\Core\Request\Sync'))
         ;
 
         $registryMock = $this->getMock('Payum\Core\Registry\RegistryInterface');
@@ -115,7 +115,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $container->set('payum', $registryMock);
         $container->set('payum.security.http_request_verifier', $tokenVerifierMock);
 
-        $controller = new RefundController;
+        $controller = new SyncController;
         $controller->setContainer($container);
 
         $response = $controller->doAction($request);
@@ -127,7 +127,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldExecuteRefundRequestWithoutAfterUrl()
+    public function shouldExecuteSyncRequestWithoutAfterUrl()
     {
         $request = Request::create('/');
         $request->query->set('foo', 'fooVal');
@@ -153,7 +153,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Core\Request\Refund'))
+            ->with($this->isInstanceOf('Payum\Core\Request\Sync'))
         ;
 
         $registryMock = $this->getMock('Payum\Core\Registry\RegistryInterface');
@@ -168,7 +168,7 @@ class RefundControllerTest extends \PHPUnit_Framework_TestCase
         $container->set('payum', $registryMock);
         $container->set('payum.security.http_request_verifier', $tokenVerifierMock);
 
-        $controller = new RefundController;
+        $controller = new SyncController;
         $controller->setContainer($container);
 
         $response = $controller->doAction($request);
