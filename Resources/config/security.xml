@@ -21,7 +21,7 @@
 
         <service id="payum.security.token_factory_internal" class="Payum\Core\Bridge\Symfony\Security\TokenFactory" public="false">
             <argument type="service" id="payum.security.token_storage" />
-            <argument type="service" id="payum" />
+            <argument type="service" id="payum.static_registry" />
             <argument type="service" id="router" />
         </service>
 

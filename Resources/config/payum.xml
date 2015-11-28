@@ -11,7 +11,38 @@
     <services>
         <!-- Generic -->
 
-        <service id="payum" alias="payum.static_registry" />
+        <service id="payum.builder" class="Payum\Core\PayumBuilder">
+            <call method="setMainRegistry">
+                <argument type="service" id="payum.static_registry" />
+            </call>
+            <call method="setHttpRequestVerifier">
+                <argument type="service" id="payum.security.http_request_verifier" />
+            </call>
+            <call method="setTokenFactory">
+                <argument type="service" id="payum.security.token_factory_internal" />
+            </call>
+            <call method="setTokenStorage">
+                <argument type="service" id="payum.security.token_storage" />
+            </call>
+            <call method="setGenericTokenFactoryPaths">
+                <argument type="collection">
+                    <argument key="capture">%payum.capture_path%</argument>
+                    <argument key="notify">%payum.notify_path%</argument>
+                    <argument key="authorize">%payum.authorize_path%</argument>
+                    <argument key="refund">%payum.refund_path%</argument>
+                </argument>
+            </call>
+            <call method="setCoreGatewayFactory">
+                <argument type="service" id="payum.gateway_factory" />
+            </call>
+            <call method="setHttpClient">
+                <argument type="service" id="payum.http_client" />
+            </call>
+        </service>
+
+        <service id="payum" class="Payum\Core\Payum">
+            <factory service="payum.builder" method="getPayum" />
+        </service>
 
         <service id="payum.static_registry" class="Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry">
             <argument type="collection" /> <!-- gateways services. this should be replaced while container is built -->

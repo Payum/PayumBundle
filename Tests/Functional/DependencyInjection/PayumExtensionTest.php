@@ -20,6 +20,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalProChecko
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
 use Payum\Core\Model\GatewayConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 
 class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
@@ -275,7 +276,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetPayumAsAliasToStaticRegistryIfDynamicGatewaysNotConfigured()
+    public function shouldUsePayumBuilderServiceToBuildPayumService()
     {
         $config = array(
             // 'dynamic_gateways' => array()
@@ -302,7 +303,14 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $extension->load($configs, $containerBuilder);
 
-        $this->assertEquals('payum.static_registry', $containerBuilder->getAlias('payum'));
+        $payum = $containerBuilder->getDefinition('payum');
+        $this->assertEquals('Payum\Core\Payum', $payum->getClass());
+        $this->assertInternalType('array', $payum->getFactory());
+
+        $this->assertInstanceOf(Reference::class, $payum->getFactory()[0]);
+        $this->assertEquals('payum.builder', (string) $payum->getFactory()[0]);
+
+        $this->assertEquals('getPayum', $payum->getFactory()[1]);
     }
 
     /**
