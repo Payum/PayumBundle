@@ -1,13 +1,18 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests;
 
+use Payum\Bundle\PayumBundle\CoreGatewayFactory;
 use Payum\Bundle\PayumBundle\GatewayFactory;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\Extension\ExtensionInterface;
+use Payum\Core\GatewayFactoryInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\HttpClientInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
+class CoreGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ContainerInterface
@@ -28,9 +33,9 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeSubClassCoreGatewayFactory()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\GatewayFactory');
+        $rc = new \ReflectionClass(CoreGatewayFactory::class);
 
-        $this->assertTrue($rc->isSubclassOf('Payum\Core\CoreGatewayFactory'));
+        $this->assertTrue($rc->isSubclassOf(\Payum\Core\CoreGatewayFactory::class));
     }
 
     /**
@@ -38,9 +43,9 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldImplementsGatewayFactoryInterface()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\GatewayFactory');
+        $rc = new \ReflectionClass(CoreGatewayFactory::class);
 
-        $this->assertTrue($rc->implementsInterface('Payum\Core\GatewayFactoryInterface'));
+        $this->assertTrue($rc->implementsInterface(GatewayFactoryInterface::class));
     }
 
     /**
@@ -48,9 +53,9 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldImplementContainerAwareInterface()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\GatewayFactory');
+        $rc = new \ReflectionClass(CoreGatewayFactory::class);
 
-        $this->assertTrue($rc->implementsInterface('Symfony\Component\DependencyInjection\ContainerAwareInterface'));
+        $this->assertTrue($rc->implementsInterface(ContainerAwareInterface::class));
     }
 
     /**
@@ -58,7 +63,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function couldBeConstructedWithTagsAsArguments()
     {
-        new GatewayFactory(array(), array(), array());
+        new CoreGatewayFactory([], [], []);
     }
 
     /**
@@ -66,7 +71,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAllowSetContainer()
     {
-        $factory = new GatewayFactory(array(), array(), array());
+        $factory = new CoreGatewayFactory([], [], []);
         $factory->setContainer($container = new Container());
 
         $this->assertAttributeSame($container, 'container', $factory);
@@ -77,7 +82,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAllowGetGatewayWithoutAnyAdditionalOptions()
     {
-        $factory = new GatewayFactory(array(), array(), array());
+        $factory = new CoreGatewayFactory([], [], []);
         $factory->setContainer($this->container);
 
         $gateway = $factory->create();
@@ -90,11 +95,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionIfGatewayNameMatch()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('gateway' => 'theGateway'),
-        )), array(), array());
+        )), [], []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig(array(
@@ -110,11 +115,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionIfFactoryNameMatch()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('factory' => 'theFactory'),
-        )), array(), array());
+        )), [], []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig(array(
@@ -130,11 +135,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionIfAllAttributeSet()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('all' => true),
-        )), array(), array());
+        )), [], []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -148,11 +153,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionWithAlias()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('all' => true, 'alias' => 'the_action_alias'),
-        )), array(), array());
+        )), [], []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -166,11 +171,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionWithPrepend()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('all' => true, 'prepend' => true),
-        )), array(), array());
+        )), [], []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -186,13 +191,13 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedActionWithSeveralTags()
     {
-        $this->container->set('the_action', $this->getMock('Payum\Core\Action\ActionInterface'));
+        $this->container->set('the_action', $this->getMock(ActionInterface::class));
 
-        $factory = new GatewayFactory(array('the_action' => array(
+        $factory = new CoreGatewayFactory(array('the_action' => array(
             array('factory' => 'theFactory'),
             array('gateway' => 'theGateway'),
             array('all' => true, 'prepend' => true),
-        )), array() , array());
+        )), [] , []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig(array(
@@ -211,11 +216,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedExtensionIfFactoryNameMatch()
     {
-        $this->container->set('the_extension', $this->getMock('Payum\Core\Extension\ExtensionInterface'));
+        $this->container->set('the_extension', $this->getMock(ExtensionInterface::class));
 
-        $factory = new GatewayFactory(array(), array('the_extension' => array(
+        $factory = new CoreGatewayFactory([], array('the_extension' => array(
             array('factory' => 'theFactory'),
-        )), array());
+        )), []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig(array(
@@ -231,11 +236,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedExtensionIfAllAttributeSet()
     {
-        $this->container->set('the_extension', $this->getMock('Payum\Core\Extension\ExtensionInterface'));
+        $this->container->set('the_extension', $this->getMock(ExtensionInterface::class));
 
-        $factory = new GatewayFactory(array(), array('the_extension' => array(
+        $factory = new CoreGatewayFactory([], array('the_extension' => array(
             array('all' => true),
-        )), array());
+        )), []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -249,11 +254,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedExtensionWithAlias()
     {
-        $this->container->set('the_extension', $this->getMock('Payum\Core\Extension\ExtensionInterface'));
+        $this->container->set('the_extension', $this->getMock(ExtensionInterface::class));
 
-        $factory = new GatewayFactory(array(), array('the_extension' => array(
+        $factory = new CoreGatewayFactory([], array('the_extension' => array(
             array('all' => true, 'alias' => 'the_extension_alias'),
-        )), array());
+        )), []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -267,11 +272,11 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedExtensionWithPrepend()
     {
-        $this->container->set('the_extension', $this->getMock('Payum\Core\Extension\ExtensionInterface'));
+        $this->container->set('the_extension', $this->getMock(ExtensionInterface::class));
 
-        $factory = new GatewayFactory(array(), array('the_extension' => array(
+        $factory = new CoreGatewayFactory([], array('the_extension' => array(
             array('all' => true, 'prepend' => true),
-        )), array());
+        )), []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig();
@@ -287,13 +292,13 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldAddTaggedExtensionWithSeveralTags()
     {
-        $this->container->set('the_extension', $this->getMock('Payum\Core\Extension\ExtensionInterface'));
+        $this->container->set('the_extension', $this->getMock(ExtensionInterface::class));
 
-        $factory = new GatewayFactory(array(), array('the_extension' => array(
+        $factory = new CoreGatewayFactory([], array('the_extension' => array(
             array('factory' => 'theFactory'),
             array('gateway' => 'theGateway'),
             array('all' => true, 'prepend' => true),
-        )), array());
+        )), []);
         $factory->setContainer($this->container);
 
         $config = $factory->createConfig(array(
@@ -314,7 +319,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->set('the_api', new \stdClass);
 
-        $factory = new GatewayFactory(array(), array(), array('the_api' => array(
+        $factory = new CoreGatewayFactory([], [], array('the_api' => array(
             array('factory' => 'theFactory'),
         )));
         $factory->setContainer($this->container);
@@ -334,7 +339,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->set('the_api', new \stdClass);
 
-        $factory = new GatewayFactory(array(), array(), array('the_api' => array(
+        $factory = new CoreGatewayFactory([], [], array('the_api' => array(
             array('all' => true),
         )));
         $factory->setContainer($this->container);
@@ -352,7 +357,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->set('the_api', new \stdClass);
 
-        $factory = new GatewayFactory(array(), array(), array('the_api' => array(
+        $factory = new CoreGatewayFactory([], [], array('the_api' => array(
             array('all' => true, 'alias' => 'the_api_alias'),
         )));
         $factory->setContainer($this->container);
@@ -370,7 +375,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->set('the_api', new \stdClass);
 
-        $factory = new GatewayFactory(array(), array(), array('the_api' => array(
+        $factory = new CoreGatewayFactory([], [], array('the_api' => array(
             array('all' => true, 'prepend' => true),
         )));
         $factory->setContainer($this->container);
@@ -390,7 +395,7 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->container->set('the_api', new \stdClass);
 
-        $factory = new GatewayFactory(array(), array(), array('the_api' => array(
+        $factory = new CoreGatewayFactory([], [], array('the_api' => array(
             array('factory' => 'theFactory'),
             array('gateway' => 'theGateway'),
             array('all' => true, 'prepend' => true),
@@ -406,5 +411,23 @@ class GatewayFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('payum.api.the_api', $config);
 
         $this->assertContains('payum.api.the_api', $config['payum.prepend_apis']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAllowSetDefaultConfig()
+    {
+        $this->container->set('the_api', new \stdClass);
+
+        $factory = new CoreGatewayFactory([], [], [], [
+            'foo' => 'fooVal',
+        ]);
+        $factory->setContainer($this->container);
+
+        $config = $factory->createConfig([]);
+
+        $this->assertArrayHasKey('foo', $config);
+        $this->assertEquals('fooVal', $config['foo']);
     }
 }

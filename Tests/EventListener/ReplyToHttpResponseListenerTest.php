@@ -109,7 +109,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
 
         $listener->onKernelException($event);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertTrue($event->getResponse()->headers->has('X-Status-Code'));
         $this->assertEquals(302, $event->getResponse()->headers->get('X-Status-Code'));
     }
@@ -143,7 +143,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
 
         $listener->onKernelException($event);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertTrue($event->getResponse()->headers->has('X-Status-Code'));
         $this->assertEquals(666, $event->getResponse()->headers->get('X-Status-Code'));
     }

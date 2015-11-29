@@ -179,7 +179,7 @@ class OmnipayGatewayFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('payum.template.obtain_credit_card', $factoryConfig);
 
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factoryService->getArgument(3));
-        $this->assertEquals('payum.gateway_factory', (string) $factoryService->getArgument(3));
+        $this->assertEquals('payum.core_gateway_factory', (string) $factoryService->getArgument(3));
     }
 
     /**

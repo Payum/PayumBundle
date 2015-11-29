@@ -33,7 +33,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $gatewayFactory = new Definition('Payum\Bundle\PayumBundle\GatewayFactory', array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
 
         $pass = new BuildGatewayFactoryPass;
 
@@ -52,7 +52,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $gatewayFactory = new Definition('Payum\Bundle\PayumBundle\GatewayFactory', array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
 
         $container->setDefinition('payum.action.foo', new Definition());
         $container->getDefinition('payum.action.foo')->addTag('payum.action', array('foo' => 'fooVal'));
@@ -87,7 +87,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $gatewayFactory = new Definition('Payum\Bundle\PayumBundle\GatewayFactory', array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
 
         $container->setDefinition('payum.extension.foo', new Definition());
         $container->getDefinition('payum.extension.foo')->addTag('payum.extension', array('foo' => 'fooVal'));
@@ -122,7 +122,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $gatewayFactory = new Definition('Payum\Bundle\PayumBundle\GatewayFactory', array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
 
         $container->setDefinition('payum.api.foo', new Definition());
         $container->getDefinition('payum.api.foo')->addTag('payum.api', array('foo' => 'fooVal'));
@@ -157,7 +157,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $gatewayFactory = new Definition('Payum\Bundle\PayumBundle\GatewayFactory', array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
 
         $container->setDefinition('payum.api.foo', new Definition());
         $container->getDefinition('payum.api.foo')->addTag('payum.api', array('foo' => 'fooVal'));

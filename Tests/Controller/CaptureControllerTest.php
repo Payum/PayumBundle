@@ -2,11 +2,21 @@
 namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
 use Payum\Bundle\PayumBundle\Controller\CaptureController;
+use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Token;
+use Payum\Core\Payum;
+use Payum\Core\Registry\RegistryInterface;
+use Payum\Core\Request\Capture;
+use Payum\Core\Security\GenericTokenFactoryInterface;
+use Payum\Core\Security\HttpRequestVerifierInterface;
+use Payum\Core\Storage\StorageInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Routing\RouterInterface;
 
 class CaptureControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,9 +25,9 @@ class CaptureControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeSubClassOfController()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Controller\CaptureController');
+        $rc = new \ReflectionClass(CaptureController::class);
 
-        $this->assertTrue($rc->isSubclassOf('Symfony\Bundle\FrameworkBundle\Controller\Controller'));
+        $this->assertTrue($rc->isSubclassOf(Controller::class));
     }
 
     /**
@@ -59,7 +69,7 @@ class CaptureControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldDoRedirectToCaptureWithTokenUrl()
     {
-        $routerMock = $this->getMock('Symfony\Component\Routing\RouterInterface');
+        $routerMock = $this->getMock(RouterInterface::class);
         $routerMock
             ->expects($this->once())
             ->method('generate')
@@ -84,7 +94,7 @@ class CaptureControllerTest extends \PHPUnit_Framework_TestCase
 
         $response = $controller->doSessionTokenAction($request);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals('/payment/capture/theToken?foo=fooVal', $response->getTargetUrl());
     }
 
@@ -100,27 +110,27 @@ class CaptureControllerTest extends \PHPUnit_Framework_TestCase
         $token->setGatewayName('theGateway');
         $token->setAfterUrl('http://example.com/theAfterUrl');
 
-        $tokenVerifierMock = $this->getMock('Payum\Core\Security\HttpRequestVerifierInterface');
-        $tokenVerifierMock
+        $httpRequestVerifierMock = $this->getMock(HttpRequestVerifierInterface::class);
+        $httpRequestVerifierMock
             ->expects($this->once())
             ->method('verify')
             ->with($this->identicalTo($request))
             ->will($this->returnValue($token))
         ;
-        $tokenVerifierMock
+        $httpRequestVerifierMock
             ->expects($this->once())
             ->method('invalidate')
             ->with($this->identicalTo($token))
         ;
 
-        $gatewayMock = $this->getMock('Payum\Core\GatewayInterface');
+        $gatewayMock = $this->getMock(GatewayInterface::class);
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf('Payum\Core\Request\Capture'))
+            ->with($this->isInstanceOf(Capture::class))
         ;
 
-        $registryMock = $this->getMock('Payum\Core\Registry\RegistryInterface');
+        $registryMock = $this->getMock(RegistryInterface::class);
         $registryMock
             ->expects($this->once())
             ->method('getGateway')
@@ -128,16 +138,22 @@ class CaptureControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($gatewayMock))
         ;
 
+        $payum = new Payum(
+            $registryMock,
+            $httpRequestVerifierMock,
+            $this->getMock(GenericTokenFactoryInterface::class),
+            $this->getMock(StorageInterface::class)
+        );
+
         $container = new Container;
-        $container->set('payum', $registryMock);
-        $container->set('payum.security.http_request_verifier', $tokenVerifierMock);
+        $container->set('payum', $payum);
 
         $controller = new CaptureController;
         $controller->setContainer($container);
 
         $response = $controller->doAction($request);
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals('http://example.com/theAfterUrl', $response->getTargetUrl());
     }
 }

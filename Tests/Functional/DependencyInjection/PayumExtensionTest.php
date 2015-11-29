@@ -316,7 +316,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSetPayumAsAliasToDynamicRegistryAndPassStatisOneToDynamicOne()
+    public function shouldSetGatewayConfigStorageToPayumBuilderIfConfigured()
     {
         $config = array(
             'dynamic_gateways' => array(
@@ -352,12 +352,12 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $extension->load($configs, $containerBuilder);
 
-        $this->assertEquals('payum.dynamic_registry', $containerBuilder->getAlias('payum'));
+        $builder = $containerBuilder->getDefinition('payum.builder');
 
-        $registry = $containerBuilder->getDefinition('payum.dynamic_registry');
-        $this->assertEquals('Payum\Core\Registry\DynamicRegistry', $registry->getClass());
-        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $registry->getArgument(0));
-        $this->assertEquals('payum.static_registry', (string) $registry->getArgument(1));
+        $calls = $builder->getMethodCalls();
+
+        $this->assertEquals('setGatewayConfigStorage', $calls[7][0]);
+        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $calls[7][1][0]);
     }
 
     /**
