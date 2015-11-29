@@ -60,7 +60,7 @@ class PaymentController extends Controller
         $details['currency'] = 'USD';
         $storage->update($details);
 
-        $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_payment_done' // the route to redirect after capture;

@@ -220,7 +220,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             new Reference('payum.static_registry')
         ));
         $container->setDefinition('payum.dynamic_registry', $registry);
-        $container->setAlias('payum', new Alias('payum.dynamic_registry'));
 
         if ($dynamicGatewaysConfig['sonata_admin']) {
             if (false == class_exists(Admin::class)) {

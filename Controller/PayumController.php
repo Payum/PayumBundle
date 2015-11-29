@@ -1,7 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Controller;
 
-use Payum\Core\Registry\RegistryInterface;
+use Payum\Core\Payum;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 abstract class PayumController extends Controller
 {
     /**
-     * @return RegistryInterface
+     * @return Payum
      */
     protected function getPayum()
     {
@@ -17,18 +17,22 @@ abstract class PayumController extends Controller
     }
 
     /**
+     * @deprecated will be removed in 2.0.
+     *
      * @return HttpRequestVerifierInterface
      */
     protected function getHttpRequestVerifier()
     {
-        return $this->get('payum.security.http_request_verifier');
+        return $this->getPayum()->getHttpRequestVerifier();
     }
 
     /**
+     * @deprecated will be removed in 2.0.
+     *
      * @return GenericTokenFactoryInterface
      */
     protected function getTokenFactory()
     {
-        return $this->get('payum.security.token_factory');
+        return $this->getPayum()->getTokenFactory();
     }
 }

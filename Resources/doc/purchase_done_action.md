@@ -8,7 +8,7 @@ Well, let's assume you created capture token this way while preparing payment.
 
 ```php
 <?php
-$captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+$captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
     $gatewayName,
     $details,
     'acme_payment_done'
@@ -24,7 +24,7 @@ It is the route of url you will be redirected after capture done its job. Let's 
 
     public function captureDoneAction(Request $request)
     {
-        $token = $this->get('payum.security.http_request_verifier')->verify($request);
+        $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
         
         $identity = $token->getDetails();
         $model = $this->get('payum')->getStorage($identity->getClass())->find($identity);
@@ -32,7 +32,7 @@ It is the route of url you will be redirected after capture done its job. Let's 
         $gateway = $this->get('payum')->getGateway($token->getGatewayName());
 
         // you can invalidate the token. The url could not be requested any more.
-        // $this->get('payum.security.http_request_verifier')->invalidate($token);
+        // $this->get('payum')->getHttpRequestVerifier()->invalidate($token);
         
         // Once you have token you can get the model from the storage directly. 
         //$identity = $token->getDetails();
