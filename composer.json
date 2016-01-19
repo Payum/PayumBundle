@@ -36,6 +36,12 @@
             "homepage": "https://github.com/Payum/PayumBundle/contributors"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ChessCom/Payum"
+        }
+    ],
     "require": {
         "php": ">=5.3.2",
         "payum/core": "0.14.*",
@@ -52,7 +58,7 @@
         "symfony/class-loader": "~2.3",
         "sonata-project/admin-bundle": "~2.0",
         "doctrine/orm": "*",
-        "payum/payum": "0.14.*",
+        "payum/payum": "0.14-stripe-v2.1.3",
         "payum/omnipay-bridge": "0.14.*",
         "payum/jms-payment-bridge": "0.14.*",
         "omnipay/dummy": "~2.0",
