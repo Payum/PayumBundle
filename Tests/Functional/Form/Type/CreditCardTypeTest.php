@@ -2,8 +2,11 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
+use Payum\Core\Bridge\Symfony\Form\Type\CreditCardType;
 use Payum\Core\Model\CreditCardInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class CreditCardTypeTest extends WebTestCase
 {
@@ -24,11 +27,11 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory()
     {
-        $form = $this->formFactory->create('payum_credit_card');
+        $form = $this->formFactory->create(CreditCardType::class);
         $view = $form->createView();
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormInterface', $form);
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
+        $this->assertInstanceOf(FormInterface::class, $form);
+        $this->assertInstanceOf(FormView::class, $view);
     }
 
     /**
@@ -36,7 +39,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldSubmitDataCorrectly()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -69,7 +72,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldRequireHolderNotBlank()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -93,7 +96,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldRequireNumberNotBlank()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -117,7 +120,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldNumberPassLuchValidation()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -141,7 +144,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldRequireSecurityCodeNotBlank()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -165,7 +168,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldRequireExpireAtNotBlank()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
@@ -189,7 +192,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function shouldRequireExpireAtInFuture()
     {
-        $form = $this->formFactory->create('payum_credit_card', null, array(
+        $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
         ));
 
