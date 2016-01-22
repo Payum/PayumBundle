@@ -2,7 +2,10 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
+use Payum\Core\Bridge\Symfony\Form\Type\CreditCardExpirationDateType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class CreditCardExpirationDateTypeTest extends WebTestCase
 {
@@ -23,11 +26,11 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory()
     {
-        $form = $this->formFactory->create('payum_credit_card_expiration_date');
+        $form = $this->formFactory->create(CreditCardExpirationDateType::class);
         $view = $form->createView();
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormInterface', $form);
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
+        $this->assertInstanceOf(FormInterface::class, $form);
+        $this->assertInstanceOf(FormView::class, $view);
     }
 
     /**
@@ -35,7 +38,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function shouldAllowSubmitExpireDateAsChoice()
     {
-        $form = $this->formFactory->create('payum_credit_card_expiration_date', null, array(
+        $form = $this->formFactory->create(CreditCardExpirationDateType::class, null, array(
             'widget' => 'choice',
             'input' => 'datetime',
             'csrf_protection' => false,
@@ -50,7 +53,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
         $this->assertTrue($form->isValid(), $form->getErrors(true, false));
 
         $data = $form->getData();
-        $this->assertInstanceOf('DateTime', $data);
+        $this->assertInstanceOf(\DateTime::class, $data);
         $this->assertEquals('2020-01-01', $data->format('Y-m-d'));
     }
 
@@ -59,7 +62,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function shouldHideDaySelectAndSetFirstDayFromChoiceAsValue()
     {
-        $form = $this->formFactory->create('payum_credit_card_expiration_date', null, array(
+        $form = $this->formFactory->create(CreditCardExpirationDateType::class, null, array(
             'widget' => 'choice',
             'input' => 'datetime',
             'csrf_protection' => false,
@@ -78,7 +81,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     {
         $date = new \DateTime('2020-01-10');
 
-        $form = $this->formFactory->create('payum_credit_card_expiration_date', $date, array(
+        $form = $this->formFactory->create(CreditCardExpirationDateType::class, $date, array(
             'widget' => 'choice',
             'input' => 'datetime',
             'csrf_protection' => false,

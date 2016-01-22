@@ -2,7 +2,10 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
+use Payum\Core\Bridge\Symfony\Form\Type\GatewayFactoriesChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class GatewayFactoriesChoiceTypeTest extends WebTestCase
 {
@@ -23,10 +26,10 @@ class GatewayFactoriesChoiceTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory()
     {
-        $form = $this->formFactory->create('payum_gateway_factories_choice');
+        $form = $this->formFactory->create(GatewayFactoriesChoiceType::class);
         $view = $form->createView();
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormInterface', $form);
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
+        $this->assertInstanceOf(FormInterface::class, $form);
+        $this->assertInstanceOf(FormView::class, $view);
     }
 }

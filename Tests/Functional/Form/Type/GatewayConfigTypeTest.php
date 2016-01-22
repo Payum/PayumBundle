@@ -2,7 +2,11 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
+use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
+use Payum\Core\Model\GatewayConfig;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class GatewayConfigTypeTest extends WebTestCase
 {
@@ -23,12 +27,12 @@ class GatewayConfigTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory()
     {
-        $form = $this->formFactory->create('payum_gateway_config', null, array(
-            'data_class' => 'Payum\Core\Model\GatewayConfig',
+        $form = $this->formFactory->create(GatewayConfigType::class, null, array(
+            'data_class' => GatewayConfig::class,
         ));
         $view = $form->createView();
 
-        $this->assertInstanceOf('Symfony\Component\Form\FormInterface', $form);
-        $this->assertInstanceOf('Symfony\Component\Form\FormView', $view);
+        $this->assertInstanceOf(FormInterface::class, $form);
+        $this->assertInstanceOf(FormView::class, $view);
     }
 }
