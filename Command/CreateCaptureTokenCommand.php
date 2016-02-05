@@ -2,8 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Command;
 
 use Payum\Core\Exception\RuntimeException;
-use Payum\Core\Registry\RegistryInterface;
-use Payum\Core\Security\GenericTokenFactoryInterface;
+use Payum\Core\Payum;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,7 +47,7 @@ class CreateCaptureTokenCommand extends ContainerAwareCommand
             }
         }
 
-        $token = $this->getTokenFactory()->createCaptureToken($gatewayName, $model, $afterUrl);
+        $token = $this->getPayum()->getTokenFactory()->createCaptureToken($gatewayName, $model, $afterUrl);
 
         $output->writeln(sprintf('Hash: <info>%s</info>', $token->getHash()));
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
@@ -57,15 +56,7 @@ class CreateCaptureTokenCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return GenericTokenFactoryInterface
-     */
-    protected function getTokenFactory()
-    {
-        return $this->getContainer()->get('payum.security.token_factory');
-    }
-
-    /**
-     * @return RegistryInterface
+     * @return Payum
      */
     protected function getPayum()
     {

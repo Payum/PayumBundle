@@ -209,14 +209,17 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             );
 
             $container->setDefinition('payum.dynamic_gateways.config_storage', new DefinitionDecorator($configStorage));
+
+            $payumBuilder = $container->getDefinition('payum.builder');
+            $payumBuilder->addMethodCall('setGatewayConfigStorage', [new Reference('payum.dynamic_gateways.config_storage')]);
         }
 
+        //deprecated
         $registry =  new Definition('Payum\Core\Registry\DynamicRegistry', array(
             new Reference('payum.dynamic_gateways.config_storage'),
             new Reference('payum.static_registry')
         ));
         $container->setDefinition('payum.dynamic_registry', $registry);
-        $container->setAlias('payum', new Alias('payum.dynamic_registry'));
 
         if ($dynamicGatewaysConfig['sonata_admin']) {
             if (false == class_exists(Admin::class)) {

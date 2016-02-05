@@ -31,7 +31,7 @@ class PaymentController extends Controller
         
         $storage->update($payment);
         
-        $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
             $gatewayName, 
             $payment, 
             'done' // the route to redirect after capture;

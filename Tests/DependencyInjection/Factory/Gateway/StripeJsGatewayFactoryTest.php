@@ -199,7 +199,7 @@ class StripeJsGatewayFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('payum.template.obtain_credit_card', $factoryConfig);
 
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factoryService->getArgument(1));
-        $this->assertEquals('payum.gateway_factory', (string) $factoryService->getArgument(1));
+        $this->assertEquals('payum.core_gateway_factory', (string) $factoryService->getArgument(1));
 
         $this->assertEquals('@PayumStripe/Action/obtain_checkout_token.html.twig', $container->getParameter('payum.stripe_checkout.template.obtain_checkout_token'));
     }

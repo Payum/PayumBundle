@@ -139,7 +139,7 @@ class PaymentController extends Controller
         
         $storage->update($payment);
         
-        $captureToken = $this->get('payum.security.token_factory')->createCaptureToken(
+        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
             $gatewayName, 
             $payment, 
             'done' // the route to redirect after capture
@@ -171,12 +171,12 @@ class PaymentController extends Controller
 {
     public function doneAction(Request $request)
     {
-        $token = $this->get('payum.security.http_request_verifier')->verify($request);
+        $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
         
         $gateway = $this->get('payum')->getGateway($token->getGatewayName());
         
         // you can invalidate the token. The url could not be requested any more.
-        // $this->get('payum.security.http_request_verifier')->invalidate($token);
+        // $this->get('payum')->getHttpRequestVerifier()->invalidate($token);
         
         // Once you have token you can get the model from the storage directly. 
         //$identity = $token->getDetails();

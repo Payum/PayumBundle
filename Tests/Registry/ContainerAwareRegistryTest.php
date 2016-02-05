@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Registry;
 
+use Payum\Core\GatewayInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
@@ -47,7 +48,7 @@ class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase
         $storages = array();
 
         $container = new Container;
-        $container->set('fooGatewayServiceId', $this->getMock('Payum\Core\GatewayInterface'));
+        $container->set('fooGatewayServiceId', $this->getMock(GatewayInterface::class));
 
         $registry = new ContainerAwareRegistry($gateways, $storages);
         $registry->setContainer($container);

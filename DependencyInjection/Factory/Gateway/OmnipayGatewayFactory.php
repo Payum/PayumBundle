@@ -58,7 +58,7 @@ class OmnipayGatewayFactory extends AbstractGatewayFactory
             null,
             new Reference('payum.omnipay_factory'),
             $this->createFactoryConfig(),
-            new Reference('payum.gateway_factory')
+            new Reference('payum.core_gateway_factory')
         ));
         $factory->addTag('payum.gateway_factory', array(
             'factory_name' => $this->getName(),

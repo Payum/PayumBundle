@@ -6,6 +6,9 @@ use Payum\Core\CoreGatewayFactory;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * @deprecated since 1.1, will be removed in 2.0. Use Payum\Bundle\PayumBundle\CoreGatewayFactory class.
+ */
 class GatewayFactory extends CoreGatewayFactory implements ContainerAwareInterface
 {
     /**
@@ -32,14 +35,15 @@ class GatewayFactory extends CoreGatewayFactory implements ContainerAwareInterfa
      * @param array $actionsTags
      * @param array $extensionsTags
      * @param array $apisTags
+     * @param array $defaultConfig
      */
-    public function __construct(array $actionsTags, array $extensionsTags, array $apisTags)
+    public function __construct(array $actionsTags, array $extensionsTags, array $apisTags, array $defaultConfig = [])
     {
         $this->actionsTags = $actionsTags;
         $this->extensionsTags = $extensionsTags;
         $this->apisTags = $apisTags;
 
-        parent::__construct([]);
+        parent::__construct($defaultConfig);
     }
 
     /**

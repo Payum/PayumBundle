@@ -4,35 +4,25 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="payum.capture_path">payum_capture_do</parameter>
-        <parameter key="payum.notify_path">payum_notify_do</parameter>
-        <parameter key="payum.authorize_path">payum_authorize_do</parameter>
-        <parameter key="payum.refund_path">payum_refund_do</parameter>
-    </parameters>
-
     <services>
         <!-- Should be replaced by PayumExtension -->
         <service id="payum.security.token_storage" abstract="true" />
 
-        <service id="payum.security.http_request_verifier" class="Payum\Core\Bridge\Symfony\Security\HttpRequestVerifier">
-            <argument type="service" id="payum.security.token_storage" />
+        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
+        <service id="payum.security.http_request_verifier" class="Payum\Core\Security\HttpRequestVerifierInterface">
+            <factory service="payum" method="getHttpRequestVerifier" />
         </service>
 
-        <service id="payum.security.token_factory_internal" class="Payum\Core\Bridge\Symfony\Security\TokenFactory" public="false">
+        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
+        <service id="payum.security.token_factory_internal" class="Payum\Core\Security\TokenFactoryInterface" public="false">
+            <factory service="payum.token_factory_builder" method="build" />
             <argument type="service" id="payum.security.token_storage" />
-            <argument type="service" id="payum" />
-            <argument type="service" id="router" />
+            <argument type="service" id="payum.static_registry" />
         </service>
 
-        <service id="payum.security.token_factory" class="Payum\Core\Security\GenericTokenFactory">
-            <argument type="service" id="payum.security.token_factory_internal" />
-            <argument type="collection">
-                <argument key="capture">%payum.capture_path%</argument>
-                <argument key="notify">%payum.notify_path%</argument>
-                <argument key="authorize">%payum.authorize_path%</argument>
-                <argument key="refund">%payum.refund_path%</argument>
-            </argument>
+        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
+        <service id="payum.security.token_factory" class="Payum\Core\Security\GenericTokenFactoryInterface">
+            <factory service="payum" method="getTokenFactory" />
         </service>
     </services>
 </container>

@@ -18,7 +18,7 @@ class NotifyController extends PayumController
 
     public function doAction(Request $request)
     {
-        $token = $this->getHttpRequestVerifier()->verify($request);
+        $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
 
