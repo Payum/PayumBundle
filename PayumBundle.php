@@ -16,6 +16,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalExpressCh
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalProCheckoutNvpGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PayexGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\AuthorizeNetAimGatewayFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\SofortGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeCheckoutGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeJsGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory;
@@ -51,6 +52,7 @@ class PayumBundle extends Bundle
         $extension->addGatewayFactory(new KlarnaInvoiceGatewayFactory);
         $extension->addGatewayFactory(new StripeJsGatewayFactory);
         $extension->addGatewayFactory(new StripeCheckoutGatewayFactory);
+        $extension->addGatewayFactory(new SofortGatewayFactory());
 
         $extension->addStorageFactory(new FilesystemStorageFactory);
         $extension->addStorageFactory(new DoctrineStorageFactory);
