@@ -897,6 +897,88 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('a_foo_gateway', $config['gateways']);
         $this->assertArrayHasKey('a_bar_gateway', $config['gateways']);
     }
+
+    /**
+     * @test
+     */
+    public function shouldTreatNullGatewaysV2AsEmptyArray()
+    {
+        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration($configuration, array(
+            array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'foo_storage' => array(
+                                'foo_opt' => 'foo'
+                            )
+                        )
+                    )
+                ),
+                'gateways_v2' => null,
+            ),
+        ));
+
+        $this->assertEquals([], $config['gateways_v2']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAllowPutAnythingToGatewaysV2AndNotPerformAnyValidations()
+    {
+        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration($configuration, array(
+            array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'foo_storage' => array(
+                                'foo_opt' => 'foo'
+                            )
+                        )
+                    )
+                ),
+                'gateways_v2' => array(
+                    'a_gateway' => array(
+                        'factory' => 'aFactory',
+                        'foo' => 'fooVal',
+                        'bar' => 'barVal',
+                    ),
+                    'another_gateway' => array(
+                        'factory' => 'anotherFactory',
+                        'foo' => ['fooVal', 'barVal'],
+                    ),
+                    'gateway_with_injection' => array(
+                        'foo' => '%foo%',
+                        'bar' => '%bar%',
+                    ),
+                )
+            ),
+        ));
+
+        $this->assertEquals(array(
+            'a_gateway' => array(
+                'factory' => 'aFactory',
+                'foo' => 'fooVal',
+                'bar' => 'barVal',
+            ),
+            'another_gateway' => array(
+                'factory' => 'anotherFactory',
+                'foo' => ['fooVal', 'barVal'],
+            ),
+            'gateway_with_injection' => array(
+                'foo' => '%foo%',
+                'bar' => '%bar%',
+            ),
+        ), $config['gateways_v2']);
+    }
 }
 
 class FooGatewayFactory implements GatewayFactoryInterface

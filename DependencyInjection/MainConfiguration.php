@@ -54,6 +54,14 @@ class MainConfiguration implements ConfigurationInterface
             ->arrayNode('dynamic_gateways')
         ;
         $this->addDynamicGatewaysSection($dynamicGatewaysNode);
+
+        $rootNode
+            ->children()
+            ->arrayNode('gateways_v2')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')
+                ->treatNullLike([])
+        ;
         
         $gatewaysPrototypeNode = $rootNode
             ->children()

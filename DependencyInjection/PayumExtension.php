@@ -52,6 +52,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $this->loadSecurity($config['security'], $container);
 
         $this->loadGateways($config['gateways'], $container);
+        $this->loadGatewaysV2($config['gateways_v2'], $container);
 
         if (isset($config['dynamic_gateways'])) {
             $this->loadDynamicGateways($config['dynamic_gateways'], $container);
@@ -128,6 +129,19 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 'factory' => $gatewayFactoryName,
                 'gateway' => $gatewayName
             ));
+        }
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    protected function loadGatewaysV2(array $config, ContainerBuilder $container)
+    {
+        $builder = $container->getDefinition('payum.builder');
+
+        foreach ($config as $gatewayName => $gatewayConfig) {
+            $builder->addMethodCall('addGateway', $config);
         }
     }
 
