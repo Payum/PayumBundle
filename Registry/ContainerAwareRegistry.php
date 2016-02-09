@@ -1,30 +1,9 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Registry;
 
-use Payum\Core\Registry\AbstractRegistry;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-class ContainerAwareRegistry extends AbstractRegistry implements ContainerAwareInterface
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0. Use class from the bridge
+ */
+class ContainerAwareRegistry extends \Payum\Core\Bridge\Symfony\ContainerAwareRegistry
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getService($id)
-    {
-        return $this->container->get($id);
-    }
 }
