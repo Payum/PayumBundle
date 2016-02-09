@@ -21,11 +21,15 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @var StorageFactoryInterface[]
+     *
+     * @deprecated  since 1.2 and will be removed in 2.0
      */
     protected $storagesFactories = array();
 
     /**
      * @var GatewayFactoryInterface[]
+     *
+     * @deprecated  since 1.2 and will be removed in 2.0
      */
     protected $gatewaysFactories = array();
 
@@ -108,6 +112,8 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * @deprecated  since 1.2 and will be removed in 2.0
+     *
      * @param array $config
      * @param ContainerBuilder $container
      */
@@ -275,6 +281,8 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * @deprecated  since 1.2 and will be removed in 2.0
+     *
      * @param GatewayFactoryInterface $factory
      *
      * @throws \Payum\Core\Exception\InvalidArgumentException

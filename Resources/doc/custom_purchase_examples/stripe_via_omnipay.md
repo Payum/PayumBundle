@@ -22,13 +22,12 @@ $ php composer.phar require "payum/omnipay-bridge" "omnipay/stripe:~2.0"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            omnipay:
-                type: Stripe
-                options:
-                    apiKey: abc123
-                    testMode: true
+            factory: omnipay
+            type: Stripe
+            apiKey: abc123
+            testMode: true
 ```
 
 _**Note:** You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_omnipay`._

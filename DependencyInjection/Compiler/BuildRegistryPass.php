@@ -4,6 +4,9 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0
+ */
 class BuildRegistryPass implements CompilerPassInterface
 {
     /**

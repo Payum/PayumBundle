@@ -22,15 +22,14 @@ $ php composer.phar require "payum/omnipay-bridge" "omnipay/paypal:~2.0"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            omnipay:
-                type: Paypal_Express
-                options:
-                    username: 'REPLACE IT',
-                    password: 'REPLACE IT',
-                    signature: 'REPLACE IT',
-                    testMode: true
+            factory: omnipay
+            type: Paypal_Express
+            username: 'REPLACE IT',
+            password: 'REPLACE IT',
+            signature: 'REPLACE IT',
+            testMode: true
 ```
 
 _**Note:** You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_omnipay`._

@@ -18,11 +18,10 @@ There are several ways to add it to a gateway:
     # app/config/config.yml
 
     payum:
-        gateways:
+        gateways_v2:
             a_gateway:
-                a_factory:
-                    actions:
-                        - acme.payum.action.foo
+                factory: a_factory:
+                payum.action.foo: @payumActionServiceId
     ```
 
 * Tag it
@@ -36,9 +35,9 @@ There are several ways to add it to a gateway:
     # app/config/config.yml
 
     payum:
-        gateways:
+        gateways_v2:
             a_gateway:
-                a_factory: ~
+                factory: a_factory
     ```
 
     ```yaml
@@ -50,28 +49,6 @@ There are several ways to add it to a gateway:
             tags:
                 - { name: payum.action, factory: a_factory }
 
-    ```
-
-    Or you can set concrete `gateway` name. 
-    In this case the action will be added only to the gateway with requested gateway name.
-
-    ```yaml
-    # app/config/config.yml
-
-    payum:
-        gateways:
-            a_gateway:
-                a_factory: ~
-    ```
-
-    ```yaml
-    # src/Acme/PaymentBundle/Resources/config/services.yml
-
-    services:
-        acme.payum.action.foo:
-            class: Acme\PaymentBundle\Payum\Action\FooAction
-            tags:
-                - { name: payum.action, gateway: a_gateway }
     ```
 
     If `prepend` set to true the action is added before the rest. 

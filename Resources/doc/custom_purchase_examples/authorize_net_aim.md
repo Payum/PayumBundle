@@ -22,12 +22,12 @@ $ php composer.phar require "payum/authorize-net-aim"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            authorize_net_aim:
-                login_id: 'get it from gateway'
-                transaction_key: 'get it from gateway'
-                sandbox: true
+            factory: authorize_net_aim
+            login_id: 'get it from gateway'
+            transaction_key: 'get it from gateway'
+            sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_authorize_net`._

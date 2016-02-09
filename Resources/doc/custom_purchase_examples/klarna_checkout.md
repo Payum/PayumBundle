@@ -22,12 +22,12 @@ $ php composer.phar require "payum/klarna-checkout:@stable"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            klarna_checkout:
-                secret:  'get this from gateway side'
-                merchant_id: 'REPLACE WITH YOUR MERCHANT_ID'
-                sandbox: true
+            factory: klarna_checkout
+            secret:  'get this from gateway side'
+            merchant_id: 'REPLACE WITH YOUR MERCHANT_ID'
+            sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_klarna`._
