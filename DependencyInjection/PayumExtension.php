@@ -7,7 +7,6 @@ use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
 use Sonata\AdminBundle\Admin\Admin;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -147,7 +146,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $builder = $container->getDefinition('payum.builder');
 
         foreach ($config as $gatewayName => $gatewayConfig) {
-            $builder->addMethodCall('addGateway', $config);
+            $builder->addMethodCall('addGateway', [$gatewayName, $config]);
         }
     }
 
