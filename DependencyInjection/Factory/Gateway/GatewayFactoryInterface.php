@@ -18,7 +18,7 @@ interface GatewayFactoryInterface
     function create(ContainerBuilder $container, $gatewayName, array $config);
 
     /**
-     * Method could be used to load services which you need always, even if you do not create any gateways with this factory riht now.
+     * Method could be used to load services which you need always, even if you do not create any gateways with this factory right now.
      * It could a gateway factory service for example
      */
     function load(ContainerBuilder $container);
