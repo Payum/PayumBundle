@@ -28,7 +28,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
     public function provideGateways()
     {
         return array(
-            'papyla express checkout' => array(
+            'paypal express checkout' => array(
                 array(
                     'username' => 'a_username',
                     'password' => 'a_password',

@@ -41,3 +41,14 @@ payum:
                 password: aPassword
                 signature: aSignature
                 sandbox: true
+
+    gateways_v2:
+        fooGatewayV2:
+            factory: offline
+
+        barGatewayV2:
+            factory: paypal_express_checkout_nvp
+            username: aUsername
+            password: aPassword
+            signature: aSignature
+            sandbox: true

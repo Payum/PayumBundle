@@ -2,20 +2,26 @@
 namespace Payum\Bundle\PayumBundle\Tests\Registry;
 
 use Payum\Core\GatewayInterface;
+use Payum\Core\Registry\AbstractRegistry;
+use Payum\Core\Storage\StorageInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 use Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
-class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase 
+/**
+ * @deprecated
+ */
+class ContainerAwareRegistryDeprecatedTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
     public function shouldBeSubClassOfAbstractRegistry()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry');
+        $rc = new \ReflectionClass(ContainerAwareRegistry::class);
 
-        $this->assertTrue($rc->isSubclassOf('Payum\Core\Registry\AbstractRegistry'));
+        $this->assertTrue($rc->isSubclassOf(AbstractRegistry::class));
     }
 
     /**
@@ -23,9 +29,9 @@ class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldImplementContainerAwareInterface()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry');
+        $rc = new \ReflectionClass(ContainerAwareRegistry::class);
 
-        $this->assertTrue($rc->implementsInterface('Symfony\Component\DependencyInjection\ContainerAwareInterface'));
+        $this->assertTrue($rc->implementsInterface(ContainerAwareInterface::class));
     }
 
     /**
@@ -70,7 +76,7 @@ class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase
         );
 
         $container = new Container;
-        $container->set('fooStorageServiceId', $this->getMock('Payum\Core\Storage\StorageInterface'));
+        $container->set('fooStorageServiceId', $this->getMock(StorageInterface::class));
 
         $registry = new ContainerAwareRegistry($gateways, $storages);
         $registry->setContainer($container);
@@ -84,7 +90,7 @@ class ContainerAwareRegistryTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnGatewayFactorySetToContainer()
     {
         $container = new Container;
-        $container->set('fooFactoryServiceId', $this->getMock('Payum\Core\Storage\StorageInterface'));
+        $container->set('fooFactoryServiceId', $this->getMock(StorageInterface::class));
 
         $registry = new ContainerAwareRegistry(array(), array(), array(
             'fooName' => 'fooFactoryServiceId',

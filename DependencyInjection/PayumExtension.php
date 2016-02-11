@@ -146,7 +146,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $builder = $container->getDefinition('payum.builder');
 
         foreach ($config as $gatewayName => $gatewayConfig) {
-            $builder->addMethodCall('addGateway', [$gatewayName, $config]);
+            $builder->addMethodCall('addGateway', [$gatewayName, $gatewayConfig]);
         }
     }
 
