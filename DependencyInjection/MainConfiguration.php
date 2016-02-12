@@ -11,6 +11,8 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 class MainConfiguration implements ConfigurationInterface
 {
     /**
+     * @deprecated  since 1.2 and will be removed in 2.0
+     *
      * @var GatewayFactoryInterface[]
      */
     protected $gatewayFactories = array();
@@ -54,6 +56,14 @@ class MainConfiguration implements ConfigurationInterface
             ->arrayNode('dynamic_gateways')
         ;
         $this->addDynamicGatewaysSection($dynamicGatewaysNode);
+
+        $rootNode
+            ->children()
+            ->arrayNode('gateways_v2')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')
+                ->treatNullLike([])
+        ;
         
         $gatewaysPrototypeNode = $rootNode
             ->children()
@@ -96,6 +106,8 @@ class MainConfiguration implements ConfigurationInterface
     }
 
     /**
+     * @deprecated  since 1.2 and will be removed in 2.0
+     *
      * @param ArrayNodeDefinition $gatewaysPrototypeNode
      */
     protected function addGatewaysSection(ArrayNodeDefinition $gatewaysPrototypeNode)

@@ -2,6 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Storage;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -16,7 +17,7 @@ class AbstractStorageFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory');
         
-        $this->assertTrue($rc->implementsInterface('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface'));
+        $this->assertTrue($rc->implementsInterface(StorageFactoryInterface::class));
     }
 
     /**
@@ -24,7 +25,7 @@ class AbstractStorageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeAbstract()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface');
+        $rc = new \ReflectionClass(StorageFactoryInterface::class);
 
         $this->assertTrue($rc->isAbstract());
     }

@@ -39,7 +39,7 @@ class DebugGatewayCommandTest extends WebTestCase
     {
         $output = $this->executeConsole(new DebugGatewayCommand());
 
-        $this->assertContains('Found 2 gateways', $output);
+        $this->assertContains('Found 4 gateways', $output);
         $this->assertContains('fooGateway (Payum\Core\Gateway):', $output);
         $this->assertContains('barGateway (Payum\Core\Gateway):', $output);
     }

@@ -12,7 +12,10 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CoreGatewayFactoryTest extends \PHPUnit_Framework_TestCase
+/**
+ * @deprecated
+ */
+class CoreGatewayFactoryDeprecatedTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ContainerInterface

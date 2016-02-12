@@ -1,13 +1,13 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Gateway;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\GatewayFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\AbstractGatewayFactory;
-use Symfony\Component\HttpKernel\Kernel;
 
 class AbstractGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,7 @@ class AbstractGatewayFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\AbstractGatewayFactory');
         
-        $this->assertTrue($rc->implementsInterface('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\GatewayFactoryInterface'));
+        $this->assertTrue($rc->implementsInterface(GatewayFactoryInterface::class));
     }
 
     /**

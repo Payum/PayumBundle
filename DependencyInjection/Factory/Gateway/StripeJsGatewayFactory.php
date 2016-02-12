@@ -5,6 +5,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Parameter;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0
+ */
 class StripeJsGatewayFactory extends StripeCheckoutGatewayFactory implements PrependExtensionInterface
 {
     /**

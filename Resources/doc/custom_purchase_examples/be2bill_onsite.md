@@ -22,12 +22,12 @@ $ php composer.phar require "payum/be2bill"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            be2bill_onsite:
-                identifier: 'get this from gateway'
-                password: 'get this from gateway'
-                sandbox: true
+            factory: be2bill_onsite
+            identifier: 'get this from gateway'
+            password: 'get this from gateway'
+            sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_be2bill`._

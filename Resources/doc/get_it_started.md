@@ -103,9 +103,9 @@ payum:
     storages:
         Acme\PaymentBundle\Entity\Payment: { doctrine: orm }
             
-    gateways:
+    gateways_v2:
         offline:
-            offline: ~
+            factory: offline
 ```
 
 _**Note**: You can add other gateways to the gateways section too._

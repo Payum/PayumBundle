@@ -6,6 +6,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0
+ */
 class CustomGatewayFactory extends AbstractGatewayFactory
 {
     /**

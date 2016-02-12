@@ -75,15 +75,14 @@ When we are done we can tell payum to use this service instead of default one:
 # app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_name_here:
-            paypal_express_checkout_nvp:
-                username:  NOT USED
-                password:  NOT USED
-                signature: NOT USED
-                sandbox: true
-                apis:
-                    - acme.payment.payum.paypal_express_checkout_api
+            factory: paypal_express_checkout_nvp
+            username:  NOT USED
+            password:  NOT USED
+            signature: NOT USED
+            sandbox: true
+            payum.api: @acme.payment.payum.paypal_express_checkout_api
 
 ```
 

@@ -25,26 +25,22 @@ payum:
 
             # storage specific options
 
-    payments:
-        foo_payment:
-            factory:
-                # options
+    gateways_v2:
+        foo_gateway:
+            # options
                 
-        bar_payment:
-            factory:
-                # options
-                
-                actions:
-                    - action.foo
-                    - action.bar
-                   
-                apis:
-                    - api.foo
-                    - api.bar
-                
-                extensions:
-                    - extension.foo
-                    - extension.bar
+        bar_gateway:
+            # options
+
+            payum.template.layout: "AcmeDemoBundle::layout.html.twig"
+
+            #use container parameter
+            payum.template.foo: "%aParameterName%"
+
+            # use service from container
+            payum.action.foo: "@aServiceId"
+            payum.api.foo: "@aServiceId"
+            payum.extension.foo: "@aServiceId"
 ```
 
 ## Doctrine storage:
@@ -70,153 +66,151 @@ payum:
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            paypal_express_checkout_nvp:
-                username:  'required'
-                password:  'required'
-                signature: 'required'
-                sandbox: true
+            factory: paypal_express_checkout_nvp
+            username:  'required'
+            password:  'required'
+            signature: 'required'
+            sandbox: true
 ```
 
 ## Paypal pro checkout gateway
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            paypal_express_checkout_nvp:
-                username:  'required'
-                password:  'required'
-                partner: 'required'
-                vendor: 'required'
-                tender: C
-                trxtype: S
-                sandbox: true
+            factory: paypal_pro_checkout_nvp
+            username:  'required'
+            password:  'required'
+            partner: 'required'
+            vendor: 'required'
+            tender: C
+            trxtype: S
+            sandbox: true
 ```
 
 ## Stripe.Js
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            stripe_js:
-                publishable_key: 'required'
-                secret_key: 'required'
+            factory: stripe_js
+            publishable_key: 'required'
+            secret_key: 'required'
 ```
 
 ## Stripe Checkout
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            stripe_checkout:
-                publishable_key: 'required'
-                secret_key: 'required'
+            factory: stripe_checkout
+            publishable_key: 'required'
+            secret_key: 'required'
 ```
 
 ## Authorize.Net AIM gateway
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            authorize_net_aim:
-                login_id: 'required'
-                transaction_key: 'required'
-                sandbox: true
+            factory: authorize_net_aim
+            login_id: 'required'
+            transaction_key: 'required'
+            sandbox: true
 ```
 
 ## Be2Bill gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            be2bill:
-                identifier: 'required'
-                password: 'required'
-                sandbox: true
+            factory: be2bill
+            identifier: 'required'
+            password: 'required'
+            sandbox: true
 ```
 
 ## Be2Bill onsite gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            be2bill_onsite:
-                identifier: 'required'
-                password: 'required'
-                sandbox: true
+            factory: be2bill_onsite
+            identifier: 'required'
+            password: 'required'
+            sandbox: true
 ```
 
 ## Payex gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            payex:
-                encryption_key: 'required'
-                account_number: 'required'
-                sandbox: true
+            factory: payex
+            encryption_key: 'required'
+            account_number: 'required'
+            sandbox: true
 ```
 
 ## Klarna checkout gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            klarna_checkout:
-                secret:  'required'
-                merchant_id: 'required'
-                sandbox: true
+            factory: klarna_checkout
+            secret:  'required'
+            merchant_id: 'required'
+            sandbox: true
 ```
 
 ## Klarna invoice gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            klarna_invoice:
-                secret: 'required'
-                eid: 'required'
-                country: SE
-                language: SV
-                currency: SEK
-                sandbox: true
+            factory: klarna_invoice
+            secret: 'required'
+            eid: 'required'
+            country: SE
+            language: SV
+            currency: SEK
+            sandbox: true
 ```
 
 ## Omnipay gateway
 
 ```yml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            omnipay:
-                type: 'required'
-                options:
-                    foo: fooOpt
-                    bar: barOpt
+            factory: omnipay
+            type: 'required'
+            options:
+                foo: fooOpt
+                bar: barOpt
 ```
 
 ## Custom gateway
 
 ```yaml
 payum:
-    gateways:
+    gateways_v2:
         aName:
-            custom:
-                # if service not set an empty gateway will be created.
-                service: ~ 
+            factory: custom
+            # if service not set an empty gateway will be created.
+            service: ~
 ```
-
-## Next Step
 
 ## Next Step
 

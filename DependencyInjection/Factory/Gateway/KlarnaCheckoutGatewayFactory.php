@@ -7,6 +7,9 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\Parameter;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0
+ */
 class KlarnaCheckoutGatewayFactory extends AbstractGatewayFactory implements PrependExtensionInterface
 {
     /**

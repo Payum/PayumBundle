@@ -22,12 +22,12 @@ $ php composer.phar require "payum/klarna-invoice:@stable"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            klarna_invoice:
-                secret: 'EDIT ME'
-                eid: 'EDIT ME'
-                sandbox: true
+            factory: klarna_invoice
+            secret: 'EDIT ME'
+            eid: 'EDIT ME'
+            sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_klarna`._

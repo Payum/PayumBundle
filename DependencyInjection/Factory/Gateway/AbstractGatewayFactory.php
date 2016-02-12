@@ -9,6 +9,9 @@ use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0
+ */
 abstract class AbstractGatewayFactory implements GatewayFactoryInterface
 {
     /**

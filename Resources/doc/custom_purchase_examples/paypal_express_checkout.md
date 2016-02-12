@@ -22,13 +22,13 @@ $ php composer.phar require "payum/paypal-express-checkout-nvp"
 #app/config/config.yml
 
 payum:
-    gateways:
+    gateways_v2:
         your_gateway_here:
-            paypal_express_checkout_nvp:
-                username:  'get this from gateway side'
-                password:  'get this from gateway side'
-                signature: 'get this from gateway side'
-                sandbox: true
+            factory: paypal_express_checkout_nvp
+            username:  'get this from gateway side'
+            password:  'get this from gateway side'
+            signature: 'get this from gateway side'
+            sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_paypal`._
