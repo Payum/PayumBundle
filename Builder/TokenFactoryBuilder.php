@@ -7,6 +7,9 @@ use Payum\Core\Security\TokenFactoryInterface;
 use Payum\Core\Storage\StorageInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @deprecated  since 1.2 and will be removed in 2.0 use one from bridge
+ */
 class TokenFactoryBuilder
 {
     /**
