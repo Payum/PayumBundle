@@ -2,6 +2,11 @@
 
 Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
+## 1.x to 2.0
+
+* The way gateways are configured was changed. The `gateways_v2` configuration option was renamed to `gateways`. The old `gateways` option was removed.
+* The `GatewayFactory`, `CoreGatewayFactory`, `ContainerAwareRegistry` classes were removed.
+
 ## 0.15 to 1.0
 
 * Php minimum version is 5.5
