@@ -1,8 +1,6 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\GatewayFactoryInterface;
-use Payum\Core\Bridge\Twig\TwigFactory;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
@@ -35,7 +33,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         // load services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('payum.xml');
-        $loader->load('security.xml');
         $loader->load('form.xml');
 
         if ($container->getParameter('kernel.debug')) {
@@ -45,8 +42,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $this->loadStorages($config['storages'], $container);
         $this->loadSecurity($config['security'], $container);
 
-        $this->loadGateways($config['gateways'], $container);
-        $this->loadGatewaysV2($config['gateways_v2'], $container);
+        $this->loadGateways($config['gateways_v2'], $container);
 
         if (isset($config['dynamic_gateways'])) {
             $this->loadDynamicGateways($config['dynamic_gateways'], $container);
@@ -59,17 +55,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $bundles = $container->getParameter('kernel.bundles');
-
-//        if (isset($bundles['TwigBundle'])) {
-//            $container->prependExtensionConfig('twig', array(
-//                'paths' => array(
-//                    TwigFactory::guessViewsPath('Payum\Core\Gateway') => 'PayumCore',
-//                    TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
-//                )
-//            ));
-//
-//
-//        }
 
         if (isset($bundles['DoctrineBundle'])) {
             foreach ($container->getExtensionConfig('doctrine') as $config) {
@@ -101,9 +86,17 @@ class PayumExtension extends Extension implements PrependExtensionInterface
      * @param array $config
      * @param ContainerBuilder $container
      */
-    protected function loadGatewaysV2(array $config, ContainerBuilder $container)
+    protected function loadGateways(array $config, ContainerBuilder $container)
     {
         $builder = $container->getDefinition('payum.builder');
+
+        if (isset($config['core'])) {
+            // TODO
+            // TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
+            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config['core']]);
+
+            unset($config['core']);
+        }
 
         foreach ($config as $gatewayName => $gatewayConfig) {
             $builder->addMethodCall('addGateway', [$gatewayName, $gatewayConfig]);

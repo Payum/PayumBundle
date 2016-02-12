@@ -1,8 +1,10 @@
 <?php
 namespace Payum\Bundle\PayumBundle;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoryPass;
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildRegistryPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildConfigsPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewaysPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildStoragesPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel1StorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel2StorageFactory;
@@ -27,7 +29,9 @@ class PayumBundle extends Bundle
         $extension->addStorageFactory(new Propel1StorageFactory);
         $extension->addStorageFactory(new Propel2StorageFactory);
 
-        $container->addCompilerPass(new BuildRegistryPass());
-        $container->addCompilerPass(new BuildGatewayFactoryPass);
+        $container->addCompilerPass(new BuildConfigsPass());
+        $container->addCompilerPass(new BuildGatewaysPass);
+        $container->addCompilerPass(new BuildStoragesPass);
+        $container->addCompilerPass(new BuildGatewayFactoriesPass);
     }
 }

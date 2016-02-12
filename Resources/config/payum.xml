@@ -20,16 +20,10 @@
                 <argument type="service" id="payum.static_registry" />
             </call>
             <call method="setHttpRequestVerifier">
-                <argument type="collection">
-                    <argument type="service" id="payum.http_request_verifier_builder" />
-                    <argument>build</argument>
-                </argument>
+                <argument type="service" id="payum.http_request_verifier_builder" />
             </call>
             <call method="setTokenFactory">
-                <argument type="collection">
-                    <argument type="service" id="payum.token_factory_builder" />
-                    <argument>build</argument>
-                </argument>
+                <argument type="service" id="payum.token_factory_builder" />
             </call>
             <call method="setTokenStorage">
                 <argument type="service" id="payum.security.token_storage" />
@@ -43,7 +37,7 @@
                 </argument>
             </call>
             <call method="setCoreGatewayFactory">
-                <argument type="service" id="payum.gateway_factory" />
+                <argument type="service" id="payum.core_gateway_factory_builder" />
             </call>
             <call method="setHttpClient">
                 <argument type="service" id="payum.http_client" />
@@ -54,21 +48,11 @@
             <factory service="payum.builder" method="getPayum" />
         </service>
 
-        <service id="payum.static_registry" class="Payum\Bundle\PayumBundle\Registry\ContainerAwareRegistry">
+        <service id="payum.static_registry" class="Payum\Core\Bridge\Symfony\ContainerAwareRegistry">
             <argument type="collection" /> <!-- gateways services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- storages services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- gateways factories services. this should be replaced while container is built -->
 
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-        </service>
-
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum builder if you want to build gateway -->
-        <service id="payum.core_gateway_factory" class="Payum\Bundle\PayumBundle\CoreGatewayFactory">
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
@@ -92,6 +76,8 @@
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="128" />
         </service>
 
+        <service id="payum.security.token_storage" abstract="true" />
+
         <!-- Extensions -->
 
         <service id="payum.extension.storage.prototype" class="Payum\Core\Extension\StorageExtension" abstract="true" public="false">
@@ -105,10 +91,16 @@
         </service>
 
         <!-- Builders -->
-        <service id="payum.token_factory_builder" class="Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder" public="false">
+        <service id="payum.token_factory_builder" class="Payum\Core\Bridge\Symfony\Builder\TokenFactoryBuilder" public="false">
             <argument type="service" id="router" />
         </service>
 
-        <service id="payum.http_request_verifier_builder" class="Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder" public="false" />
+        <service id="payum.http_request_verifier_builder" class="Payum\Core\Bridge\Symfony\Builder\HttpRequestVerifierBuilder" public="false" />
+
+        <service id="payum.core_gateway_factory_builder" class="Payum\Core\Bridge\Symfony\Builder\CoreGatewayFactoryBuilder" public="false">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
     </services>
 </container>

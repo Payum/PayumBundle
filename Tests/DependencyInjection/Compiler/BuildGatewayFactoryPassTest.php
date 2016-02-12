@@ -1,7 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoryPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -14,7 +14,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
      */
     public function shouldImplementsCompilerPassInteface()
     {
-        $rc = new \ReflectionClass(BuildGatewayFactoryPass::class);
+        $rc = new \ReflectionClass(BuildGatewayFactoriesPass::class);
 
         $this->assertTrue($rc->implementsInterface(CompilerPassInterface::class));
     }
@@ -24,7 +24,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
      */
     public function couldBeConstructedWithoutAnyArguments()
     {
-        new BuildGatewayFactoryPass();
+        new BuildGatewayFactoriesPass();
     }
 
     /**
@@ -44,7 +44,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $container->setDefinition('foo_factory', $gatewayFactory);
         $container->setDefinition('payum.builder', $builder);
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
     }
@@ -69,7 +69,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $container->setDefinition('foo_factory', $gatewayFactory);
         $container->setDefinition('payum.builder', $builder);
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
@@ -111,7 +111,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $container->setDefinition('payum.core_gateway_factory', $coreGatewayFactory);
         $container->setDefinition('payum.builder', $builder);
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 

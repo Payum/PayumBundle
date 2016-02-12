@@ -14,7 +14,7 @@ services:
     acme.foo_gateway:
         class: Payum\Core\Gateway
         tags:
-            - { name: payum.gateway, factory: custom, gateway: foo }
+            - { name: payum.gateway, gateway: foo }
 ```
 
 Attributes:
@@ -35,7 +35,7 @@ services:
     acme.foo_action:
         class: Payum\Core\Action\ActionInterface
         tags:
-            - { name: payum.action, factory: foo, gateway: bar, all: true, prepend: false }
+            - { name: payum.action, factory: foo, gateway: bar, all: true, alias: foo, prepend: false }
 ```
 
 Attributes:
@@ -47,6 +47,35 @@ Attributes:
 * all - define if you want to add the action to all gateways
 
 * prepend - define if want your action to be put at the begging.
+
+* alias - you can use alias if you' like to overwrite the default action or add a good looking name
+
+## Api tag
+
+The tag `payum.api` could be used if you want to register your service as an api.
+The service could be any object.
+
+```yaml
+# app/config/config.yml
+
+services:
+    acme.foo_extension:
+        class: Payum\Core\Extension\ExtensionInterface
+        tags:
+            - { name: payum.api, factory: foo, gateway: bar, all: true, alias: foo, prepend: false }
+```
+
+Attributes:
+
+* factory - define if you want to add the extension to gateways created by the factory with given name.
+
+* gateway - define if you want to add the extension to a gateway with given name
+
+* all - define if you want to add the extension to all gateways
+
+* prepend - define if want your extension to be put at the begging.
+
+* alias - you can use alias if you' like to overwrite the default action or add a good looking name
 
 ## Extension tag
 
@@ -60,7 +89,7 @@ services:
     acme.foo_extension:
         class: Payum\Core\Extension\ExtensionInterface
         tags:
-            - { name: payum.extension, factory: foo, gateway: bar, all: true, prepend: false }
+            - { name: payum.extension, factory: foo, gateway: bar, all: true, alias: foo, prepend: false }
 ```
 
 Attributes:
@@ -72,6 +101,8 @@ Attributes:
 * all - define if you want to add the extension to all gateways
 
 * prepend - define if want your extension to be put at the begging.
+
+* alias - you can use alias if you' like to overwrite the default action or add a good looking name
 
 ## Gateway factory tag
 
@@ -85,7 +116,7 @@ services:
     acme.foo_gateway_factory:
         class: Payum\Core\GatewayFactory
         tags:
-            - { name: payum.gateway_factory, factory_name: foo, human_name: Foo }
+            - { name: payum.gateway_factory, factory: foo }
 ```
 
 Attributes:

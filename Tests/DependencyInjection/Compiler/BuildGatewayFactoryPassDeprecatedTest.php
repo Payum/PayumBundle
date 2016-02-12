@@ -1,7 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoryPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesPass;
 use Payum\Bundle\PayumBundle\GatewayFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,7 +23,7 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
         $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
@@ -51,7 +51,7 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
         $container->getDefinition('payum.action.baz')->addTag('payum.action', array('baz' => 'bazVal'));
 
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
@@ -87,7 +87,7 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
         $container->getDefinition('payum.extension.baz')->addTag('payum.extension', array('baz' => 'bazVal'));
 
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
@@ -123,7 +123,7 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
         $container->getDefinition('payum.api.baz')->addTag('payum.api', array('baz' => 'bazVal'));
 
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
@@ -161,7 +161,7 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
         $container->getDefinition('payum.action.baz')->addTag('payum.action', array('baz' => 'bazVal'));
 
 
-        $pass = new BuildGatewayFactoryPass;
+        $pass = new BuildGatewayFactoriesPass;
 
         $pass->process($container);
 
