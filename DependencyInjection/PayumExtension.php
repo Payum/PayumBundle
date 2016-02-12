@@ -20,17 +20,8 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @var StorageFactoryInterface[]
-     *
-     * @deprecated  since 1.2 and will be removed in 2.0
      */
     protected $storagesFactories = array();
-
-    /**
-     * @var GatewayFactoryInterface[]
-     *
-     * @deprecated  since 1.2 and will be removed in 2.0
-     */
-    protected $gatewaysFactories = array();
 
     /**
      * {@inheritDoc}
@@ -69,20 +60,16 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (isset($bundles['TwigBundle'])) {
-            $container->prependExtensionConfig('twig', array(
-                'paths' => array(
-                    TwigFactory::guessViewsPath('Payum\Core\Gateway') => 'PayumCore',
-                    TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
-                )
-            ));
-
-            foreach ($this->gatewaysFactories as $factory) {
-                if ($factory instanceof PrependExtensionInterface) {
-                    $factory->prepend($container);
-                }
-            }
-        }
+//        if (isset($bundles['TwigBundle'])) {
+//            $container->prependExtensionConfig('twig', array(
+//                'paths' => array(
+//                    TwigFactory::guessViewsPath('Payum\Core\Gateway') => 'PayumCore',
+//                    TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
+//                )
+//            ));
+//
+//
+//        }
 
         if (isset($bundles['DoctrineBundle'])) {
             foreach ($container->getExtensionConfig('doctrine') as $config) {
@@ -107,33 +94,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                     break;
                 }
             }
-        }
-    }
-
-    /**
-     * @deprecated  since 1.2 and will be removed in 2.0
-     *
-     * @param array $config
-     * @param ContainerBuilder $container
-     */
-    protected function loadGateways(array $config, ContainerBuilder $container)
-    {
-        foreach ($this->gatewaysFactories as $factory) {
-            $factory->load($container);
-        }
-
-        foreach ($config as $gatewayName => $gatewayConfig) {
-            $gatewayFactoryName = $this->findSelectedGatewayFactoryNameInGatewayConfig($gatewayConfig);
-            $gatewayId = $this->gatewaysFactories[$gatewayFactoryName]->create(
-                $container,
-                $gatewayName,
-                $gatewayConfig[$gatewayFactoryName]
-            );
-
-            $container->getDefinition($gatewayId)->addTag('payum.gateway', array(
-                'factory' => $gatewayFactoryName,
-                'gateway' => $gatewayName
-            ));
         }
     }
 
@@ -280,45 +240,11 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
-     * @deprecated  since 1.2 and will be removed in 2.0
-     *
-     * @param GatewayFactoryInterface $factory
-     *
-     * @throws \Payum\Core\Exception\InvalidArgumentException
-     */
-    public function addGatewayFactory(GatewayFactoryInterface $factory)
-    {
-        $factoryName = $factory->getName();
-        if (empty($factoryName)) {
-            throw new InvalidArgumentException(sprintf('The gateway factory %s has empty name', get_class($factory)));
-        }
-        if (isset($this->gatewaysFactories[$factoryName])) {
-            throw new InvalidArgumentException(sprintf('The gateway factory with such name %s already registered', $factoryName));
-        }
-        
-        $this->gatewaysFactories[$factory->getName()] = $factory;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getConfiguration(array $config, ContainerBuilder $container)
     {
-        return new MainConfiguration($this->gatewaysFactories, $this->storagesFactories);
-    }
-
-    /**
-     * @param array $gatewayConfig
-     *
-     * @return string
-     */
-    protected function findSelectedGatewayFactoryNameInGatewayConfig($gatewayConfig)
-    {
-        foreach ($gatewayConfig as $name => $value) {
-            if (isset($this->gatewaysFactories[$name])) {
-                return $name;
-            }
-        }
+        return new MainConfiguration($this->storagesFactories);
     }
 
     /**

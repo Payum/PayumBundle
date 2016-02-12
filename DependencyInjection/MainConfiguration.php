@@ -2,7 +2,6 @@
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\GatewayFactoryInterface;
 use Payum\Core\Exception\LogicException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -11,27 +10,15 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 class MainConfiguration implements ConfigurationInterface
 {
     /**
-     * @deprecated  since 1.2 and will be removed in 2.0
-     *
-     * @var GatewayFactoryInterface[]
-     */
-    protected $gatewayFactories = array();
-
-    /**
      * @var StorageFactoryInterface[]
      */
     protected $storageFactories = array();
 
     /**
-     * @param GatewayFactoryInterface[] $gatewayFactories
      * @param StorageFactoryInterface[] $storageFactories
      */
-    public function __construct(array $gatewayFactories, array $storageFactories)
+    public function __construct(array $storageFactories)
     {
-        foreach ($gatewayFactories as $gatewayFactory) {
-            $this->gatewayFactories[$gatewayFactory->getName()] = $gatewayFactory;
-        }
-
         foreach ($storageFactories as $storageFactory) {
             $this->storageFactories[$storageFactory->getName()] = $storageFactory;
         }
@@ -42,8 +29,6 @@ class MainConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $gatewayFactories = $this->gatewayFactories;
-        
         $tb = new TreeBuilder();
         $rootNode = $tb->root('payum');
 
@@ -65,58 +50,9 @@ class MainConfiguration implements ConfigurationInterface
                 ->treatNullLike([])
         ;
         
-        $gatewaysPrototypeNode = $rootNode
-            ->children()
-                ->arrayNode('gateways')
-                    ->useAttributeAsKey('name')
-                    ->prototype('array')
-                        ->performNoDeepMerging()
-        ;
-
-        $this->addGatewaysSection($gatewaysPrototypeNode);
         $this->addStoragesSection($rootNode);
 
-        $gatewaysPrototypeNode
-                ->validate()
-                ->ifTrue(function($v) use($gatewayFactories) {
-                    $selectedGateways = array();
-                    foreach ($v as $name => $value) {
-                        if (isset($gatewayFactories[$name])) {
-                            $selectedGateways[$name] = $gatewayFactories[$name];
-                        }
-                    }
-
-                    if (0 == count($selectedGateways)) {
-                        throw new LogicException(sprintf(
-                            'One gateway from the %s gateways available must be selected',
-                            implode(', ', array_keys($selectedGateways))
-                        ));
-                    }
-                    if (count($selectedGateways) > 1) {
-                        throw new LogicException('Only one gateway per gateway could be selected');
-                    }
-
-                    return false;
-                })
-                ->thenInvalid('A message')
-            ->end()
-        ->end();
-        
         return $tb;
-    }
-
-    /**
-     * @deprecated  since 1.2 and will be removed in 2.0
-     *
-     * @param ArrayNodeDefinition $gatewaysPrototypeNode
-     */
-    protected function addGatewaysSection(ArrayNodeDefinition $gatewaysPrototypeNode)
-    {
-        foreach ($this->gatewayFactories as $factory) {
-            $factory->addConfiguration(
-                $gatewaysPrototypeNode->children()->arrayNode($factory->getName())
-            );
-        }
     }
 
     /**
