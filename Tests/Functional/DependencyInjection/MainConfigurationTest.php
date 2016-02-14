@@ -2,43 +2,16 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\AuthorizeNetAimGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\Be2BillDirectGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\Be2BillOffsiteGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\KlarnaCheckoutGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\KlarnaInvoiceGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\OmnipayDirectGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\OmnipayOffsiteGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalProCheckoutNvpGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeCheckoutGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeJsGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\MainConfiguration;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalExpressCheckoutNvpGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 
 class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 {
-    protected $gatewayFactories = array();
-
     protected $storageFactories = array();
     
     protected function setUp()
     {
-        $this->gatewayFactories = array(
-            new PaypalExpressCheckoutNvpGatewayFactory,
-            new PaypalProCheckoutNvpGatewayFactory,
-            new AuthorizeNetAimGatewayFactory,
-            new Be2BillDirectGatewayFactory,
-            new Be2BillOffsiteGatewayFactory(),
-            new OmnipayDirectGatewayFactory,
-            new OmnipayOffsiteGatewayFactory(),
-            new KlarnaCheckoutGatewayFactory,
-            new KlarnaInvoiceGatewayFactory(),
-            new StripeJsGatewayFactory(),
-            new StripeCheckoutGatewayFactory(),
-        );
-        
         $this->storageFactories = array(
             new DoctrineStorageFactory,
             new FilesystemStorageFactory
@@ -50,7 +23,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithMinimumConfig()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -76,7 +49,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithMinimumConfigPlusGateway()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -111,7 +84,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithDynamicGateways()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -145,7 +118,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithDynamicGatewaysPlusSonataAdmin()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -180,7 +153,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithKlarnaCheckoutGatewayFactory()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -214,7 +187,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithDoctrineStorageFactory()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -254,7 +227,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessingWithFilesystemStorageFactory()
     {
-        $configuration = new MainConfiguration($this->gatewayFactories, $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
