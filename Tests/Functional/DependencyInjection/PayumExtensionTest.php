@@ -1,135 +1,96 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\Be2BillOffsiteGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\CustomGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\KlarnaCheckoutGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\KlarnaInvoiceGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\OfflineGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\OmnipayOffsiteGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\GatewayFactoryInterface;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeCheckoutGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\StripeJsGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\AuthorizeNetAimGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\Be2BillDirectGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PayexGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\OmnipayDirectGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalExpressCheckoutNvpGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway\PaypalProCheckoutNvpGatewayFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
 use Payum\Core\Model\GatewayConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 
 class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 {
     public function provideGateways()
     {
         return array(
-            'paypal express checkout' => array(
-                array(
-                    'username' => 'a_username',
-                    'password' => 'a_password',
-                    'signature' => 'a_signature',
-                    'sandbox' => true
-                ),
-                new PaypalExpressCheckoutNvpGatewayFactory(),
+            array(
+                'factory' => 'paypal_express_checkout',
+                'username' => 'a_username',
+                'password' => 'a_password',
+                'signature' => 'a_signature',
+                'sandbox' => true
             ),
-            'paypal pro checkout' => array(
-                array(
-                    'username' => 'a_username',
-                    'password' => 'a_password',
-                    'partner' => 'a_partner',
-                    'vendor' => 'a_vendor',
-                    'sandbox' => true
-                ),
-                new PaypalProCheckoutNvpGatewayFactory(),
+            array(
+                'factory' => 'paypal_pro_checkout',
+                'username' => 'a_username',
+                'password' => 'a_password',
+                'partner' => 'a_partner',
+                'vendor' => 'a_vendor',
+                'sandbox' => true
             ),
-            'be2bill direct' => array(
-                array(
-                    'identifier' => 'a_identifier',
-                    'password' => 'a_password',
-                    'sandbox' => true
-                ),
-                new Be2BillDirectGatewayFactory(),
+            array(
+                'factory' => 'be2bill_direct',
+                'identifier' => 'a_identifier',
+                'password' => 'a_password',
+                'sandbox' => true
             ),
-            'be2bill offsite' => array(
-                array(
-                    'identifier' => 'a_identifier',
-                    'password' => 'a_password',
-                    'sandbox' => true
-                ),
-                new Be2BillOffsiteGatewayFactory(),
+            array(
+                'factory' => 'be2bill_offsite',
+                'identifier' => 'a_identifier',
+                'password' => 'a_password',
+                'sandbox' => true
             ),
-            'offline' => array(
-                array(),
-                new OfflineGatewayFactory(),
+            array(
+                'factory' => 'be2bill',
+                'identifier' => 'a_identifier',
+                'password' => 'a_password',
+                'sandbox' => true
             ),
-            'stripe js' => array(
-                array(
-                    'publishable_key' => 'a_key',
-                    'secret_key' => 'a_key'
-                ),
-                new StripeJsGatewayFactory(),
+            array(
+                'factory' => 'offline',
             ),
-            'stripe checkout' => array(
-                array(
-                    'publishable_key' => 'a_key',
-                    'secret_key' => 'a_key'
-                ),
-                new StripeCheckoutGatewayFactory(),
+            array(
+                'factory' => 'stripe_js',
+                'publishable_key' => 'a_key',
+                'secret_key' => 'a_key'
             ),
-            'authorize net aim' => array(
-                array(
-                    'login_id' => 'a_login',
-                    'transaction_key' => 'a_transaction_key',
-                    'sandbox' => true
-                ),
-                new AuthorizeNetAimGatewayFactory(),
+            array(
+                'factory' => 'stripe_checkout',
+                'publishable_key' => 'a_key',
+                'secret_key' => 'a_key'
             ),
-            'omnipay direct' => array(
-                array(
-                    'type' => 'Stripe',
-                    'options' => array(
-                        'apiKey' => 'abc123',
-                    )
-                ),
-                new OmnipayDirectGatewayFactory(),
+            array(
+                'factory' => 'authorize_net_aim',
+                'login_id' => 'a_login',
+                'transaction_key' => 'a_transaction_key',
+                'sandbox' => true
             ),
-            'omnipay offsite' => array(
-                array(
-                    'type' => 'PayPal_Express',
-                    'options' => array(
-                        'username' => 'abc123',
-                        'passowrd' => 'abc123',
-                        'signature' => 'abc123',
-                        'testMode' => true,
-                    ),
-                ),
-                new OmnipayOffsiteGatewayFactory(),
+            array(
+                'factory' => 'omnipay_direct',
+                'type' => 'Stripe',
+                'apiKey' => 'abc123',
             ),
-            'payex' => array(
-                array(
-                    'encryption_key' => 'aKey',
-                    'account_number' => 'aNum'
-                ),
-                new PayexGatewayFactory(),
+            array(
+                'factory' => 'omnipay_offsite',
+                'type' => 'PayPal_Express',
+                'username' => 'abc123',
+                'passowrd' => 'abc123',
+                'signature' => 'abc123',
+                'testMode' => true,
             ),
-            'klarna checkout' => array(
-                array(
-                    'secret' => 'aSecret',
-                    'merchant_id' => 'anId'
-                ),
-                new KlarnaCheckoutGatewayFactory(),
+            array(
+                'factory' => 'payex',
+                'encryption_key' => 'aKey',
+                'account_number' => 'aNum'
             ),
-            'klarna invoice' => array(
-                array(
-                    'eid' => 'anId',
-                    'secret' => 'aSecret',
-                ),
-                new KlarnaInvoiceGatewayFactory(),
+            array(
+                'factory' => 'klarna_checkout',
+                'secret' => 'aSecret',
+                'merchant_id' => 'anId'
+            ),
+            array(
+                'factory' => 'klarna_invoice',
+                'eid' => 'anId',
+                'secret' => 'aSecret',
             ),
         );
     }
@@ -139,7 +100,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideGateways
      */
-    public function shouldLoadExtensionWithGateway($config, GatewayFactoryInterface $gatewayFactory)
+    public function shouldLoadExtensionWithGateway($config)
     {
         $config = array(
             'security' => array(
@@ -153,9 +114,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
                 )
             ),
             'gateways' => array(
-                'a_gateway' => array(
-                    $gatewayFactory->getName() => $config,
-                )
+                'a_gateway' => $config
             )
         );
 
@@ -165,7 +124,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $container->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addGatewayFactory($gatewayFactory);
         $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $container);
@@ -211,7 +169,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $container->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addGatewayFactory(new CustomGatewayFactory());
         $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $container);
@@ -253,7 +210,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addGatewayFactory(new PaypalExpressCheckoutNvpGatewayFactory);
         $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
