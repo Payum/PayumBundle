@@ -5,22 +5,17 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <!-- Should be replaced by PayumExtension -->
-        <service id="payum.security.token_storage" abstract="true" />
+        <!-- deprecated since 1.2, will be removed in 2.0. use payum service to get this service -->
+        <service id="payum.security.token_storage" class="Payum\Core\Storage\StorageInterface">
+            <factory service="payum" method="getTokenStorage" />
+        </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
+        <!-- deprecated since 1.2, will be removed in 2.0. use payum service to get this service -->
         <service id="payum.security.http_request_verifier" class="Payum\Core\Security\HttpRequestVerifierInterface">
             <factory service="payum" method="getHttpRequestVerifier" />
         </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
-        <service id="payum.security.token_factory_internal" class="Payum\Core\Security\TokenFactoryInterface" public="false">
-            <factory service="payum.token_factory_builder" method="build" />
-            <argument type="service" id="payum.security.token_storage" />
-            <argument type="service" id="payum.static_registry" />
-        </service>
-
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum service to get this service -->
+        <!-- deprecated since 1.2, will be removed in 2.0. use payum service to get this service -->
         <service id="payum.security.token_factory" class="Payum\Core\Security\GenericTokenFactoryInterface">
             <factory service="payum" method="getTokenFactory" />
         </service>

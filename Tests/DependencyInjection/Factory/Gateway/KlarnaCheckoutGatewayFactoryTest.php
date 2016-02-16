@@ -191,6 +191,7 @@ class KlarnaCheckoutGatewayFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new KlarnaCheckoutGatewayFactory;
 
         $container = new ContainerBuilder;
+        $container->setDefinition('payum.builder', new Definition());
 
         $factory->load($container);
 
@@ -198,24 +199,10 @@ class KlarnaCheckoutGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factoryService = $container->getDefinition('payum.klarna_checkout.factory');
         $this->assertEquals('Payum\Klarna\Checkout\KlarnaCheckoutGatewayFactory', $factoryService->getClass());
-        $this->assertEquals(
-            array(array('factory_name' => 'klarna_checkout', 'human_name' => 'Klarna Checkout')),
-            $factoryService->getTag('payum.gateway_factory')
-        );
 
-        $factoryConfig = $factoryService->getArgument(0);
-        $this->assertEquals('klarna_checkout', $factoryConfig['payum.factory_name']);
-        $this->assertArrayHasKey('payum.http_client', $factoryConfig);
-        $this->assertArrayHasKey('twig.env', $factoryConfig);
-        $this->assertArrayHasKey('payum.iso4217', $factoryConfig);
-        $this->assertArrayHasKey('payum.template.authorize', $factoryConfig);
-        $this->assertArrayHasKey('payum.template.layout', $factoryConfig);
-        $this->assertArrayHasKey('payum.template.obtain_credit_card', $factoryConfig);
-
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factoryService->getArgument(1));
-        $this->assertEquals('payum.core_gateway_factory', (string) $factoryService->getArgument(1));
-
-        $this->assertEquals('@PayumKlarnaCheckout/Action/capture.html.twig', $container->getParameter('payum.klarna_checkout.template.capture'));
+        $this->assertNotEmpty($factoryService->getFactory());
+        $this->assertEquals('payum', (string) $factoryService->getFactory()[0]);
+        $this->assertEquals('getGatewayFactory', $factoryService->getFactory()[1]);
     }
 
     /**

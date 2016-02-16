@@ -2,6 +2,10 @@
 
 Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
+## 1.2.0 to 1.2.1
+
+* The service `payum.security.token_factory_internal` has been removed. Use `payum` service to get token factory.
+
 ## 0.15 to 1.0
 
 * Php minimum version is 5.5

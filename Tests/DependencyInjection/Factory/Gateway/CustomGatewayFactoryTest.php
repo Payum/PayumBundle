@@ -128,6 +128,7 @@ class CustomGatewayFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new CustomGatewayFactory;
 
         $container = new ContainerBuilder;
+        $container->setDefinition('payum.builder', new Definition());
 
         $factory->load($container);
 
@@ -135,21 +136,10 @@ class CustomGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factoryService = $container->getDefinition('payum.custom.factory');
         $this->assertEquals('Payum\Core\GatewayFactory', $factoryService->getClass());
-        $this->assertEquals(
-            array(array('factory_name' => 'custom', 'human_name' => 'Custom')),
-            $factoryService->getTag('payum.gateway_factory')
-        );
 
-        $factoryConfig = $factoryService->getArgument(0);
-        $this->assertEquals('custom', $factoryConfig['payum.factory_name']);
-        $this->assertArrayHasKey('payum.http_client', $factoryConfig);
-        $this->assertArrayHasKey('twig.env', $factoryConfig);
-        $this->assertArrayHasKey('payum.iso4217', $factoryConfig);
-        $this->assertArrayHasKey('payum.template.layout', $factoryConfig);
-        $this->assertArrayHasKey('payum.template.obtain_credit_card', $factoryConfig);
-
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factoryService->getArgument(1));
-        $this->assertEquals('payum.core_gateway_factory', (string) $factoryService->getArgument(1));
+        $this->assertNotEmpty($factoryService->getFactory());
+        $this->assertEquals('payum', (string) $factoryService->getFactory()[0]);
+        $this->assertEquals('getGatewayFactory', $factoryService->getFactory()[1]);
     }
 
     /**
