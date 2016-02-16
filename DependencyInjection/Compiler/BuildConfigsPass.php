@@ -12,19 +12,20 @@ class BuildConfigsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $configs = $this->processTagData($container->findTaggedServiceIds('payum.action'), 'payum.action.');
+        $configs = $this->processTagData($container->findTaggedServiceIds('payum.action'), 'payum.action.', 'payum.prepend_actions');
         $configs = array_replace_recursive(
             $configs,
-            $this->processTagData($container->findTaggedServiceIds('payum.api'), 'payum.api.')
+            $this->processTagData($container->findTaggedServiceIds('payum.api'), 'payum.api.', 'payum.prepend_apis')
         );
         $configs = array_replace_recursive(
             $configs,
-            $this->processTagData($container->findTaggedServiceIds('payum.extension'), 'payum.extension.')
+            $this->processTagData($container->findTaggedServiceIds('payum.extension'), 'payum.extension.', 'payum.prepend_extensions')
         );
-
 
         $builder = $container->getDefinition('payum.builder');
-        $builder->addMethodCall('addCoreGatewayFactoryConfig', [$configs[0]]);
+        if (false == empty($configs[0])) {
+            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$configs[0]]);
+        }
 
         foreach ($configs[1] as $factoryName => $factoryConfig) {
             $builder->addMethodCall('addGatewayFactoryConfig', [$factoryName, $factoryConfig]);
@@ -35,27 +36,15 @@ class BuildConfigsPass implements CompilerPassInterface
         }
     }
 
-    protected function processTagData(array $tagData, $namePrefix)
+    protected function processTagData(array $tagData, $namePrefix, $prependKey)
     {
-        $coreGatewayFactoryConfig = [
-            'payum.prepend_actions' => [],
-            'payum.prepend_apis' => [],
-            'payum.prepend_extensions' => [],
-        ];
-        $gatewaysFactoriesConfigs = [
-            'payum.prepend_actions' => [],
-            'payum.prepend_apis' => [],
-            'payum.prepend_extensions' => [],
-        ];
-        $gatewaysConfigs = [
-            'payum.prepend_actions' => [],
-            'payum.prepend_apis' => [],
-            'payum.prepend_extensions' => [],
-        ];
+        $coreGatewayFactoryConfig = [];
+        $gatewaysFactoriesConfigs = [];
+        $gatewaysConfigs = [];
 
         foreach ($tagData as $serviceId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                $attributes = array_replace(['alias' => null, 'factory' => null, 'gateway' => null,  'all' => true, 'prepend' => false], $attributes);
+                $attributes = array_replace(['alias' => null, 'factory' => null, 'gateway' => null,  'all' => false, 'prepend' => false], $attributes);
 
                 $name = $attributes['alias'] ?: $serviceId;
                 $name = $namePrefix.$name;
@@ -64,7 +53,11 @@ class BuildConfigsPass implements CompilerPassInterface
                     $coreGatewayFactoryConfig[$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        $coreGatewayFactoryConfig['payum.prepend_actions'][] = $name;
+                        if (false == isset($coreGatewayFactoryConfig[$prependKey])) {
+                            $coreGatewayFactoryConfig[$prependKey] = [];
+                        }
+
+                        $coreGatewayFactoryConfig[$prependKey][] = $name;
                     }
                 } elseif ($attributes['factory']) {
                     if (false == isset($gatewaysFactoriesConfigs[$attributes['factory']])) {
@@ -74,7 +67,11 @@ class BuildConfigsPass implements CompilerPassInterface
                     $gatewaysFactoriesConfigs[$attributes['factory']][$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        $gatewaysFactoriesConfigs[$attributes['factory']]['payum.prepend_actions'][] = $name;
+                        if (false == isset($gatewaysFactoriesConfigs[$attributes['factory']][$prependKey])) {
+                            $gatewaysFactoriesConfigs[$attributes['factory']][$prependKey] = [];
+                        }
+
+                        $gatewaysFactoriesConfigs[$attributes['factory']][$prependKey][] = $name;
                     }
                 } elseif ($attributes['gateway']) {
                     if (false == isset($gatewaysConfigs[$attributes['gateway']])) {
@@ -84,7 +81,11 @@ class BuildConfigsPass implements CompilerPassInterface
                     $gatewaysConfigs[$attributes['gateway']][$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        $gatewaysConfigs[$attributes['gateway']]['payum.prepend_actions'][] = $name;
+                        if (false == isset($gatewaysConfigs[$attributes['gateway']][$prependKey])) {
+                            $gatewaysConfigs[$attributes['gateway']][$prependKey] = [];
+                        }
+
+                        $gatewaysConfigs[$attributes['gateway']][$prependKey][] = $name;
                     }
                 }
             }
