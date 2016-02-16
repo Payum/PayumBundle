@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2 (2016-02-16)
+
+* [compiler] backport `payum.gateway_factory_builder` tag from 2.x.
+
 ## 1.2.1 (2016-02-16)
 
 * [gateway] inject core gateway factory builder into payum builder.
