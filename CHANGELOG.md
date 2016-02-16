@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 (2016-02-16)
+
+* [gateway] inject core gateway factory builder into payum builder.
+
 ## 1.2.0 (2016-02-12)
 
 * Supports Symfony 3.x
