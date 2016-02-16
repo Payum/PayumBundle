@@ -205,6 +205,7 @@ class AbstractGatewayFactoryTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container = new ContainerBuilder;
+        $container->setDefinition('payum.builder', new Definition());
 
         $factory->load($container);
 
@@ -212,13 +213,10 @@ class AbstractGatewayFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factoryService = $container->getDefinition('payum.foo.factory');
         $this->assertEquals('Payum\Core\GatewayFactory', $factoryService->getClass());
-        $this->assertEquals(array(array('factory_name' => 'foo', 'human_name' => 'Foo')), $factoryService->getTag('payum.gateway_factory'));
 
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $factoryService->getArgument(1));
-        $this->assertEquals('payum.core_gateway_factory', (string) $factoryService->getArgument(1));
-
-        $this->assertEquals('@PayumCore\layout.html.twig', $container->getParameter('payum.template.layout'));
-        $this->assertEquals('@PayumSymfonyBridge\obtainCreditCard.html.twig', $container->getParameter('payum.template.obtain_credit_card'));
+        $this->assertNotEmpty($factoryService->getFactory());
+        $this->assertEquals('payum', (string) $factoryService->getFactory()[0]);
+        $this->assertEquals('getGatewayFactory', $factoryService->getFactory()[1]);
     }
 
     /**

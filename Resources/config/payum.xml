@@ -43,7 +43,7 @@
                 </argument>
             </call>
             <call method="setCoreGatewayFactory">
-                <argument type="service" id="payum.gateway_factory" />
+                <argument type="service" id="payum.core_gateway_factory_builder" />
             </call>
             <call method="setHttpClient">
                 <argument type="service" id="payum.http_client" />
@@ -64,17 +64,13 @@
             </call>
         </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum builder if you want to build gateway -->
+        <!-- deprecated since 1.2, will be removed in 2.0. use payum builder if you want to build gateway -->
         <service id="payum.core_gateway_factory" class="Payum\Bundle\PayumBundle\CoreGatewayFactory">
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
-            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
+            <factory service="payum.core_gateway_factory_builder" method="build" />
+            <argument type="collection" />
         </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. use payum builder if you want to build gateway -->
+        <!-- deprecated since 1.2, will be removed in 2.0. use payum builder if you want to build gateway -->
         <service id="payum.gateway_factory" alias="payum.core_gateway_factory" />
 
         <service id="payum.http_client" class="Payum\Core\HttpClientInterface">
@@ -107,21 +103,21 @@
             <tag name="payum.extension" all="true" alias="psr_logger" />
         </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. registered by payum builder -->
+        <!-- deprecated since 1.2, will be removed in 2.0. registered by payum builder -->
         <service id="payum.extension.token_factory" class="Payum\Core\Extension\GenericTokenFactoryExtension">
             <argument type="service" id="payum.security.token_factory" />
         </service>
 
         <!-- Actions -->
 
-        <!-- deprecated since 1.1, will be removed in 2.0. registered by payum builder -->
+        <!-- deprecated since 1.2, will be removed in 2.0. registered by payum builder -->
         <service id="payum.action.get_http_request" class="Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction">
             <call method="setHttpRequest">
                 <argument type="service" id="request" on-invalid="null" strict="false" />
             </call>
         </service>
 
-        <!-- deprecated since 1.1, will be removed in 2.0. registered by payum builder -->
+        <!-- deprecated since 1.2, will be removed in 2.0. registered by payum builder -->
         <service id="payum.action.obtain_credit_card" class="Payum\Core\Bridge\Symfony\Action\ObtainCreditCardAction">
             <argument type="service" id="form.factory" />
             <argument>%payum.template.obtain_credit_card%</argument>
@@ -133,6 +129,15 @@
         <!-- Builders -->
         <service id="payum.token_factory_builder" class="Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder" public="false">
             <argument type="service" id="router" />
+        </service>
+
+        <service id="payum.core_gateway_factory_builder" class="Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder" public="false">
+            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
+            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
+            <argument type="collection" /> <!-- this should be replaced in compiler pass -->
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
         </service>
 
         <service id="payum.http_request_verifier_builder" class="Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder" public="false" />

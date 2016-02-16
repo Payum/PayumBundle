@@ -35,7 +35,7 @@ class BuildGatewayFactoryPass implements CompilerPassInterface
      */
     protected function processDeprecated(ContainerBuilder $container)
     {
-        $gatewayFactory = $container->getDefinition('payum.core_gateway_factory');
+        $gatewayFactory = $container->getDefinition('payum.core_gateway_factory_builder');
 
         $gatewayFactory->replaceArgument(0, $container->findTaggedServiceIds('payum.action'));
         $gatewayFactory->replaceArgument(1, $container->findTaggedServiceIds('payum.extension'));

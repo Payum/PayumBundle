@@ -1,8 +1,10 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
+use Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoryPass;
 use Payum\Bundle\PayumBundle\GatewayFactory;
+use Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -17,10 +19,10 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
      */
     public function shouldPassEmptyArraysIfNoTagsDefined()
     {
-        $gatewayFactory = new Definition(GatewayFactory::class, array(null, null, null));
+        $gatewayFactory = new Definition(CoreGatewayFactoryBuilder::class, array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
         $pass = new BuildGatewayFactoryPass;
@@ -37,10 +39,10 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
      */
     public function shouldPassPayumActionTagsAsFirstArgument()
     {
-        $gatewayFactory = new Definition(GatewayFactory::class, array(null, null, null));
+        $gatewayFactory = new Definition(CoreGatewayFactoryBuilder::class, array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
         $container->setDefinition('payum.action.foo', new Definition());
@@ -73,10 +75,10 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
      */
     public function shouldPassPayumExtensionTagsAsSecondArgument()
     {
-        $gatewayFactory = new Definition(GatewayFactory::class, array(null, null, null));
+        $gatewayFactory = new Definition(CoreGatewayFactoryBuilder::class, array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
         $container->setDefinition('payum.extension.foo', new Definition());
@@ -109,10 +111,10 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
      */
     public function shouldPassPayumApiTagsAsThirdArgument()
     {
-        $gatewayFactory = new Definition(GatewayFactory::class, array(null, null, null));
+        $gatewayFactory = new Definition(CoreGatewayFactoryBuilder::class, array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
         $container->setDefinition('payum.api.foo', new Definition());
@@ -145,10 +147,10 @@ class BuildGatewayFactoryPassDeprecatedTest extends \Phpunit_Framework_TestCase
      */
     public function shouldPassActionExtensionApiTagsAtOnce()
     {
-        $gatewayFactory = new Definition(GatewayFactory::class, array(null, null, null));
+        $gatewayFactory = new Definition(CoreGatewayFactoryBuilder::class, array(null, null, null));
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $gatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $gatewayFactory);
         $container->setDefinition('payum.builder', new Definition());
 
         $container->setDefinition('payum.api.foo', new Definition());

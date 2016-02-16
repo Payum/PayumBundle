@@ -1,13 +1,13 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Gateway;
 
+use Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder;
 use Payum\Core\Exception\RuntimeException;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @deprecated  since 1.2 and will be removed in 2.0
@@ -118,15 +118,17 @@ abstract class AbstractGatewayFactory implements GatewayFactoryInterface
      */
     protected function createGatewayFactory(ContainerBuilder $container)
     {
-        $factory = new Definition($this->getPayumGatewayFactoryClass(), array(
-            $this->createFactoryConfig(),
-            new Reference('payum.core_gateway_factory'),
-        ));
-        $factory->addTag('payum.gateway_factory', array(
-            'factory_name' => $this->getName(),
-            'human_name' => $this->getHumanName(),
-        ));
+        $builder = $container->getDefinition('payum.builder');
 
+        $factoryBuilder = new Definition(GatewayFactoryBuilder::class, [$this->getPayumGatewayFactoryClass()]);
+        $factoryBuilderId = sprintf('payum.%s.factory_builder', $this->getName());
+        $container->setDefinition($factoryBuilderId, $factoryBuilder);
+
+        $builder->addMethodCall('addGatewayFactory', [$this->getName(), new Reference($factoryBuilderId)]);
+        $builder->addMethodCall('addGatewayFactoryConfig', [$this->getName(), $this->createFactoryConfig()]);
+
+        $factory = new Definition($this->getPayumGatewayFactoryClass(), [$this->getName()]);
+        $factory->setFactory([new Reference('payum'), 'getGatewayFactory']);
         $factoryId = sprintf('payum.%s.factory', $this->getName());
 
         $container->setDefinition($factoryId, $factory);

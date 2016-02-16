@@ -65,7 +65,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $coreGatewayFactory->addArgument('baz');
 
         $container = new ContainerBuilder;
-        $container->setDefinition('payum.core_gateway_factory', $coreGatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $coreGatewayFactory);
         $container->setDefinition('foo_factory', $gatewayFactory);
         $container->setDefinition('payum.builder', $builder);
 
@@ -108,7 +108,7 @@ class BuildGatewayFactoryPassTest extends \Phpunit_Framework_TestCase
         $coreGatewayFactory->addArgument('bar');
         $coreGatewayFactory->addArgument('baz');
 
-        $container->setDefinition('payum.core_gateway_factory', $coreGatewayFactory);
+        $container->setDefinition('payum.core_gateway_factory_builder', $coreGatewayFactory);
         $container->setDefinition('payum.builder', $builder);
 
         $pass = new BuildGatewayFactoryPass;
