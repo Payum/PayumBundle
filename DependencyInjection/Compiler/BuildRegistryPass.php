@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 
+use Payum\Core\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -34,11 +35,20 @@ class BuildRegistryPass implements CompilerPassInterface
         $gatewaysFactoriesIds = array();
         foreach ($container->findTaggedServiceIds('payum.gateway_factory') as $gatewayFactoryId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                $gatewaysFactoriesIds[$attributes['factory_name']] = $gatewayFactoryId;
+                // FC layer
+                if (isset($attributes['factory_name']) && false == isset($attributes['factory'])) {
+                    $attributes['factory'] = $attributes['factory_name'];
+                }
 
-                $availableGatewayFactories[$attributes['factory_name']] = isset($attributes['human_name']) ?
+                if (false == isset($attributes['factory'])) {
+                    throw new LogicException('The payum.gateway_factory tag require factory attribute.');
+                }
+
+                $gatewaysFactoriesIds[$attributes['factory']] = $gatewayFactoryId;
+
+                $availableGatewayFactories[$attributes['factory']] = isset($attributes['human_name']) ?
                     $attributes['human_name'] :
-                    $attributes['factory_name']
+                    $attributes['factory']
                 ;
             }
         }

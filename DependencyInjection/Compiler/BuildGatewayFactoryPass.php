@@ -14,16 +14,17 @@ class BuildGatewayFactoryPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $builder = $container->getDefinition('payum.builder');
-        foreach ($container->findTaggedServiceIds('payum.gateway_factory') as $factoryId => $tagAttributes) {
+        foreach ($container->findTaggedServiceIds('payum.gateway_factory_builder') as $serviceId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (false == isset($attributes['factory_name'])) {
-                    throw new LogicException('The payum.gateway_factory tag require factory_name attribute.');
+                // FC layer
+                if (isset($attributes['factory_name']) && false == isset($attributes['factory'])) {
+                    $attributes['factory'] = $attributes['factory_name'];
                 }
 
-                $builder->addMethodCall('addGatewayFactory', [
-                    $attributes['factory_name'],
-                    new Reference($factoryId)
-                ]);
+                if (false == isset($attributes['factory'])) {
+                    throw new LogicException('The payum.gateway_factory tag require factory attribute.');
+                }
+                $builder->addMethodCall('addGatewayFactory', [$attributes['factory'], new Reference($serviceId)]);
             }
         }
 
