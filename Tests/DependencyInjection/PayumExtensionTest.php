@@ -185,7 +185,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'gateways_v2' => array(
+                'gateways' => array(
                     'a_gateway' => array(
                         'foo' => 'fooVal',
                     ),
