@@ -14,8 +14,8 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->storageFactories = array(
-            new BazStorageFactory(),
-            new OloloStorageFactory()
+            new FooStorageFactory(),
+            new BarStorageFactory()
         );
     }
 
@@ -24,7 +24,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function couldBeConstructedWithArrayOfGatewayFactoriesAndStorageFactories()
     {
-        new MainConfiguration([], $this->storageFactories);
+        new MainConfiguration($this->storageFactories);
     }
 
     /**
@@ -32,7 +32,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassConfigurationProcessing()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -62,7 +62,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'gateways_v2' => array(
+                'gateways' => array(
                     'a_gateway' => [
                         'foo' => 'fooVal'
                     ],
@@ -81,7 +81,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAddStoragesToAllGatewayByDefault()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -123,7 +123,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAllowDisableAddStoragesToAllGatewayFeature()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -162,7 +162,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAllowSetConcreteGatewaysWhereToAddStorages()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -203,7 +203,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAllowSetGatewaysCreatedWithFactoriesWhereToAddStorages()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -247,7 +247,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTryToUseNotValidClassAsStorageEntry()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -281,7 +281,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTryToAddMoreThenOneStorageForOneEntry()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -318,7 +318,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfStorageEntryDefinedWithoutConcreteStorage()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -345,7 +345,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldPassIfNoneStorageSelected()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -360,7 +360,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'gateways_v2' => array(
+                'gateways' => array(
                     'a_gateway' => ['foo' => 'fooVal']
                 )
             )
@@ -375,7 +375,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfMoreThenOneTokenStorageConfigured()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -407,7 +407,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTokenStorageConfiguredWithModelNotImplementingTokenInterface()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -434,7 +434,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTokenStorageConfiguredWithNotModelClass()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -461,7 +461,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfSecurityNotConfigured()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -478,7 +478,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTokenStorageNotConfigured()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -497,7 +497,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfMoreThenOneGatewayConfigStorageConfigured()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -538,7 +538,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfGatewayConfigStorageConfiguredWithModelNotImplementingGatewayConfigInterface()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -574,7 +574,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfGatewayConfigStorageConfiguredWithNotModelClass()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -610,7 +610,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfGatewayConfigStorageNotConfigured()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -636,7 +636,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldTreatNullGatewaysV2AsEmptyArray()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -651,11 +651,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'gateways_v2' => null,
+                'gateways' => null,
             ),
         ));
 
-        $this->assertEquals([], $config['gateways_v2']);
+        $this->assertEquals([], $config['gateways']);
     }
 
     /**
@@ -663,7 +663,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAllowPutAnythingToGatewaysV2AndNotPerformAnyValidations()
     {
-        $configuration = new MainConfiguration([], $this->storageFactories);
+        $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
 
@@ -678,7 +678,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'gateways_v2' => array(
+                'gateways' => array(
                     'a_gateway' => array(
                         'factory' => 'aFactory',
                         'foo' => 'fooVal',
@@ -710,11 +710,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 'foo' => '%foo%',
                 'bar' => '%bar%',
             ),
-        ), $config['gateways_v2']);
+        ), $config['gateways']);
     }
 }
 
-class BazStorageFactory implements StorageFactoryInterface
+class FooStorageFactory implements StorageFactoryInterface
 {
     public function create(ContainerBuilder $container, $modelClass, array $config)
     {
@@ -735,7 +735,7 @@ class BazStorageFactory implements StorageFactoryInterface
     }
 }
 
-class OloloStorageFactory implements StorageFactoryInterface
+class BarStorageFactory implements StorageFactoryInterface
 {
     public function create(ContainerBuilder $container, $modelClass, array $config)
     {

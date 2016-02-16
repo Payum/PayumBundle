@@ -44,7 +44,7 @@ class MainConfiguration implements ConfigurationInterface
 
         $rootNode
             ->children()
-            ->arrayNode('gateways_v2')
+            ->arrayNode('gateways')
                 ->useAttributeAsKey('name')
                 ->prototype('variable')
                 ->treatNullLike([])
