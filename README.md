@@ -4,14 +4,14 @@
 [![Latest Stable Version](https://poser.pugx.org/payum/payum-bundle/version.png)](https://packagist.org/packages/payum/payum-bundle)
 
 The bundle  integrate [payum](https://github.com/Payum/Payum) into [symfony](http://www.symfony.com) framework.
-It already supports [+35 gateways](http://payum.org/doc/1.0/Core/supported-gateways).
+It already supports [+35 gateways](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/supported-gateways.md).
 Provide nice configuration layer, secured capture controller, storages integration and lots of more features.
 
 [Sylius e-commerce platform](http://sylius.com) base its payment solutions on top of the bundle.
 
 ## Resources
 
-* [Documentation](http://payum.org/doc#PayumBundle)
+* [Documentation](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/index.md)
 * [Sandbox](http://sandbox.payum.forma-dev.com)
 * [Questions](http://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumBundle/issues)
