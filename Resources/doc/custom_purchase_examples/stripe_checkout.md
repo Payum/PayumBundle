@@ -22,7 +22,7 @@ $ php composer.phar require "payum/stripe"
 #app/config/config.yml
 
 payum:
-    gateways_v2:
+    gateways:
         your_gateway_here:
             factory: stripe_checkout
             publishable_key: 'get this from gateway'

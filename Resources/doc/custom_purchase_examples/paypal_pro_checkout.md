@@ -22,9 +22,9 @@ $ php composer.phar require "payum/paypal-pro-checkout-nvp"
 #app/config/config.yml
 
 payum:
-    gateways_v2:
+    gateways:
         your_gateway_here:
-            factory: paypal_pro_checkout_nvp
+            factory: paypal_pro_checkout
             username: 'EDIT ME'
             password: 'EDIT ME'
             partner:  'EDIT ME'

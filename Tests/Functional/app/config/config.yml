@@ -33,21 +33,10 @@ payum:
 
     gateways:
         fooGateway:
-            offline: ~
-
-        barGateway:
-            paypal_express_checkout_nvp:
-                username: aUsername
-                password: aPassword
-                signature: aSignature
-                sandbox: true
-
-    gateways_v2:
-        fooGatewayV2:
             factory: offline
 
-        barGatewayV2:
-            factory: paypal_express_checkout_nvp
+        barGateway:
+            factory: paypal_express_checkout
             username: aUsername
             password: aPassword
             signature: aSignature

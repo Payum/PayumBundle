@@ -22,7 +22,7 @@ $ php composer.phar require "payum/klarna-invoice:@stable"
 #app/config/config.yml
 
 payum:
-    gateways_v2:
+    gateways:
         your_gateway_here:
             factory: klarna_invoice
             secret: 'EDIT ME'

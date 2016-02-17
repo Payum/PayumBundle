@@ -4,8 +4,11 @@ Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
 ## 1.x to 2.0
 
-* The way gateways are configured was changed. The `gateways_v2` configuration option was renamed to `gateways`. The old `gateways` option was removed.
+* The way gateways are configured was changed. The `gateways_v2` configuration option was renamed to `gateways`. The old `gateways` option was removed. Examples https://gist.github.com/makasim/f1aef97c8d1f2994456a
+
 * The `GatewayFactory`, `CoreGatewayFactory`, `ContainerAwareRegistry` classes were removed.
+* Factory `paypal_express_checkout_nvp` renamed to `paypal_express_checkout`
+* Factory `paypal_pro_checkout_nvp` renamed to `paypal_pro_checkout`
 
 ## 1.2.0 to 1.2.1
 

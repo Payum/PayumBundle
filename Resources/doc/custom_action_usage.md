@@ -18,7 +18,7 @@ There are several ways to add it to a gateway:
     # app/config/config.yml
 
     payum:
-        gateways_v2:
+        gateways:
             a_gateway:
                 factory: a_factory:
                 payum.action.foo: @payumActionServiceId
@@ -35,7 +35,7 @@ There are several ways to add it to a gateway:
     # app/config/config.yml
 
     payum:
-        gateways_v2:
+        gateways:
             a_gateway:
                 factory: a_factory
     ```

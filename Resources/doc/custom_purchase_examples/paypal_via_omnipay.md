@@ -22,7 +22,7 @@ $ php composer.phar require "payum/omnipay-bridge" "omnipay/paypal:~2.0"
 #app/config/config.yml
 
 payum:
-    gateways_v2:
+    gateways:
         your_gateway_here:
             factory: omnipay
             type: Paypal_Express

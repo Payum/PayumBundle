@@ -25,7 +25,7 @@ payum:
 
             # storage specific options
 
-    gateways_v2:
+    gateways:
         foo_gateway:
             # options
                 
@@ -66,9 +66,9 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
-            factory: paypal_express_checkout_nvp
+            factory: paypal_express_checkout
             username:  'required'
             password:  'required'
             signature: 'required'
@@ -79,9 +79,9 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
-            factory: paypal_pro_checkout_nvp
+            factory: paypal_pro_checkout
             username:  'required'
             password:  'required'
             partner: 'required'
@@ -95,7 +95,7 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: stripe_js
             publishable_key: 'required'
@@ -106,7 +106,7 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: stripe_checkout
             publishable_key: 'required'
@@ -117,7 +117,7 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: authorize_net_aim
             login_id: 'required'
@@ -129,7 +129,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: be2bill
             identifier: 'required'
@@ -141,7 +141,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: be2bill_onsite
             identifier: 'required'
@@ -153,7 +153,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: payex
             encryption_key: 'required'
@@ -165,7 +165,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: klarna_checkout
             secret:  'required'
@@ -177,7 +177,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: klarna_invoice
             secret: 'required'
@@ -192,7 +192,7 @@ payum:
 
 ```yml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: omnipay
             type: 'required'
@@ -205,7 +205,7 @@ payum:
 
 ```yaml
 payum:
-    gateways_v2:
+    gateways:
         aName:
             factory: custom
             # if service not set an empty gateway will be created.

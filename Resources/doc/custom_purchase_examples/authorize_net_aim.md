@@ -22,7 +22,7 @@ $ php composer.phar require "payum/authorize-net-aim"
 #app/config/config.yml
 
 payum:
-    gateways_v2:
+    gateways:
         your_gateway_here:
             factory: authorize_net_aim
             login_id: 'get it from gateway'

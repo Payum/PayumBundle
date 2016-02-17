@@ -67,12 +67,11 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
                 ),
                 'gateways' => array(
                     'a_gateway' => array(
-                        'paypal_express_checkout_nvp' => array(
-                            'username' => 'aUsername',
-                            'password' => 'aPassword',
-                            'signature' => 'aSignature',
-                            'sandbox' => true
-                        )
+                        'factory' => 'paypal_express_checkout',
+                        'username' => 'aUsername',
+                        'password' => 'aPassword',
+                        'signature' => 'aSignature',
+                        'sandbox' => true,
                     )
                 )
             )
