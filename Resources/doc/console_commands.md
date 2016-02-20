@@ -7,7 +7,7 @@ In the following examples, we will show you how to [get a payment status](#get-p
 ## Get Payment Status
 
 ```bash
-$ php app/console payum:status paypal --model-class=Acme\PaymentBundle\Entity\Payment --model-id=1
+$ php bin/console payum:status paypal --model-class=Acme\PaymentBundle\Entity\Payment --model-id=1
 
 > Status: success
 ```
@@ -18,7 +18,7 @@ Some payment gateways do not allow you to set a callback URL per model. You can 
 This command allows you to generate a secure URL. Optionally, you can associate a model with this token.
 
 ```bash
-$ php app/console payum:security:create-notify-token paypal --model-class=Acme\PaymentBundle\Entity\Payment --model-id=1
+$ php bin/console payum:security:create-notify-token paypal --model-class=Acme\PaymentBundle\Entity\Payment --model-id=1
 
 > Hash: oTA0w-SRaVY8U1pRr6MVshAtdjiogRENTlnJit6lYLg
 > Url: http://localhost/payment/notify/oTA0w-SRaVY8U1pRr6MVshAtdjiogRENTlnJit6lYLg
@@ -30,7 +30,7 @@ $ php app/console payum:security:create-notify-token paypal --model-class=Acme\P
 This could be helpful when you want to send user a purchase link (via email) manually, or when user is lost in the middle of a payment and asking for a new link.
 
 ```bash
-$ php app/console payum:security:create-capture-token paypal \
+$ php bin/console payum:security:create-capture-token paypal \
  --model-class=Acme\PaymentBundle\Entity\Payment \
  --model-id=1 \
  --after-url="url-or-route-to-go-after-purchase"
@@ -47,7 +47,7 @@ This could be helpful when you want to find out what actions were added to payme
 Also it will show extensions and apis added too.  
 
 ```bash
-$ php app/console payum:gateway:debug
+$ php bin/console payum:gateway:debug
 
 Found 1 gateways
 
