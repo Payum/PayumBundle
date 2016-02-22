@@ -103,7 +103,7 @@ payum:
     storages:
         Acme\PaymentBundle\Entity\Payment: { doctrine: orm }
             
-    gateways:
+    gateways_v2:
         offline:
             factory: offline
 ```
