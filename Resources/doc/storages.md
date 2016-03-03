@@ -275,7 +275,7 @@ next, you have to configure payum's storages:
 payum:
     security:
         token_storage:
-            Acme\PaymentBundle\Entity\PayumSecurityToken:
+            Acme\PaymentBundle\Model\PaymentToken:
                 filesystem:
                     storage_dir: %kernel.root_dir%/Resources/payments
                     id_property: hash
@@ -292,3 +292,4 @@ payum:
 * [Get it started](get_it_started.md).
 * [Custom purchase examples](custom_purchase_examples.md).
 * [Back to index](index.md).
+
