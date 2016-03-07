@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.3 (2016-03-07)
+
+[factory] fix regression. some actions are not added to gateways like an obtain credit card action.
+
 ## 1.2.2 (2016-02-16)
 
 * [compiler] backport `payum.gateway_factory_builder` tag from 2.x.
