@@ -151,6 +151,8 @@ abstract class AbstractGatewayFactory implements GatewayFactoryInterface
         $config['guzzle.client'] = new Reference('payum.guzzle_client');
         $config['twig.env'] = new Reference('twig');
         $config['payum.iso4217'] = new Reference('payum.iso4217');
+        $config['payum.action.obtain_credit_card'] = new Reference('payum.action.obtain_credit_card');
+        $config['payum.action.get_http_request'] = new Reference('payum.action.get_http_request');
 
         return $config;
     }
