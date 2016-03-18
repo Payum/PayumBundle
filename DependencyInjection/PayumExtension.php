@@ -1,9 +1,11 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
+use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
+use Payum\Core\Gateway;
 use Sonata\AdminBundle\Admin\Admin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -42,6 +44,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $this->loadStorages($config['storages'], $container);
         $this->loadSecurity($config['security'], $container);
 
+        $this->loadCoreGateway(isset($config['gateways']['core']) ? $config['gateways']['core'] : [], $container);
+        unset($config['gateways']['core']);
+        
         $this->loadGateways($config['gateways'], $container);
 
         if (isset($config['dynamic_gateways'])) {
@@ -60,7 +65,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             foreach ($container->getExtensionConfig('doctrine') as $config) {
                 // do not register mappings if dbal not configured.
                 if (false == empty($config['dbal'])) {
-                    $rc = new \ReflectionClass('Payum\Core\Gateway');
+                    $rc = new \ReflectionClass(Gateway::class);
                     $payumRootDir = dirname($rc->getFileName());
 
                     $container->prependExtensionConfig('doctrine', array(
@@ -90,17 +95,37 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     {
         $builder = $container->getDefinition('payum.builder');
 
-        if (isset($config['core'])) {
-            // TODO
-            // TwigFactory::guessViewsPath('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter') => 'PayumSymfonyBridge',
-            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config['core']]);
-
-            unset($config['core']);
-        }
-
         foreach ($config as $gatewayName => $gatewayConfig) {
             $builder->addMethodCall('addGateway', [$gatewayName, $gatewayConfig]);
         }
+    }
+
+    /**
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    protected function loadCoreGateway(array $config, ContainerBuilder $container)
+    {
+        $builder = $container->getDefinition('payum.builder');
+        
+        $defaultConfig = [
+            'payum.template.layout' => '@PayumCore\layout.html.twig',
+            'payum.template.obtain_credit_card' => '@PayumSymfonyBridge\obtainCreditCard.html.twig',
+            'payum.paths' => [
+                'PayumSymfonyBridge' => dirname((new \ReflectionClass(ReplyToSymfonyResponseConverter::class))->getFileName()).'/Resources/views',
+            ],
+
+            'payum.http_client' => new Reference('payum.http_client'),
+            'payum.iso4217' => new Reference('payum.iso4217'),
+            'twig.env' => new Reference('twig'),
+
+            'payum.action.get_http_request' => new Reference('@payum.action.get_http_request'),
+            'payum.action.obtain_credit_card' => new Reference('@payum.action.obtain_credit_card_builder'),
+        ];
+        
+        $config = array_replace_recursive($defaultConfig, $config);
+
+        $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
     }
 
     /**

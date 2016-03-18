@@ -4,6 +4,10 @@
 
 * Lighten the bundle a lot. Remove a lot of stuff from the bundle, about 8000 lines of code. All features still works though with some slight changes.
 
+## 1.2.3 (2016-03-07)
+
+* [factory] fix regression. some actions are not added to gateways like an obtain credit card action.
+
 ## 1.2.2 (2016-02-16)
 
 * [compiler] backport `payum.gateway_factory_builder` tag from 2.x.
