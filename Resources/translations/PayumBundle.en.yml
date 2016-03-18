@@ -4,3 +4,5 @@ form:
         expire_at: Expiration Date
         number: Card Number
         security_code: Security (CVV) Code
+    choice:
+        paypal_express_checkout: Paypal Express Checkout

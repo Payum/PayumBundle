@@ -146,8 +146,10 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $calls = $builder->getMethodCalls();
 
-        $this->assertEquals('setGatewayConfigStorage', $calls[7][0]);
-        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $calls[7][1][0]);
+        $this->assertEquals('addCoreGatewayFactoryConfig', $calls[7][0]);
+
+        $this->assertEquals('setGatewayConfigStorage', $calls[8][0]);
+        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $calls[8][1][0]);
     }
 
     /**

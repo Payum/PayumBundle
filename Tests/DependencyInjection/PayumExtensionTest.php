@@ -200,13 +200,17 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $builder = $container->getDefinition('payum.builder');
         $calls = $builder->getMethodCalls();
-        $this->assertEquals('addGateway', $calls[7][0]);
-        $this->assertEquals('a_gateway', $calls[7][1][0]);
-        $this->assertEquals(['foo' => 'fooVal'], $calls[7][1][1]);
+        $this->assertEquals('addCoreGatewayFactoryConfig', $calls[7][0]);
 
+        $builder = $container->getDefinition('payum.builder');
+        $calls = $builder->getMethodCalls();
         $this->assertEquals('addGateway', $calls[8][0]);
-        $this->assertEquals('another_gateway', $calls[8][1][0]);
-        $this->assertEquals(['bar' => 'barVal'], $calls[8][1][1]);
+        $this->assertEquals('a_gateway', $calls[8][1][0]);
+        $this->assertEquals(['foo' => 'fooVal'], $calls[8][1][1]);
+
+        $this->assertEquals('addGateway', $calls[9][0]);
+        $this->assertEquals('another_gateway', $calls[9][1][0]);
+        $this->assertEquals(['bar' => 'barVal'], $calls[9][1][1]);
     }
 }
 
