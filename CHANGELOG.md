@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1 (2016-03-18)
+
+* fix gateway factories choice type.
+* fix missing PayumSymfonyBridge twig alias
+* fix obtain credit card action and get http request actions.
+* update minimum required payum core version.
+
 ## 2.0.0 (2016-03-01)
 
 * Lighten the bundle a lot. Remove a lot of stuff from the bundle, about 8000 lines of code. All features still works though with some slight changes.
