@@ -38,7 +38,7 @@
     ],
     "require": {
         "php": "^5.5.0|^7.0",
-        "payum/core": "^1.2",
+        "payum/core": "^1.2.6",
         "symfony/framework-bundle": "~2.8|~3.0",
         "symfony/twig-bundle": "~2.8|~3.0",
         "symfony/form": "~2.8|~3.0",
@@ -54,9 +54,9 @@
         "symfony/phpunit-bridge": "~2.8|~3.0",
         "sonata-project/admin-bundle": "~2.4@dev",
         "doctrine/orm": "~2.5",
-        "payum/payum": "^1.2@dev",
-        "payum/omnipay-bridge": "~1.0@dev",
-        "payum/jms-payment-bridge": "~1.0@dev",
+        "payum/payum": "^1.2.6",
+        "payum/omnipay-bridge": "^1",
+        "payum/jms-payment-bridge": "^1",
 
         "omnipay/dummy": "~2.0",
         "omnipay/stripe": "~2.0",
