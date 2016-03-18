@@ -119,8 +119,8 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             'payum.iso4217' => new Reference('payum.iso4217'),
             'twig.env' => new Reference('twig'),
 
-            'payum.action.get_http_request' => new Reference('@payum.action.get_http_request'),
-            'payum.action.obtain_credit_card' => new Reference('@payum.action.obtain_credit_card_builder'),
+            'payum.action.get_http_request' => new Reference('payum.action.get_http_request'),
+            'payum.action.obtain_credit_card' => new Reference('payum.action.obtain_credit_card_builder'),
         ];
         
         $config = array_replace_recursive($defaultConfig, $config);
