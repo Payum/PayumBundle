@@ -49,18 +49,27 @@ class DebugGatewayFactoryCommand extends ContainerAwareCommand
 
             foreach ($factory->createConfig() as $name => $value) {
                 if (is_object($value)) {
-                    $value = 'Object('.get_class($value).')';
+                    $table->addRow([$name, 'Object(' . get_class($value) . ')']);
+                } elseif ('payum.required_options' == $name && is_array($value)) {
+                    $table->addRow([$name, implode(', ', $value)]);
+                } elseif ('payum.default_options' == $name && is_array($value)) {
+                    $table->addRow([$name, implode(', ', array_keys($value))]);
+                } elseif (is_array($value) && empty($value)) {
+                    $table->addRow([$name, '[]']);
                 } elseif (is_array($value)) {
+
+
                     $table->addRow([$name, '']);
 
                     foreach ($value as $subName => $subValue) {
-                        $table->addRow(["\t".$subName, $subValue]);
+                        $table->addRow(['   '.$subName, wordwrap($subValue, 70, "\n", true)]);
                     }
 
                     continue;
+                } else {
+                    $table->addRow([$name, $value]);
                 }
 
-                $table->addRow([$name, $value]);
             }
 
             $table->render();
