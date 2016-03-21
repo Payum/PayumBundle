@@ -29,10 +29,13 @@ payum:
             password: 'EDIT ME'
             partner:  'EDIT ME'
             vendor:   'EDIT ME'
+            tender:  C
             sandbox: true
 ```
 
 _**Attention**: You have to changed `your_gateway_name` to something more descriptive and domain related, for example `post_a_job_with_paypal`._
+
+_**Note**: `tender`: `C` for Credit card, `P` for PayPal, `A` for Automated Clearinghouse (ACH). [Read more](https://developer.paypal.com/docs/classic/payflow/recurring-billing/#required-parameters-for-the-modify-and-reactivate-actions)_
 
 ## Prepare payment
 
