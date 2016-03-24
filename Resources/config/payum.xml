@@ -38,9 +38,6 @@
             <call method="setCoreGatewayFactory">
                 <argument type="service" id="payum.core_gateway_factory_builder" />
             </call>
-            <call method="setHttpClient">
-                <argument type="service" id="payum.http_client" />
-            </call>
         </service>
 
         <service id="payum" class="Payum\Core\Payum">
@@ -56,16 +53,6 @@
                 <argument type="service" id="service_container" />
             </call>
         </service>
-
-        <service id="payum.http_client" class="Payum\Core\HttpClientInterface">
-            <factory class="Payum\Core\Bridge\Guzzle\HttpClientFactory" method="create" />
-        </service>
-
-        <service id="payum.guzzle_client" class="GuzzleHttp\ClientInterface">
-            <factory class="Payum\Core\Bridge\Guzzle\HttpClientFactory" method="createGuzzle" />
-        </service>
-
-        <service id="payum.iso4217" class="Payum\ISO4217\ISO4217" />
 
         <service id="payum.converter.reply_to_http_response" class="Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter" />
 
