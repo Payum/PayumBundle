@@ -35,13 +35,9 @@ So now after you registered the bundle let's import routing.
 
 payum_capture:
     resource: "@PayumBundle/Resources/config/routing/capture.xml"
-    
-payum_authorize:
-    resource: "@PayumBundle/Resources/config/routing/authorize.xml"
-    
-payum_notify:
-    resource: "@PayumBundle/Resources/config/routing/notify.xml"
 ```
+
+_**Note**: There are other useful routes like authorize,notify,sync,payout. You can import them like capture one._
 
 ## Configure
 
