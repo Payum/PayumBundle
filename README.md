@@ -38,7 +38,7 @@ payum:
                 
     gateways:
         offline:
-            offline: ~
+            factory: offline
 ```
 
 ### Purchase
