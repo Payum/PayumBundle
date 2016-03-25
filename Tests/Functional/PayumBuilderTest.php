@@ -59,6 +59,7 @@ class PayumBuilderTest extends WebTestCase
             'notify' => 'payum_notify_do',
             'authorize' => 'payum_authorize_do',
             'refund' => 'payum_refund_do',
+            'payout' => 'payum_payout_do',
         ], 'genericTokenFactoryPaths', $builder);
     }
 }
