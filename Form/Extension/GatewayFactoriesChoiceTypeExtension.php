@@ -47,6 +47,6 @@ class GatewayFactoriesChoiceTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return [GatewayFactoriesChoiceType::class];
+        return GatewayFactoriesChoiceType::class;
     }
 }
