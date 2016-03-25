@@ -32,7 +32,7 @@ class CreateCaptureTokenCommandTest extends WebTestCase
             'gateway-name' => 'fooGateway',
             '--model-class' => $modelClass,
             '--model-id' => $modelId,
-            '--after-url' => 'http://google.com'
+            '--after-url' => 'http://google.com/'
         ));
 
         $this->assertContains('Hash: ', $output);
