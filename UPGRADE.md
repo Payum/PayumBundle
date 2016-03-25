@@ -2,6 +2,12 @@
 
 Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
+## 2.0 to 2.1
+
+* `payum.http_client` service was removed. Use gateway's config to overwrite it.
+* `payum.iso4217` service was removed. Use gateway's config to overwrite it.
+* `payum.guzzle_client` service was removed. Use gateway's config to overwrite it.
+
 ## 1.x to 2.0
 
 * The way gateways are configured was changed. The `gateways_v2` configuration option was renamed to `gateways`. The old `gateways` option was removed. Examples https://gist.github.com/makasim/f1aef97c8d1f2994456a

@@ -115,8 +115,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 'PayumSymfonyBridge' => dirname((new \ReflectionClass(ReplyToSymfonyResponseConverter::class))->getFileName()).'/Resources/views',
             ],
 
-            'payum.http_client' => new Reference('payum.http_client'),
-            'payum.iso4217' => new Reference('payum.iso4217'),
             'twig.env' => new Reference('twig'),
 
             'payum.action.get_http_request' => new Reference('payum.action.get_http_request'),
