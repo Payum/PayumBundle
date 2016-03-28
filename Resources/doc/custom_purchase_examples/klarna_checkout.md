@@ -62,7 +62,7 @@ class PaymentController extends Controller
         $captureToken = $this->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
-            'acme_payment_details_view'
+            'acme_payment_done'
         );
 
         $details['merchant'] = array(
