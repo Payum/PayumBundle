@@ -10,6 +10,7 @@
         <service id="payum.extension.log_executed_actions" class="Payum\Core\Bridge\Psr\Log\LogExecutedActionsExtension">
             <argument type="service" id="logger" on-invalid="ignore" />
 
+            <tag name="monolog.logger" channel="payum"/>
             <tag name="payum.extension" all="true" alias="log_executed_actions" />
         </service>
     </services>
