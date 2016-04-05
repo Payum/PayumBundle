@@ -75,6 +75,7 @@
         <service id="payum.extension.logger" class="Payum\Core\Bridge\Psr\Log\LoggerExtension">
             <argument type="service" id="logger" on-invalid="ignore" />
 
+            <tag name="monolog.logger" channel="payum"/>
             <tag name="payum.extension" all="true" alias="psr_logger" />
         </service>
 
