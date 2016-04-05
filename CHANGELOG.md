@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+* Remove Service `payum.http_client`, `payum.guzzle_client` and `payum.iso4217` 722121f6b7718015a5ba79c28e74901cee9944b0
+
 ## 2.0.1 (2016-03-18)
 
 * fix gateway factories choice type.
