@@ -5,6 +5,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\FormFactoryInterface;
+use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
 
 class GatewayConfigAdmin extends Admin
 {
@@ -52,7 +53,7 @@ class GatewayConfigAdmin extends Admin
      */
     public function getFormBuilder()
     {
-        $formBuilder = $this->formFactory->createBuilder('payum_gateway_config', $this->getSubject(), array(
+        $formBuilder = $this->formFactory->createBuilder(GatewayConfigType::class, $this->getSubject(), array(
             'data_class' => get_class($this->getSubject()),
         ));
 
