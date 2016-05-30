@@ -1,7 +1,6 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 
-use Payum\Core\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -23,6 +22,12 @@ class BuildConfigsPass implements CompilerPassInterface
         );
 
         $builder = $container->getDefinition('payum.builder');
+        if ($container->hasDefinition('twig')) {
+            $config = ['twig.env' => '@twig'];
+
+            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
+        }
+
         if (false == empty($configs[0])) {
             $builder->addMethodCall('addCoreGatewayFactoryConfig', [$configs[0]]);
         }
