@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## 2.1.0 (2016-05-31)
+
+* Decouple payum bundle from twig bundle.
+* Fix error in SonataAdmin configuration logic
+* Assign channel to loggers
+* [klarna][doc] fix klarna doc
+* Add support of Payouts
+* Update GatewayFactoriesChoiceTypeExtension.php
+* Require 1.3 core
+* Remove dependency on guzzle
+* Update paypal_pro_checkout.md
 
 * Remove Service `payum.http_client`, `payum.guzzle_client` and `payum.iso4217` 722121f6b7718015a5ba79c28e74901cee9944b0
 
