@@ -32,9 +32,10 @@ payum:
 
     security:
         token_storage:
-            Payum\Core\Model\Token:
-                storage_dir: %kernel.root_dir%/Resources/gateways
-                id_property: hash
+            filesystem:
+                Payum\Core\Model\Token:
+                    storage_dir: %kernel.root_dir%/Resources/gateways
+                    id_property: hash
                 
     gateways:
         offline:
