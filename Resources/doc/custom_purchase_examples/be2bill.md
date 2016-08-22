@@ -49,7 +49,7 @@ class PaymentController extends Controller
 {
     public function prepareBe2BillPaymentAction(Request $request)
     {
-        $paymentName = 'your_gateway_name';
+        $gatewayName = 'your_gateway_name';
 
         $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
 
