@@ -13,7 +13,7 @@ Provide nice configuration layer, secured capture controller, storages integrati
 ## Resources
 
 * [Documentation](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/index.md)
-* [Sandbox](http://sandbox.payum.forma-dev.com)
+* [Sandbox](https://github.com/makasim/PayumBundleSandbox)
 * [Questions](http://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumBundle/issues)
 * [Twitter](https://twitter.com/payumphp)
