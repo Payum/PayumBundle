@@ -9,6 +9,7 @@
         <parameter key="payum.notify_path">payum_notify_do</parameter>
         <parameter key="payum.authorize_path">payum_authorize_do</parameter>
         <parameter key="payum.refund_path">payum_refund_do</parameter>
+        <parameter key="payum.cancel_path">payum_cancel_do</parameter>
         <parameter key="payum.payout_path">payum_payout_do</parameter>
     </parameters>
 
@@ -34,6 +35,7 @@
                     <argument key="notify">%payum.notify_path%</argument>
                     <argument key="authorize">%payum.authorize_path%</argument>
                     <argument key="refund">%payum.refund_path%</argument>
+                    <argument key="cancel">%payum.cancel_path%</argument>
                     <argument key="payout">%payum.payout_path%</argument>
                 </argument>
             </call>
