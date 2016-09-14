@@ -1,16 +1,16 @@
 parameters:
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    locale:            'en'
+    secret:            'ThisTokenIsNotSoSecretChangeIt'
         
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
     test: ~
     session:
-        storage_id: session.storage.mock_file
-    secret:          %secret%
-    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
-    default_locale:  %locale%
+        storage_id: 'session.storage.mock_file'
+    secret:          '%secret%'
+    router:          { resource: '%kernel.root_dir%/config/routing.yml' }
+    default_locale:  '%locale%'
     templating:
         engines:                                          [ 'twig']
     form:                                                 true
@@ -21,23 +21,23 @@ payum:
     storages:
         Payum\Core\Model\ArrayObject:
             filesystem:
-                storage_dir: %kernel.cache_dir%
-                id_property: id
+                storage_dir: '%kernel.cache_dir%'
+                id_property: 'id'
 
     security:
         token_storage:
             Payum\Core\Model\Token:
                 filesystem:
-                    id_property: hash
-                    storage_dir: %kernel.cache_dir%
+                    id_property: 'hash'
+                    storage_dir: '%kernel.cache_dir%'
 
     gateways:
         fooGateway:
-            factory: offline
+            factory: 'offline'
 
         barGateway:
-            factory: paypal_express_checkout
-            username: aUsername
-            password: aPassword
-            signature: aSignature
+            factory: 'paypal_express_checkout'
+            username: 'aUsername'
+            password: 'aPassword'
+            signature: 'aSignature'
             sandbox: true
