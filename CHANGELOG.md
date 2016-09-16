@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.1 (2016-09-16)
+
+* Require payum/core 1.3.7 as minimum version
+* Add http client to composer require
+* import all  routes in func tests
+* Add cancel path to generic token factory paths.
+* Add cancel controller
+* Fix typos.
+* Fix the link to the sandbox.
+
 ## 2.1.0 (2016-05-31)
 
 * Decouple payum bundle from twig bundle.
