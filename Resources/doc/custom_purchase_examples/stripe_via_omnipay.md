@@ -6,7 +6,7 @@ Steps:
 * [Configure gateway](#configure-context)
 * [Prepare payment](#prepare-payment)
 
-_**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration same as described there._
+_**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration is the same as described there._
 
 ## Download libraries
 
