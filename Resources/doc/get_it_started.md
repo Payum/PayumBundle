@@ -174,7 +174,7 @@ class PaymentController extends Controller
         
         // Once you have token you can get the model from the storage directly. 
         //$identity = $token->getDetails();
-        //$payment = $payum->getStorage($identity->getClass())->find($identity);
+        //$payment = $this->get('payum')->getStorage($identity->getClass())->find($identity);
         
         // or Payum can fetch the model for you while executing a request (Preferred).
         $gateway->execute($status = new GetHumanStatus($token));
