@@ -106,6 +106,8 @@
         <!-- deprecated since 1.2, will be removed in 2.0. registered by payum builder -->
         <service id="payum.extension.token_factory" class="Payum\Core\Extension\GenericTokenFactoryExtension">
             <argument type="service" id="payum.security.token_factory" />
+
+            <tag name="payum.extension" all="true" />
         </service>
 
         <!-- Actions -->
