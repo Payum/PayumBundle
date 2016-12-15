@@ -143,7 +143,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             if (false !== strpos($storageId, '.storage.')) {
                 $storageExtensionId = str_replace('.storage.', '.extension.storage.', $storageId);
             } else {
-                throw new LogicException(sprintf('In order to add storage to extension the storage %id has to contains ".storage." inside.', $storageId));
+                throw new LogicException(sprintf('In order to add storage to extension the storage "%s" has to contains ".storage." inside.', $storageId));
             }
 
             $storageExtension = new DefinitionDecorator('payum.extension.storage.prototype');
