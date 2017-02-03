@@ -12,7 +12,7 @@ Provide nice configuration layer, secured capture controller, storages integrati
 
 ## Resources
 
-* [Documentation](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/index.md)
+* [Documentation](https://github.com/Payum/Payum/blob/master/docs/index.md#symfony-payum-bundle)
 * [Sandbox](https://github.com/makasim/PayumBundleSandbox)
 * [Questions](http://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumBundle/issues)
