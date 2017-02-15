@@ -1,0 +1,28 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <span class="sf-toolbar-status">Payum</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            {# ... #}
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+    <span class="label">
+        <strong>Payum</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Gateway execution graph</h2>
+
+    <pre>{{ collector.dump()|raw }}</pre>
+{% endblock %}

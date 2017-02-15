@@ -13,5 +13,10 @@
             <tag name="monolog.logger" channel="payum"/>
             <tag name="payum.extension" all="true" alias="log_executed_actions" />
         </service>
+
+        <service id="payum.profiler.payum_collector" class="Payum\Bundle\PayumBundle\Profiler\PayumCollector">
+            <tag name="payum.extension" all="true" alias="profile_collector" prepend="true" />
+            <tag name="data_collector" template="PayumBundle:Profiler:payum.html.twig" id="payum" />
+        </service>
     </services>
 </container>
