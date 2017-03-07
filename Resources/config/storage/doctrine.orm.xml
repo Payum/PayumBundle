@@ -15,11 +15,9 @@
         </service>
 
         <service 
-            id="payum.entity_manager" 
-            class="Doctrine\ORM\EntityManager"
+            id="payum.entity_manager"
+            alias="doctrine.orm.default_entity_manager"
             public="false"
-        >
-            <factory service="doctrine" method="getManager" />
-        </service>
+        />
     </services>
 </container>
