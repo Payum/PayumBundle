@@ -6,6 +6,7 @@ use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Gateway;
+use Payum\Core\Storage\EncryptingGatewayConfigurationStorage;
 use Sonata\AdminBundle\Admin\Admin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -50,7 +51,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $this->loadGateways($config['gateways'], $container);
 
         if (isset($config['dynamic_gateways'])) {
-            $this->loadDynamicGateways($config['dynamic_gateways'], $container);
+            $this->loadDynamicGateways($config['dynamic_gateways'], $config['storage_encrypting'], $container);
         };
     }
 
@@ -186,9 +187,10 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
     /**
      * @param array $dynamicGatewaysConfig
+     * @param array $storageEncryptingConfig
      * @param ContainerBuilder $container
      */
-    protected function loadDynamicGateways(array $dynamicGatewaysConfig, ContainerBuilder $container)
+    protected function loadDynamicGateways(array $dynamicGatewaysConfig, array $storageEncryptingConfig, ContainerBuilder $container)
     {
         $configClass = null;
         $configStorage = null;
@@ -202,6 +204,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             );
 
             $container->setDefinition('payum.dynamic_gateways.config_storage', new DefinitionDecorator($configStorage));
+            $this->decorateStorageWithEncryptingIfConfigured($storageEncryptingConfig, 'payum.dynamic_gateways.config_storage', $container);
 
             $payumBuilder = $container->getDefinition('payum.builder');
             $payumBuilder->addMethodCall('setGatewayConfigStorage', [new Reference('payum.dynamic_gateways.config_storage')]);
@@ -272,6 +275,31 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             if (isset($this->storagesFactories[$name])) {
                 return $name;
             }
+        }
+    }
+
+    /**
+     * @param array $config
+     * @param string $id
+     * @param ContainerBuilder $container
+     */
+    protected function decorateStorageWithEncryptingIfConfigured(array $config, $id, ContainerBuilder $container)
+    {
+        if ($config['enabled']) {
+            $container->setParameter('payum.storage.encrypting_algorithm', $config['algorithm']);
+            $container->setParameter('payum.storage.encrypting_initialization_vector', $config['initialization_vector']);
+
+            $decoratingId = $id . '_encrypted';
+            $container->register($decoratingId, EncryptingGatewayConfigurationStorage::class)
+                ->setDecoratedService($id)
+                ->setArguments([
+                    new Reference($decoratingId . '.inner'),
+                    $config['algorithm'],
+                    $config['secret'],
+                    $config['initialization_vector']
+                ])
+                ->setPublic(false)
+            ;
         }
     }
 }
