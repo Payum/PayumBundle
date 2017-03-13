@@ -66,6 +66,10 @@
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException" priority="128" />
         </service>
 
+        <service id="payum.listener.cancel_gateway_configuration_update" class="Payum\Bundle\PayumBundle\EventListener\CancelGatewayConfigurationUpdateListener">
+            <tag name="doctrine.event_listener" event="preUpdate" />
+        </service>
+
         <service id="payum.security.token_storage" abstract="true" />
 
         <!-- Extensions -->
