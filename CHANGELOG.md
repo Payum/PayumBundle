@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.2 (2017-03-22)
+
+* Convert Payum ORM entity manager to be an alias of the core Doctrine one
+* [Profiler] Add basic profiler of payum's gateway execution
+* Fix adding storage to extension exception message
+* Fix docs
+
 ## 2.1.1 (2016-09-16)
 
 * Require payum/core 1.3.7 as minimum version
