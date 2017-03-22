@@ -79,6 +79,103 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldAllowAddingGatewayConfigurationEncypting()
+    {
+        $configuration = new MainConfiguration($this->storageFactories);
+
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration($configuration, array(
+            array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'foo_storage' => array(
+                                'foo_opt' => 'foo'
+                            )
+                        )
+                    )
+                ),
+                'storage_encrypting' => array(
+                    'enabled' => true,
+                    'algorithm' => 'AES-128-CBC',
+                    'secret' => 'secret',
+                    'initialization_vector' => 'iv'
+                ),
+            )
+        ));
+
+        $this->assertEquals(
+            array('enabled' => true, 'algorithm' => 'AES-128-CBC', 'secret' => 'secret', 'initialization_vector' => 'iv'),
+            $config['storage_encrypting']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHaveStorageEncryptingDisabledIfWasNotConfigured()
+    {
+        $configuration = new MainConfiguration($this->storageFactories);
+
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration($configuration, array(
+            array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'foo_storage' => array(
+                                'foo_opt' => 'foo'
+                            )
+                        )
+                    )
+                ),
+            )
+        ));
+
+        $this->assertFalse(
+            $config['storage_encrypting']['enabled']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldHaveStorageEncryptingIfConfiguredIsEnabledByDefault()
+    {
+        $configuration = new MainConfiguration($this->storageFactories);
+
+        $processor = new Processor();
+
+        $config = $processor->processConfiguration($configuration, array(
+            array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'foo_storage' => array(
+                                'foo_opt' => 'foo'
+                            )
+                        )
+                    )
+                ),
+                'storage_encrypting' => array(
+                    'algorithm' => 'AES-128-CBC',
+                    'secret' => 'secret',
+                    'initialization_vector' => 'iv'
+                ),
+            )
+        ));
+
+        $this->assertEquals(
+            array('enabled' => true, 'algorithm' => 'AES-128-CBC', 'secret' => 'secret', 'initialization_vector' => 'iv'),
+            $config['storage_encrypting']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function shouldAddStoragesToAllGatewayByDefault()
     {
         $configuration = new MainConfiguration($this->storageFactories);

@@ -51,6 +51,7 @@ class MainConfiguration implements ConfigurationInterface
         ;
         
         $this->addStoragesSection($rootNode);
+        $this->addStorageEncryptingSection($rootNode);
 
         return $tb;
     }
@@ -247,5 +248,23 @@ class MainConfiguration implements ConfigurationInterface
                 $storageNode->children()->arrayNode($factory->getName())
             );
         }
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootPrototypeNode
+     */
+    protected function addStorageEncryptingSection(ArrayNodeDefinition $rootPrototypeNode)
+    {
+        $rootPrototypeNode->children()
+            ->arrayNode('storage_encrypting')
+            ->canBeEnabled()
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->booleanNode('enabled')->defaultFalse()->end()
+                ->scalarNode('algorithm')->end()
+                ->scalarNode('secret')->end()
+                ->scalarNode('initialization_vector')->end()
+            ->end()
+        ;
     }
 }
