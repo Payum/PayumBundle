@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0 (2017-03-28)
+
+* [security] Add support of Gateway encryption.
+
 ## 2.1.2 (2017-03-22)
 
 * Convert Payum ORM entity manager to be an alias of the core Doctrine one
