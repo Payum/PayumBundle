@@ -1,12 +1,16 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
+use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
+use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
 use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Gateway;
-use Sonata\AdminBundle\Admin\Admin;
+use Payum\Core\Registry\DynamicRegistry;
+use Payum\Core\Storage\CryptoStorageDecorator;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -202,37 +206,57 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             );
 
             $container->setDefinition('payum.dynamic_gateways.config_storage', new DefinitionDecorator($configStorage));
+        }
 
-            $payumBuilder = $container->getDefinition('payum.builder');
-            $payumBuilder->addMethodCall('setGatewayConfigStorage', [new Reference('payum.dynamic_gateways.config_storage')]);
+
+        if (isset($dynamicGatewaysConfig['encryption']['defuse_secret_key'])) {
+            $container->register('payum.dynamic_gateways.cypher', DefuseCypher::class)
+                ->addArgument($dynamicGatewaysConfig['encryption']['defuse_secret_key'])
+            ;
+            $container->register('payum.dynamic_gateways.encrypted_config_storage', CryptoStorageDecorator::class)
+                ->setPublic(false)
+                ->setDecoratedService('payum.dynamic_gateways.config_storage')
+                ->addArgument(new Reference('payum.dynamic_gateways.encrypted_config_storage.inner'))
+                ->addArgument(new Reference('payum.dynamic_gateways.cypher'))
+            ;
+
+
         }
 
         //deprecated
-        $registry =  new Definition('Payum\Core\Registry\DynamicRegistry', array(
+        $registry =  new Definition(DynamicRegistry::class, array(
             new Reference('payum.dynamic_gateways.config_storage'),
             new Reference('payum.static_registry')
         ));
         $container->setDefinition('payum.dynamic_registry', $registry);
 
         if ($dynamicGatewaysConfig['sonata_admin']) {
-            if (false == class_exists(Admin::class)) {
+            if (false == class_exists(AbstractAdmin::class)) {
                 throw new LogicException('Admin class does not exists. Did you install SonataAdmin bundle?');
             }
 
-            $gatewayConfigAdmin =  new Definition('Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin', array(
+            $gatewayConfigAdmin =  new Definition(GatewayConfigAdmin::class, [
                 null,
                 $configClass,
                 null
-            ));
-            $gatewayConfigAdmin->addMethodCall('setFormFactory', array(new Reference('form.factory')));
-            $gatewayConfigAdmin->addTag('sonata.admin', array(
+            ]);
+            $gatewayConfigAdmin->addMethodCall('setFormFactory', [new Reference('form.factory')]);
+
+            if ($container->hasDefinition('payum.dynamic_gateways.cypher')) {
+                $gatewayConfigAdmin->addMethodCall('setCypher', [new Reference('payum.dynamic_gateways.cypher')]);
+            }
+
+            $gatewayConfigAdmin->addTag('sonata.admin', [
                 'manager_type' => 'orm',
                 'group' => "Gateways",
                 'label' =>  "Configs",
-            ));
+            ]);
 
             $container->setDefinition('payum.dynamic_gateways.gateway_config_admin', $gatewayConfigAdmin);
         }
+
+        $payumBuilder = $container->getDefinition('payum.builder');
+        $payumBuilder->addMethodCall('setGatewayConfigStorage', [new Reference('payum.dynamic_gateways.config_storage')]);
     }
 
     /**

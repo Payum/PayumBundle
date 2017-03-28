@@ -1,13 +1,15 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Sonata;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Payum\Core\Security\CryptedInterface;
+use Payum\Core\Security\CypherInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
 
-class GatewayConfigAdmin extends Admin
+class GatewayConfigAdmin extends AbstractAdmin
 {
     /**
      * @var FormFactoryInterface
@@ -15,11 +17,24 @@ class GatewayConfigAdmin extends Admin
     protected $formFactory;
 
     /**
+     * @var CypherInterface|null
+     */
+    protected $cypher;
+
+    /**
      * @param FormFactoryInterface $formFactory
      */
     public function setFormFactory(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
+    }
+
+    /**
+     * @param CypherInterface $cypher
+     */
+    public function setCypher(CypherInterface $cypher)
+    {
+        $this->cypher = $cypher;
     }
 
     /**
@@ -46,6 +61,44 @@ class GatewayConfigAdmin extends Admin
                 )
             ))
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preUpdate($object)
+    {
+        parent::preUpdate($object);
+
+        if ($this->cypher && $object instanceof CryptedInterface) {
+            $object->encrypt($this->cypher);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prePersist($object)
+    {
+        parent::prePersist($object);
+
+        if ($this->cypher && $object instanceof CryptedInterface) {
+            $object->encrypt($this->cypher);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObject($id)
+    {
+        $object = parent::getObject($id);
+
+        if ($this->cypher && $object instanceof CryptedInterface) {
+            $object->decrypt($this->cypher);
+        }
+
+        return $object;
     }
 
     /**

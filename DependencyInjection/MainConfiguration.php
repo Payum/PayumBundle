@@ -242,6 +242,12 @@ class MainConfiguration implements ConfigurationInterface
             ->end()
         ;
 
+        $dynamicGatewaysNode->children()
+            ->arrayNode('encryption')
+                ->children()
+                    ->scalarNode('defuse_secret_key')->cannotBeEmpty()->end()
+        ;
+
         foreach ($this->storageFactories as $factory) {
             $factory->addConfiguration(
                 $storageNode->children()->arrayNode($factory->getName())
