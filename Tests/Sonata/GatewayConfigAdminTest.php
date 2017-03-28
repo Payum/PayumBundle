@@ -2,6 +2,8 @@
 namespace Payum\Bundle\PayumBundle\Sonata\Tests;
 
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class GatewayConfigAdminTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,9 +12,9 @@ class GatewayConfigAdminTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldBeSubClassSonataAdmin()
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin');
+        $rc = new \ReflectionClass(GatewayConfigAdmin::class);
 
-        $this->assertTrue($rc->isSubclassOf('Sonata\AdminBundle\Admin\Admin'));
+        $this->assertTrue($rc->isSubclassOf(AbstractAdmin::class));
     }
 
     /**
@@ -30,7 +32,7 @@ class GatewayConfigAdminTest extends \PHPUnit_Framework_TestCase
     {
         $admin = new GatewayConfigAdmin('code', 'class', 'baseControllerName');
 
-        $formFactoryMock = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+        $formFactoryMock = $this->getMock(FormFactoryInterface::class);
 
         $admin->setFormFactory($formFactoryMock);
 

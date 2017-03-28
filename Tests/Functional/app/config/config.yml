@@ -16,6 +16,7 @@ framework:
     form:                                                 true
     csrf_protection:                                      true
     validation:                                           { enable_annotations: true }
+    assets: false
 
 payum:
     storages:

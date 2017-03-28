@@ -3,7 +3,9 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
+use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
 use Payum\Core\Model\GatewayConfigInterface;
+use Payum\Core\Storage\CryptoStorageDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -155,6 +157,62 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldWrapGatewayConfigStorageByEncryptionDecoratorWhenDefuseEncryptionIsEnabled()
+    {
+        $config = array(
+            'dynamic_gateways' => array(
+                'encryption' => [
+                    'defuse_secret_key' =>  'aSecretKey',
+                ],
+                'config_storage' => array(
+                    'Payum\Core\Model\GatewayConfig' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'security' => array(
+                'token_storage' => array(
+                    'Payum\Core\Model\Token' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'gateways' => array(),
+        );
+
+        $configs = array($config);
+
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.debug', false);
+
+        $extension = new PayumExtension;
+        $extension->addStorageFactory(new FilesystemStorageFactory);
+
+        $extension->load($configs, $container);
+
+        $this->assertTrue($container->hasDefinition('payum.dynamic_gateways.cypher'));
+        $cypher = $container->getDefinition('payum.dynamic_gateways.cypher');
+        $this->assertSame(DefuseCypher::class, $cypher->getClass());
+        $this->assertSame('aSecretKey', $cypher->getArgument(0));
+
+        $this->assertTrue($container->hasDefinition('payum.dynamic_gateways.encrypted_config_storage'));
+
+        $storage = $container->getDefinition('payum.dynamic_gateways.encrypted_config_storage');
+        $this->assertSame(CryptoStorageDecorator::class, $storage->getClass());
+        $this->assertSame('payum.dynamic_gateways.encrypted_config_storage.inner', (string) $storage->getArgument(0));
+        $this->assertSame('payum.dynamic_gateways.cypher', (string) $storage->getArgument(1));
+        $this->assertSame('payum.dynamic_gateways.config_storage', $storage->getDecoratedService()[0]);
+    }
+
+    /**
+     * @test
+     */
     public function shouldConfigureSonataAdminClassForGatewayConfigModelSetInStorageSection()
     {
         $config = array(
@@ -202,6 +260,62 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
             array(array('manager_type' => 'orm', 'group' => 'Gateways', 'label' => 'Configs')),
             $configAdmin->getTag('sonata.admin')
         );
+
+        $this->assertCount(1, $configAdmin->getMethodCalls());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldInjectCypherToForGatewayConfigAdmin()
+    {
+        $config = array(
+            'dynamic_gateways' => array(
+                'sonata_admin' => true,
+                'encryption' => [
+                    'defuse_secret_key' =>  'aSecretKey',
+                ],
+                'config_storage' => array(
+                    'Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection\TestGatewayConfig' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'security' => array(
+                'token_storage' => array(
+                    'Payum\Core\Model\Token' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'gateways' => array(),
+        );
+
+        $configs = array($config);
+
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.debug', false);
+
+        $extension = new PayumExtension;
+        $extension->addStorageFactory(new FilesystemStorageFactory);
+
+        $extension->load($configs, $containerBuilder);
+
+        $this->assertTrue($containerBuilder->hasDefinition('payum.dynamic_gateways.gateway_config_admin'));
+        $configAdmin = $containerBuilder->getDefinition('payum.dynamic_gateways.gateway_config_admin');
+
+        $calls = $configAdmin->getMethodCalls();
+
+        $this->assertCount(2, $calls);
+
+        $this->assertSame('setCypher', $calls[1][0]);
+        $this->assertSame('payum.dynamic_gateways.cypher', (string) $calls[1][1][0]);
     }
 
     /**
