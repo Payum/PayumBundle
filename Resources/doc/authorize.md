@@ -5,7 +5,7 @@ It is not always the case, sometimes you want to just authorize it and capture a
    
 ## Prepare payment
 
-We have to caThe only difference from capture one example 
+We have to cathe only difference from capture one example 
 
 ```php
 <?php
