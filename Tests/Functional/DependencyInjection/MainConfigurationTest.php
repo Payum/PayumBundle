@@ -115,6 +115,43 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function shouldPassConfigurationProcessingWithDynamicGatewaysAndEncryption()
+    {
+        $configuration = new MainConfiguration($this->storageFactories);
+
+        $processor = new Processor();
+
+        $processor->processConfiguration($configuration, array(
+            'payum' => array(
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'filesystem' => array(
+                                'storage_dir' => sys_get_temp_dir(),
+                                'id_property' => 'hash'
+                            )
+                        )
+                    )
+                ),
+                'dynamic_gateways' => array(
+                    'encryption' => [
+                        'defuse_secret_key' =>  'aSecretKey',
+                    ],
+                    'config_storage' => array(
+                        'Payum\Core\Model\GatewayConfig' => array(
+                            'doctrine' => array(
+                                'driver' => 'aDriver',
+                            )
+                        ),
+                    ),
+                )
+            )
+        ));
+    }
+
+    /**
+     * @test
+     */
     public function shouldPassConfigurationProcessingWithDynamicGatewaysPlusSonataAdmin()
     {
         $configuration = new MainConfiguration($this->storageFactories);
