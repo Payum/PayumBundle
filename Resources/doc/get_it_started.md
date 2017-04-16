@@ -1,4 +1,6 @@
 # Get it started
+## Dependancy
+Payum Bundle is also dependen on [stof/DoctrineExtenion](https://github.com/stof/StofDoctrineExtensionsBundle) bundle. Please also include it.
 
 ## Install
 
