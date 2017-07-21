@@ -8,7 +8,7 @@ The bundle  integrate [payum](https://github.com/Payum/Payum) into [symfony](htt
 It already supports [+35 gateways](https://github.com/Payum/Payum/blob/master/docs/supported-gateways.md).
 Provide nice configuration layer, secured capture controller, storages integration and lots of more features.
 
-[Sylius e-commerce platform](http://sylius.com) base its payment solutions on top of the bundle.
+[Sylius e-commerce platform](http://sylius.org) base its payment solutions on top of the bundle.
 
 ## Resources
 
