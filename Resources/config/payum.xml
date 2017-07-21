@@ -85,10 +85,10 @@
 
         <service id="payum.action.get_http_request" class="Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction">
             <call method="setHttpRequest">
-                <argument type="service" id="request" on-invalid="null" strict="false" />
+                <argument type="service" id="request" on-invalid="null" />
             </call>
             <call method="setHttpRequestStack">
-                <argument type="service" id="request_stack" on-invalid="null" strict="false" />
+                <argument type="service" id="request_stack" on-invalid="null" />
             </call>
         </service>
 
