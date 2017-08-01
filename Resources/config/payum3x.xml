@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <!-- Actions -->
+
+        <service id="payum.action.get_http_request" class="Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction">
+            <call method="setHttpRequestStack">
+                <argument type="service" id="request_stack" />
+            </call>
+        </service>
+    </services>
+</container>

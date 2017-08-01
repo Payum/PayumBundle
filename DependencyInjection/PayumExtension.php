@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 
@@ -39,6 +40,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         // load services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('payum.xml');
+        $loader->load(Kernel::MAJOR_VERSION === 3 ? 'payum3x.xml' : 'payum2x.xml');
         $loader->load('form.xml');
 
         if ($container->getParameter('kernel.debug')) {
