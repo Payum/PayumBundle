@@ -204,7 +204,7 @@ class BuildConfigsPassTest extends \PHPUnit_Framework_TestCase
 
         $container = new ContainerBuilder();
         $container->setDefinition('payum.builder', $builder);
-        $container->setDefinition('aService', $service);
+        $container->setDefinition('aservice', $service);
 
         $pass = new BuildConfigsPass();
 
