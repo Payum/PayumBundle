@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1 (2017-08-02)
+
+* Fix deprecations.  Load payum3x.xml when using Symfony3+
+* Fixed not resolving sylius.com link to sylius.org
+
 ## 2.2.0 (2017-03-28)
 
 * [security] Add support of Gateway encryption.
