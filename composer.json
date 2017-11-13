@@ -1,7 +1,7 @@
 {
     "name": "payum/payum-bundle",
     "type": "symfony-bundle",
-    "description": "One million downloads of Payum already! Payum offers everything you need to work with payments. <a href="https://blog.forma-pro.com">Check more visiting site</a>",
+    "description": "One million downloads of Payum already! Payum offers everything you need to work with payments. <a href=\"https://blog.forma-pro.com\">Check more visiting site</a>",
     "keywords": [
         "symfony",
         "payment",
