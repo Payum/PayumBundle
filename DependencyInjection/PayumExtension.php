@@ -20,6 +20,11 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel1StorageFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel2StorageFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorageFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 
 class PayumExtension extends Extension implements PrependExtensionInterface
 {
@@ -33,6 +38,12 @@ class PayumExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->addStorageFactory(new FilesystemStorageFactory);
+        $this->addStorageFactory(new DoctrineStorageFactory);
+        $this->addStorageFactory(new CustomStorageFactory);
+        $this->addStorageFactory(new Propel1StorageFactory);
+        $this->addStorageFactory(new Propel2StorageFactory);
+
         $mainConfig = $this->getConfiguration($configs, $container);
 
         $config = $this->processConfiguration($mainConfig, $configs);
