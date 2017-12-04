@@ -137,7 +137,8 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $container->prependExtensionConfig('doctrine', array());
         $container->prependExtensionConfig('doctrine', array(
-            'dbal' => 'not empty'
+            'dbal' => 'not empty',
+            'orm' => 'not empty'
         ));
 
         $extension->prepend($container);
@@ -157,7 +158,10 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
                         )
                     )),
                 ),
-                array('dbal' => 'not empty'),
+                array(
+                    'dbal' => 'not empty',
+                    'orm' => 'not empty'
+                ),
                 array(),
             ),
             $container->getExtensionConfig('doctrine')

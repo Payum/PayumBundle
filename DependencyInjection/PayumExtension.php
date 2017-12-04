@@ -70,7 +70,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['DoctrineBundle'])) {
             foreach ($container->getExtensionConfig('doctrine') as $config) {
                 // do not register mappings if dbal not configured.
-                if (false == empty($config['dbal'])) {
+                if (false == empty($config['dbal']) && false == empty($config['orm'])) {
                     $rc = new \ReflectionClass(Gateway::class);
                     $payumRootDir = dirname($rc->getFileName());
 
