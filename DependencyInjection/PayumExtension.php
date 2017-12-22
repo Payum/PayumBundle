@@ -11,13 +11,12 @@ use Payum\Core\Gateway;
 use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 
@@ -40,7 +39,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         // load services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('payum.xml');
-        $loader->load(Kernel::MAJOR_VERSION === 3 ? 'payum3x.xml' : 'payum2x.xml');
         $loader->load('form.xml');
 
         if ($container->getParameter('kernel.debug')) {
@@ -152,7 +150,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 throw new LogicException(sprintf('In order to add storage to extension the storage "%s" has to contains ".storage." inside.', $storageId));
             }
 
-            $storageExtension = new DefinitionDecorator('payum.extension.storage.prototype');
+            $storageExtension = new ChildDefinition('payum.extension.storage.prototype');
             $storageExtension->replaceArgument(0, new Reference($storageId));
             $storageExtension->setPublic(true);
             $container->setDefinition($storageExtensionId, $storageExtension);
@@ -186,7 +184,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 $tokenStorageConfig[$storageFactoryName]
             );
 
-            $container->setDefinition('payum.security.token_storage', new DefinitionDecorator($storageId));
+            $container->setDefinition('payum.security.token_storage', new ChildDefinition($storageId));
         }
     }
 
@@ -207,7 +205,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 $configStorageConfig[$storageFactoryName]
             );
 
-            $container->setDefinition('payum.dynamic_gateways.config_storage', new DefinitionDecorator($configStorage));
+            $container->setDefinition('payum.dynamic_gateways.config_storage', new ChildDefinition($configStorage));
         }
 
 
@@ -230,9 +228,13 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             new Reference('payum.dynamic_gateways.config_storage'),
             new Reference('payum.static_registry')
         ));
+        $registry->setPublic(true);
+
         $container->setDefinition('payum.dynamic_registry', $registry);
 
         if ($dynamicGatewaysConfig['sonata_admin']) {
+            throw new \LogicException('Not supported. Has to wait till Sonata Admin 4.x will be released.');
+
             if (false == class_exists(AbstractAdmin::class)) {
                 throw new LogicException('Admin class does not exists. Did you install SonataAdmin bundle?');
             }

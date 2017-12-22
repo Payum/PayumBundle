@@ -7,7 +7,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class CustomStorageFactoryTest extends \PHPUnit_Framework_TestCase
+class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
@@ -159,6 +159,6 @@ class CustomStorageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function createContainerBuilderMock()
     {
-        return $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array(), array(), '', false);
+        return $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder', array(), array(), '', false);
     }
 }

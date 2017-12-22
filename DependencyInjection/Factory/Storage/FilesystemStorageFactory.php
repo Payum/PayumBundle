@@ -1,9 +1,9 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
@@ -38,7 +38,7 @@ class FilesystemStorageFactory extends AbstractStorageFactory
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
         $loader->load('filesystem.xml');
 
-        $storage = new DefinitionDecorator('payum.storage.filesystem.prototype');
+        $storage = new ChildDefinition('payum.storage.filesystem.prototype');
         $storage->setPublic(true);
         $storage->replaceArgument(0, $config['storage_dir']);
         $storage->replaceArgument(1, $modelClass);

@@ -9,6 +9,8 @@
     </parameters>
 
     <services>
+        <defaults public="true" />
+
         <service id="payum.form.type.credit_card_expiration_date" class="Payum\Core\Bridge\Symfony\Form\Type\CreditCardExpirationDateType">
             <tag name="form.type" />
         </service>

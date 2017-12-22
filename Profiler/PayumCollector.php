@@ -141,6 +141,12 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         return $str;
     }
 
+    public function reset()
+    {
+        $this->contexts = [];
+        $this->data = [];
+    }
+
     protected function formatAction(array $contextData)
     {
         return sprintf(

@@ -69,29 +69,22 @@ class DebugGatewayCommandTest extends WebTestCase
         $command = new DebugGatewayCommand();
         $command->setApplication(new Application($this->client->getKernel()));
 
-        $helperSet = $command->getHelperSet();
-        if (!$helperSet->has('question')) {
-            $this->markTestSkipped('The symfony have a version <2.5');
-        }
-
-        $helper = $helperSet->get('question');
-        $helper->setInputStream($this->getInputStream('0'));
-
-        $output = $this->executeConsole($command, array(
+        $output = $this->executeConsole($command, [
             'gateway-name' => 'foo',
-        ));
+        ], ['0']);
 
         $this->assertContains('Choose a number for more information on the payum gateway', $output);
         $this->assertContains('[0] fooGateway', $output);
     }
 
     /**
-     * @param Command  $command
+     * @param Command $command
      * @param string[] $arguments
+     * @param string[] $inputs
      *
      * @return string
      */
-    protected function executeConsole(Command $command, array $arguments = array())
+    protected function executeConsole(Command $command, array $arguments = [], array $inputs = [])
     {
         if (!$command->getApplication()) {
             $command->setApplication(new Application($this->client->getKernel()));
@@ -107,6 +100,8 @@ class DebugGatewayCommandTest extends WebTestCase
         ), $arguments);
 
         $commandTester = new CommandTester($command);
+        $commandTester->setInputs($inputs);
+
         $commandTester->execute($arguments);
 
         return $commandTester->getDisplay();

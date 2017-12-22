@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
-class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
+class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
@@ -30,7 +31,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $expectedException
         );
 
@@ -62,7 +63,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 
@@ -93,7 +94,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 
@@ -127,7 +128,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 
@@ -153,7 +154,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createReplyToSymfonyResponseConverterMock()
     {
-        return $this->getMock('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter');
+        return $this->createMock('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter');
     }
 
     /**
@@ -161,6 +162,6 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createHttpKernelMock()
     {
-        return $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        return $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
     }
 }

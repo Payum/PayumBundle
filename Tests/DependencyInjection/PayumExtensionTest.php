@@ -43,7 +43,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
      */
     public function shouldAllowAddStorageFactory()
     {
-        $factory = $this->getMock(StorageFactoryInterface::class);
+        $factory = $this->createMock(StorageFactoryInterface::class);
         $factory
             ->expects($this->any())
             ->method('getName')
@@ -64,7 +64,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTryToAddStorageFactoryWithEmptyName()
     {
-        $factoryWithEmptyName = $this->getMock(StorageFactoryInterface::class);
+        $factoryWithEmptyName = $this->createMock(StorageFactoryInterface::class);
         $factoryWithEmptyName
             ->expects($this->once())
             ->method('getName')
@@ -83,7 +83,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
      */
     public function throwIfTryToAddStorageGatewayFactoryWithNameAlreadyAdded()
     {
-        $factory = $this->getMock(StorageFactoryInterface::class);
+        $factory = $this->createMock(StorageFactoryInterface::class);
         $factory
             ->expects($this->atLeastOnce())
             ->method('getName')
@@ -222,6 +222,7 @@ class FeeStorageFactory implements StorageFactoryInterface
 {
     public function create(ContainerBuilder $container, $modelClass, array $config)
     {
+        return 'aStorageId';
     }
 
     public function getName()
