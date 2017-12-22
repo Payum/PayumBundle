@@ -6,7 +6,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel1StorageF
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 
-class Propel1StorageFactoryTest extends \PHPUnit_Framework_TestCase
+class Propel1StorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

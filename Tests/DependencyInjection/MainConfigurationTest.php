@@ -36,8 +36,8 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $fooModelClass = get_class($this->getMock('stdClass'));
-        $barModelClass = get_class($this->getMock('stdClass'));
+        $fooModelClass = get_class($this->createMock('stdClass'));
+        $barModelClass = get_class($this->createMock('stdClass'));
 
         $processor->processConfiguration($configuration, array(
             array(
@@ -85,7 +85,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $fooModelClass = get_class($this->getMock('stdClass'));
+        $fooModelClass = get_class($this->createMock('stdClass'));
 
         $config = $processor->processConfiguration($configuration, array(
             array(
@@ -127,7 +127,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $fooModelClass = get_class($this->getMock('stdClass'));
+        $fooModelClass = get_class($this->createMock('stdClass'));
 
         $config = $processor->processConfiguration($configuration, array(
             array(
@@ -166,7 +166,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $fooModelClass = get_class($this->getMock('stdClass'));
+        $fooModelClass = get_class($this->createMock('stdClass'));
 
         $config = $processor->processConfiguration($configuration, array(
             array(
@@ -207,7 +207,7 @@ class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
 
         $processor = new Processor();
 
-        $fooModelClass = get_class($this->getMock('stdClass'));
+        $fooModelClass = get_class($this->createMock('stdClass'));
 
         $config = $processor->processConfiguration($configuration, array(
             array(

@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class BuildConfigsPassTest extends \PHPUnit_Framework_TestCase
+class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
 {
     public function provideTags()
     {

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
+class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test
@@ -153,7 +153,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createReplyToSymfonyResponseConverterMock()
     {
-        return $this->getMock('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter');
+        return $this->createMock('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter');
     }
 
     /**
@@ -161,6 +161,6 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createHttpKernelMock()
     {
-        return $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        return $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
     }
 }

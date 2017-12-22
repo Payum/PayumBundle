@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class BuildGatewaysPassTest extends \PHPUnit_Framework_TestCase
+class BuildGatewaysPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldImplementCompilerPassInterface()
     {

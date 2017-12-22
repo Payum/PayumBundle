@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class AbstractStorageFactoryTest extends \PHPUnit_Framework_TestCase
+class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

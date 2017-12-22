@@ -4,7 +4,7 @@ namespace Payum\Bundle\PayumBundle\Tests;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class PayumBundleTest extends \PHPUnit_Framework_TestCase
+class PayumBundleTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

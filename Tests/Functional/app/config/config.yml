@@ -14,7 +14,6 @@ framework:
     templating:
         engines:                                          [ 'twig']
     form:                                                 true
-    csrf_protection:                                      true
     validation:                                           { enable_annotations: true }
     assets: false
 

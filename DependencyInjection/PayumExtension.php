@@ -11,6 +11,7 @@ use Payum\Core\Gateway;
 use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -152,7 +153,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 throw new LogicException(sprintf('In order to add storage to extension the storage "%s" has to contains ".storage." inside.', $storageId));
             }
 
-            $storageExtension = new DefinitionDecorator('payum.extension.storage.prototype');
+            $storageExtension = new ChildDefinition('payum.extension.storage.prototype');
             $storageExtension->replaceArgument(0, new Reference($storageId));
             $storageExtension->setPublic(true);
             $container->setDefinition($storageExtensionId, $storageExtension);

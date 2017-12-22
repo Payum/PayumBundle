@@ -5,7 +5,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStora
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 
-class FilesystemStorageFactoryTest extends \PHPUnit_Framework_TestCase
+class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

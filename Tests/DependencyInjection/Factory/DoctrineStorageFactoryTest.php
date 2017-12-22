@@ -5,7 +5,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorage
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 
-class DoctrineStorageFactoryTest extends \PHPUnit_Framework_TestCase
+class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @test

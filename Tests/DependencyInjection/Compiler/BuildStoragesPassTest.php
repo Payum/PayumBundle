@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class BuildStoragesPassTest extends \PHPUnit_Framework_TestCase
+class BuildStoragesPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testShouldImplementCompilerPassInterface()
     {
