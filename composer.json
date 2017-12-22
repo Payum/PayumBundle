@@ -50,7 +50,6 @@
         "symfony/twig-bundle": "^3.1|^4",
         "symfony/expression-language": "^3.1|^4",
         "symfony/browser-kit": "^3.1|^4",
-        "symfony/class-loader": "^3.1|^4",
         "symfony/phpunit-bridge": "^3.1|^4",
         "symfony/templating": "^3.1|^4",
         "defuse/php-encryption": "^2",
