@@ -5,6 +5,8 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <defaults public="true" />
+
         <!-- Extensions -->
 
         <service id="payum.extension.log_executed_actions" class="Payum\Core\Bridge\Psr\Log\LogExecutedActionsExtension">

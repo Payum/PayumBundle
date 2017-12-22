@@ -16,6 +16,8 @@
     <services>
         <!-- Generic -->
 
+        <defaults public="true" />
+
         <service id="payum.builder" class="Payum\Core\PayumBuilder">
             <call method="setMainRegistry">
                 <argument type="service" id="payum.static_registry" />
@@ -97,6 +99,12 @@
         <service id="payum.action.obtain_credit_card_builder" class="Payum\Core\Bridge\Symfony\Builder\ObtainCreditCardActionBuilder">
             <argument type="service" id="form.factory" />
             <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="payum.action.get_http_request" class="Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction">
+            <call method="setHttpRequestStack">
+                <argument type="service" id="request_stack" />
+            </call>
         </service>
     </services>
 </container>

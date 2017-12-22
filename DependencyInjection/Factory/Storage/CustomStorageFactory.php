@@ -2,8 +2,8 @@
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 class CustomStorageFactory extends AbstractStorageFactory
 {
@@ -20,7 +20,7 @@ class CustomStorageFactory extends AbstractStorageFactory
      */
     protected function createStorage(ContainerBuilder $container, $modelClass, array $config)
     {
-        return new DefinitionDecorator($config['service']);
+        return new ChildDefinition($config['service']);
     }
 
     /**

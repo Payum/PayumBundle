@@ -1,12 +1,11 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\Kernel;
 
 class DoctrineStorageFactory extends AbstractStorageFactory
 {
@@ -42,7 +41,7 @@ class DoctrineStorageFactory extends AbstractStorageFactory
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
         $loader->load('doctrine.'.$config['driver'].'.xml');
 
-        $storage = new DefinitionDecorator(sprintf('payum.storage.doctrine.%s', $config['driver']));
+        $storage = new ChildDefinition(sprintf('payum.storage.doctrine.%s', $config['driver']));
         $storage->setPublic(true);
         $storage->replaceArgument(1, $modelClass);
         

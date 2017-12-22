@@ -4,8 +4,6 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractStorageFactory implements StorageFactoryInterface
 {
@@ -17,6 +15,7 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
         $storageId = sprintf('payum.storage.%s', strtolower(str_replace(array('\\\\', '\\'), '_', $modelClass)));
 
         $storageDefinition = $this->createStorage($container, $modelClass, $config);
+        $storageDefinition->setPublic(true);
         
         $container->setDefinition($storageId, $storageDefinition);
 
