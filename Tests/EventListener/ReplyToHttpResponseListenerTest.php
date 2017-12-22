@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
 {
@@ -30,7 +31,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $expectedException
         );
 
@@ -62,7 +63,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 
@@ -93,7 +94,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 
@@ -127,7 +128,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            'requestType',
+            Kernel::MASTER_REQUEST,
             $reply
         );
 

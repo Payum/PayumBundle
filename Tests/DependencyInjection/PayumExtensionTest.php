@@ -222,6 +222,7 @@ class FeeStorageFactory implements StorageFactoryInterface
 {
     public function create(ContainerBuilder $container, $modelClass, array $config)
     {
+        return 'aStorageId';
     }
 
     public function getName()
