@@ -46,7 +46,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
@@ -91,7 +90,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
@@ -140,7 +138,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
@@ -192,7 +189,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $container->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $container);
 
@@ -248,7 +244,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
@@ -307,7 +302,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
@@ -358,7 +352,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $containerBuilder->setParameter('kernel.debug', false);
 
         $extension = new PayumExtension;
-        $extension->addStorageFactory(new FilesystemStorageFactory);
 
         $extension->load($configs, $containerBuilder);
 
