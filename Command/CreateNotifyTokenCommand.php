@@ -11,13 +11,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateNotifyTokenCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'payum:security:create-notify-token';
+
     /**
      * {@inheritDoc}
      */
     protected function configure()
     {
         $this
-            ->setName('payum:security:create-notify-token')
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name associated with the token')
             ->addOption('model-class', null, InputOption::VALUE_OPTIONAL, 'The model class associated with the token')
             ->addOption('model-id', null, InputOption::VALUE_OPTIONAL, 'The model id associated with the token')

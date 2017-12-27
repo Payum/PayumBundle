@@ -12,13 +12,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class StatusCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'payum:status';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('payum:status')
             ->setDescription('Allows to get a payment status.')
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name')
             ->addOption('model-class', null, InputOption::VALUE_REQUIRED, 'The model class')
