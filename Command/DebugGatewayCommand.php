@@ -14,13 +14,14 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class DebugGatewayCommand extends ContainerAwareCommand
 {
+    protected static $defaultName = 'debug:payum:gateway';
+
     /**
      * {@inheritDoc}
      */
     protected function configure()
     {
         $this
-            ->setName('debug:payum:gateway')
             ->setAliases(array(
                 'payum:gateway:debug',
             ))
