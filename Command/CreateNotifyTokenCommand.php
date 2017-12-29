@@ -19,6 +19,7 @@ class CreateNotifyTokenCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
+            ->setName(static::$defaultName)
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name associated with the token')
             ->addOption('model-class', null, InputOption::VALUE_OPTIONAL, 'The model class associated with the token')
             ->addOption('model-id', null, InputOption::VALUE_OPTIONAL, 'The model id associated with the token')
@@ -59,4 +60,4 @@ class CreateNotifyTokenCommand extends ContainerAwareCommand
     {
         return $this->getContainer()->get('payum');
     }
-} 
+}

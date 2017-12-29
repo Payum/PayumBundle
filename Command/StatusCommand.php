@@ -20,6 +20,7 @@ class StatusCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
+            ->setName(static::$defaultName)
             ->setDescription('Allows to get a payment status.')
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name')
             ->addOption('model-class', null, InputOption::VALUE_REQUIRED, 'The model class')
