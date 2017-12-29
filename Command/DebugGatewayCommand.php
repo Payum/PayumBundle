@@ -22,6 +22,7 @@ class DebugGatewayCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
+            ->setName(static::$defaultName)
             ->setAliases(array(
                 'payum:gateway:debug',
             ))
