@@ -62,7 +62,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
         $this->loadCoreGateway(isset($config['gateways']['core']) ? $config['gateways']['core'] : [], $container);
         unset($config['gateways']['core']);
-        
+
         $this->loadGateways($config['gateways'], $container);
 
         if (isset($config['dynamic_gateways'])) {
@@ -78,27 +78,25 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $bundles = $container->getParameter('kernel.bundles');
 
         if (isset($bundles['DoctrineBundle'])) {
-            foreach ($container->getExtensionConfig('doctrine') as $config) {
-                // do not register mappings if dbal not configured.
-                if (false == empty($config['dbal']) && false == empty($config['orm'])) {
-                    $rc = new \ReflectionClass(Gateway::class);
-                    $payumRootDir = dirname($rc->getFileName());
+            $config = array_merge(...$container->getExtensionConfig('doctrine'));
 
-                    $container->prependExtensionConfig('doctrine', array(
-                        'orm' => array(
-                            'mappings' => array(
-                                'payum' => array(
-                                    'is_bundle' => false,
-                                    'type' => 'xml',
-                                    'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
-                                    'prefix' => 'Payum\Core\Model',
-                                ),
+            // do not register mappings if dbal not configured.
+            if (!empty($config['dbal']) && !empty($config['orm'])) {
+                $rc = new \ReflectionClass(Gateway::class);
+                $payumRootDir = dirname($rc->getFileName());
+
+                $container->prependExtensionConfig('doctrine', array(
+                    'orm' => array(
+                        'mappings' => array(
+                            'payum' => array(
+                                'is_bundle' => false,
+                                'type' => 'xml',
+                                'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
+                                'prefix' => 'Payum\Core\Model',
                             ),
                         ),
-                    ));
-
-                    break;
-                }
+                    ),
+                ));
             }
         }
     }
@@ -123,7 +121,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     protected function loadCoreGateway(array $config, ContainerBuilder $container)
     {
         $builder = $container->getDefinition('payum.builder');
-        
+
         $defaultConfig = [
             'payum.template.layout' => '@PayumCore\layout.html.twig',
             'payum.template.obtain_credit_card' => '@PayumSymfonyBridge\obtainCreditCard.html.twig',
@@ -134,7 +132,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             'payum.action.get_http_request' => new Reference('payum.action.get_http_request'),
             'payum.action.obtain_credit_card' => new Reference('payum.action.obtain_credit_card_builder'),
         ];
-        
+
         $config = array_replace_recursive($defaultConfig, $config);
 
         $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
@@ -289,7 +287,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if (array_key_exists($factoryName, $this->storagesFactories)) {
             throw new InvalidArgumentException(sprintf('The storage factory with such name %s already registered', $factoryName));
         }
-        
+
         $this->storagesFactories[$factoryName] = $factory;
     }
 

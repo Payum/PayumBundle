@@ -207,7 +207,6 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $container = new ContainerBuilder;
         $container->setParameter('kernel.bundles', array('DoctrineBundle' => 'DoctrineBundle'));
 
-        $container->prependExtensionConfig('doctrine', array());
         $container->prependExtensionConfig('doctrine', array(
             'dbal' => 'not empty',
         ));
