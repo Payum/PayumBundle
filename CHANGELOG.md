@@ -16,6 +16,21 @@
 * Fix adding storage to extension exception message
 * Fix docs
 
+## 2.3.0 (2018-01-09)
+
+* Make conditional mapping loading tests passing
+* Add more tests for conditional mapping loading
+* fix missing icon in profiler
+* lower shell verbosity while running tests
+* lazy load cli commands
+* remove dep on jms payment core.
+* remove class-loader from deps.
+* drop PHP 5
+* drop Symfony 2
+* upgrade Phpunit
+* Fix PayumExtension to only load orm when it is available
+* move storage factory init from PayumBundle::build to PayumExtension::load
+
 ## 2.1.1 (2016-09-16)
 
 * Require payum/core 1.3.7 as minimum version
