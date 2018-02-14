@@ -30,8 +30,14 @@ class ReplyToHttpResponseListener
         }
 
         $response = $this->replyToSymfonyResponseConverter->convert($event->getException());
-        if (false == $response->headers->has('X-Status-Code')) {
-            $response->headers->set('X-Status-Code', $response->getStatusCode());
+        
+        // BC for SF < 3.3
+        if (!method_exists($event, 'allowCustomResponseCode')) {
+            if (false === $response->headers->has('X-Status-Code')) {
+                $response->headers->set('X-Status-Code', $response->getStatusCode());
+            }
+        } else {
+            $event->allowCustomResponseCode();
         }
 
         $event->setResponse($response);

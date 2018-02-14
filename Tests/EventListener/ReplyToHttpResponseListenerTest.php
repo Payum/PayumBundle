@@ -98,6 +98,11 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
             $reply
         );
 
+        // BC for SF < 3.3
+        if (method_exists($event, 'allowCustomResponseCode')) {
+            $this->markTestSkipped('BC for SF < 3.3');
+        }
+
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
             ->expects($this->once())
@@ -132,6 +137,11 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
             $reply
         );
 
+        // BC for SF < 3.3
+        if (method_exists($event, 'allowCustomResponseCode')) {
+            $this->markTestSkipped('BC for SF < 3.3');
+        }
+
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
             ->expects($this->once())
@@ -147,6 +157,50 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertTrue($event->getResponse()->headers->has('X-Status-Code'));
         $this->assertEquals(666, $event->getResponse()->headers->get('X-Status-Code'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldCallAllowCustomResponseCode()
+    {
+        $reply = new HttpRedirect('/foo/bar');
+        $response = new Response('', 302);
+
+        $eventMock = $this
+            ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent')
+            ->setMethods(null)
+            ->setConstructorArgs([$this->createHttpKernelMock(),
+                new Request,
+                Kernel::MASTER_REQUEST,
+                $reply])
+            ->getMock();
+
+        // BC for SF < 3.3
+        if (!method_exists($eventMock, 'allowCustomResponseCode')) {
+            $this->markTestSkipped('BC for SF < 3.3');
+        }
+
+        $converterMock = $this->createReplyToSymfonyResponseConverterMock();
+        $converterMock
+            ->expects($this->once())
+            ->method('convert')
+            ->with($this->identicalTo($reply))
+            ->will($this->returnValue($response))
+        ;
+
+        $eventMock
+            ->expects($this->once())
+            ->method('allowCustomResponseCode')
+        ;
+
+        $listener = new ReplyToHttpResponseListener($converterMock);
+
+        $listener->onKernelException($eventMock);
+
+        $this->assertInstanceOf(Response::class, $eventMock->getResponse());
+        $this->assertEquals(302, $eventMock->getResponse()->getStatusCode());
+        $this->assertEquals(true, $eventMock->isAllowingCustomResponseCode());
     }
 
     /**
