@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.1 (2018-08-19)
+
+* Make profiler dynamic
+* Use allowCustomResponseCode instead X-Status-Code
+* Symfony 4 compatibility. Update template path.
+
 ## 2.3.0 (2018-01-09)
 
 * Make conditional mapping loading tests passing
