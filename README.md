@@ -28,20 +28,22 @@ payum:
     storages:
         Payum\Core\Model\Payment:
             filesystem:
-                storage_dir: %kernel.root_dir%/Resources/payments
+                storage_dir: '%kernel.root_dir%/Resources/payments'
                 id_property: number
 
     security:
         token_storage:
             Payum\Core\Model\Token:
                 filesystem:
-                    storage_dir: %kernel.root_dir%/Resources/gateways
+                    storage_dir: '%kernel.root_dir%/Resources/gateways'
                     id_property: hash
                 
     gateways:
         offline:
             factory: offline
 ```
+
+_note_ if you're using Symfony 4+ then create `config/packages/payum.yaml` file with contents described above.
 
 ### Purchase
 
