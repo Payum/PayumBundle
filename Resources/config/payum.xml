@@ -49,6 +49,7 @@
         <service id="payum" class="Payum\Core\Payum">
             <factory service="payum.builder" method="getPayum" />
         </service>
+        <service id="Payum\Core\Payum" alias="payum"></service>
 
         <service id="payum.static_registry" class="Payum\Core\Bridge\Symfony\ContainerAwareRegistry">
             <argument type="collection" /> <!-- gateways services. this should be replaced while container is built -->
