@@ -29,8 +29,14 @@ class MainConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('payum');
+        if (method_exists(TreeBuilder::class, 'getRootNode')) {
+            $tb = new TreeBuilder('payum');
+            $rootNode = $tb->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $tb = new TreeBuilder();
+            $rootNode = $tb->root('payum');
+        }
 
         $securityNode = $rootNode->children()
             ->arrayNode('security')->isRequired()
