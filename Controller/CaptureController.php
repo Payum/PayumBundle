@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Controller;
 
+use Payum\Core\Reply\HttpPostRedirect;
 use Payum\Core\Request\Capture;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -19,12 +20,18 @@ class CaptureController extends PayumController
 
         $request->getSession()->remove('payum_token');
 
-        return $this->redirect($this->generateUrl('payum_capture_do', array_replace(
+        $redirectUrl = $this->generateUrl('payum_capture_do', array_replace(
             $request->query->all(),
             array(
                 'payum_token' => $hash,
             )
-        )));
+        ));
+
+        if ($request->isMethod('POST')) {
+            throw new HttpPostRedirect($redirectUrl, $request->request->all());
+        }
+
+        return $this->redirect($redirectUrl);
     }
 
     public function doAction(Request $request)
