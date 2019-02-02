@@ -3,14 +3,18 @@ namespace Payum\Bundle\PayumBundle\Command;
 
 use Payum\Core\Exception\RuntimeException;
 use Payum\Core\Payum;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class CreateNotifyTokenCommand extends ContainerAwareCommand
+class CreateNotifyTokenCommand extends Command implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     protected static $defaultName = 'payum:security:create-notify-token';
 
     /**
@@ -58,6 +62,6 @@ class CreateNotifyTokenCommand extends ContainerAwareCommand
      */
     protected function getPayum()
     {
-        return $this->getContainer()->get('payum');
+        return $this->container->get('payum');
     }
 }

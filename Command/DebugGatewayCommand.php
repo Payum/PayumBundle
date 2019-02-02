@@ -5,15 +5,19 @@ use Payum\Core\Extension\StorageExtension;
 use Payum\Core\Gateway;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Storage\AbstractStorage;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class DebugGatewayCommand extends ContainerAwareCommand
+class DebugGatewayCommand extends Command implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     protected static $defaultName = 'debug:payum:gateway';
 
     /**
@@ -141,7 +145,7 @@ class DebugGatewayCommand extends ContainerAwareCommand
      */
     protected function getPayum()
     {
-        return $this->getContainer()->get('payum');
+        return $this->container->get('payum');
     }
 
     private function findProperGatewayName(InputInterface $input, OutputInterface $output, $gateways, $name)
