@@ -15,14 +15,14 @@ abstract class WebTestCase extends BaseWebTestCase
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected static $container;
 
     protected function setUp()
     {
         parent::setUp();
 
         $this->client = static::createClient();
-        $this->container = static::$kernel->getContainer();
+        static::$container = static::$kernel->getContainer();
     }
 
     /**

@@ -4,11 +4,10 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 use Payum\Bundle\PayumBundle\Command\StatusCommand;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
 use Payum\Core\Registry\RegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 class StatusCommandTest extends WebTestCase
 {
@@ -46,7 +45,7 @@ class StatusCommandTest extends WebTestCase
     protected function executeConsole(Command $command, array $arguments = array())
     {
         $command->setApplication(new Application($this->client->getKernel()));
-        if ($command instanceof ContainerAwareCommand) {
+        if ($command instanceof ContainerAwareInterface) {
             $command->setContainer($this->client->getContainer());
         }
 
