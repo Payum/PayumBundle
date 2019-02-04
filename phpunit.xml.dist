@@ -8,5 +8,6 @@
 
     <php>
         <env name="SHELL_VERBOSITY" value="-1" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
     </php>
 </phpunit>

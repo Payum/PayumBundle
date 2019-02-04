@@ -27,7 +27,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     public function shouldDoNothingIfExceptionNotInstanceOfReply()
     {
         $expectedException = new Exception;
-        
+
         $event = new GetResponseForExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
@@ -40,11 +40,11 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
             ->expects($this->never())
             ->method('convert')
         ;
-        
+
         $listener = new ReplyToHttpResponseListener($converterMock);
 
         $listener->onKernelException($event);
-        
+
         $this->assertNull($event->getResponse());
         $this->assertSame($expectedException, $event->getException());
         $this->assertFalse($event->isPropagationStopped());

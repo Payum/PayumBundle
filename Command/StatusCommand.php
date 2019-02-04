@@ -4,14 +4,18 @@ namespace Payum\Bundle\PayumBundle\Command;
 use Payum\Core\Exception\RuntimeException;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Request\GetHumanStatus;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class StatusCommand extends ContainerAwareCommand
+class StatusCommand extends Command implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     protected static $defaultName = 'payum:status';
 
     /**
@@ -57,6 +61,6 @@ class StatusCommand extends ContainerAwareCommand
      */
     protected function getPayum()
     {
-        return $this->getContainer()->get('payum');
+        return $this->container->get('payum');
     }
 }

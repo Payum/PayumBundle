@@ -12,7 +12,7 @@ class PayumBuilderTest extends WebTestCase
     public function testCouldBeGetFromContainerAsService()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertInstanceOf(PayumBuilder::class, $builder);
     }
@@ -20,7 +20,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainCoreGatewayFactoryBuilder()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertAttributeInstanceOf(CoreGatewayFactoryBuilder::class, 'coreGatewayFactory', $builder);
     }
@@ -28,7 +28,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainHttpRequestVerifierBuilder()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertAttributeInstanceOf(HttpRequestVerifierBuilder::class, 'httpRequestVerifier', $builder);
     }
@@ -36,7 +36,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainTokenFactoryBuilder()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertAttributeInstanceOf(TokenFactoryBuilder::class, 'tokenFactory', $builder);
     }
@@ -44,7 +44,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainMainRegistry()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertAttributeInstanceOf(ContainerAwareRegistry::class, 'mainRegistry', $builder);
     }
@@ -52,7 +52,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainGenericTokenFactoryPaths()
     {
         /** @var PayumBuilder $builder */
-        $builder = $this->container->get('payum.builder');
+        $builder = static::$container->get('payum.builder');
 
         $this->assertAttributeEquals([
             'capture' => 'payum_capture_do',
