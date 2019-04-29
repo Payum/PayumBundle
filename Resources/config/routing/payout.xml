@@ -2,6 +2,6 @@
 
 <routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     <route id="payum_payout_do" path="/payment/payout/{payum_token}">
-        <default key="_controller">PayumBundle:Payout:do</default>
+        <default key="_controller">Payum\Bundle\PayumBundle\Controller\PayoutController::doAction</default>
     </route>
 </routes>
