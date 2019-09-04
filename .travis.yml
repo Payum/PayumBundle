@@ -4,8 +4,6 @@ env:
   global:
       - SYMFONY_DEPRECATIONS_HELPER=weak
 
-sudo: false
-
 cache:
   directories:
     - $HOME/.composer/cache
@@ -21,6 +19,8 @@ matrix:
     - php: 7.1
       env: SYMFONY_VERSION=v4
     - php: 7.2
+      env: SYMFONY_VERSION=v4
+    - php: 7.3
       env: SYMFONY_VERSION=v4
 
 before_install:
