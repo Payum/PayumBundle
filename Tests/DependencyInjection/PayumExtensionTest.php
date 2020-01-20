@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
 
-class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
+class PayumExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
@@ -105,6 +105,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $extension = new PayumExtension;
 
+        $this->setupDefaultConfig($extension, $container);
         $extension->prepend($container);
 
         $this->assertEmpty($container->getExtensionConfig('doctrine'));
@@ -124,6 +125,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
             'orm' => 'not empty',
         ));
 
+        $this->setupDefaultConfig($extension, $container);
         $extension->prepend($container);
 
         $this->assertEquals(array(
@@ -142,6 +144,8 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $container = new ContainerBuilder;
         $container->setParameter('kernel.bundles', array('DoctrineBundle' => 'DoctrineBundle'));
+
+        $this->setupDefaultConfig($extension, $container);
 
         $container->prependExtensionConfig('doctrine', array(
             'dbal' => 'not empty',
@@ -171,6 +175,7 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
             'orm' => 'not empty'
         ));
 
+        $this->setupDefaultConfig($extension, $container);
         $extension->prepend($container);
 
         $rc = new \ReflectionClass('Payum\Core\Gateway');
@@ -179,14 +184,20 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    'orm' => array('mappings' => array(
-                        'payum' => array(
-                            'is_bundle' => false,
-                            'type' => 'xml',
-                            'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
-                            'prefix' => 'Payum\Core\Model',
+                    'orm' => array(
+                        'entity_managers' => array(
+                            'default' => array(
+                                'mappings' => array(
+                                    'payum' => array(
+                                        'is_bundle' => false,
+                                        'type' => 'xml',
+                                        'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
+                                        'prefix' => 'Payum\Core\Model',
+                                    )
+                                )
+                            ),
                         )
-                    )),
+                    )
                 ),
                 array(
                     'dbal' => 'not empty',
@@ -206,13 +217,66 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
 
         $container = new ContainerBuilder;
         $container->setParameter('kernel.bundles', array('DoctrineBundle' => 'DoctrineBundle'));
-
+        $container->setParameter('kernel.debug', true);
         $container->prependExtensionConfig('doctrine', array(
             'dbal' => 'not empty',
+            'orm' => 'not empty'
         ));
+
+        $this->setupDefaultConfig($extension, $container);
+        $extension->prepend($container);
+
+        $rc = new \ReflectionClass('Payum\Core\Gateway');
+        $payumRootDir = dirname($rc->getFileName());
+
+        $this->assertEquals(
+            array(
+                array(
+                    'orm' => array(
+                        'entity_managers' => array(
+                            'default' => array(
+                                'mappings' => array(
+                                    'payum' => array(
+                                        'is_bundle' => false,
+                                        'type' => 'xml',
+                                        'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
+                                        'prefix' => 'Payum\Core\Model',
+                                    )
+                                )
+                            ),
+                        )
+                    )
+                ),
+                array(
+                    'dbal' => 'not empty',
+                    'orm' => 'not empty'
+                ),
+            ),
+            $container->getExtensionConfig('doctrine')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldAddPayumMappingIfDoctrineBundleRegisteredWithDbalAndOrmConfiguredWithCustomEntityManager()
+    {
+        $extension = new PayumExtension;
+
+        $container = new ContainerBuilder;
+        $container->setParameter('kernel.bundles', array('DoctrineBundle' => 'DoctrineBundle'));
+        $container->setParameter('kernel.debug', true);
         $container->prependExtensionConfig('doctrine', array(
-            'orm' => 'not empty',
+            'dbal' => 'not empty',
+            'orm' => 'not empty'
         ));
+        $this->setupDefaultConfig($extension, $container);
+
+        $container->prependExtensionConfig($extension->getAlias(),
+            [
+                'entity_manager' => 'custom_em'
+            ]
+        );
 
         $extension->prepend($container);
 
@@ -222,20 +286,24 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    'orm' => array('mappings' => array(
-                        'payum' => array(
-                            'is_bundle' => false,
-                            'type' => 'xml',
-                            'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
-                            'prefix' => 'Payum\Core\Model',
+                    'orm' => array(
+                        'entity_managers' => array(
+                            'custom_em' => array(
+                                'mappings' => array(
+                                    'payum' => array(
+                                        'is_bundle' => false,
+                                        'type' => 'xml',
+                                        'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
+                                        'prefix' => 'Payum\Core\Model',
+                                    )
+                                )
+                            ),
                         )
-                    )),
-                ),
-                array(
-                    'orm' => 'not empty'
+                    )
                 ),
                 array(
                     'dbal' => 'not empty',
+                    'orm' => 'not empty'
                 ),
             ),
             $container->getExtensionConfig('doctrine')
@@ -289,6 +357,31 @@ class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
         $this->assertEquals('addGateway', $calls[8][0]);
         $this->assertEquals('another_gateway', $calls[8][1][0]);
         $this->assertEquals(['bar' => 'barVal'], $calls[8][1][1]);
+    }
+
+    private function setupDefaultConfig(PayumExtension $extension, ContainerBuilder $container)
+    {
+        $extension->addStorageFactory(new FeeStorageFactory());
+
+        $container->prependExtensionConfig($extension->getAlias(),
+            [
+                'security' => array(
+                    'token_storage' => array(
+                        'Payum\Core\Model\Token' => array(
+                            'bar_storage' => ['bar_opt' => 'val']
+                        )
+                    )
+                ),
+                'gateways' => array(
+                    'a_gateway' => array(
+                        'foo' => 'fooVal',
+                    ),
+                    'another_gateway' => array(
+                        'bar' => 'barVal',
+                    )
+                )
+            ]
+        );
     }
 }
 

@@ -13,11 +13,5 @@
             <argument type="service" id="payum.entity_manager" />
             <argument><!-- should be set in DoctrineStorageFactory --></argument>
         </service>
-
-        <service 
-            id="payum.entity_manager"
-            alias="doctrine.orm.default_entity_manager"
-            public="false"
-        />
     </services>
 </container>

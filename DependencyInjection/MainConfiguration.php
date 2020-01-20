@@ -58,6 +58,12 @@ class MainConfiguration implements ConfigurationInterface
         
         $this->addStoragesSection($rootNode);
 
+        $rootNode
+            ->children()
+            ->scalarNode('entity_manager')
+            ->defaultValue('default')
+            ->end();
+
         return $tb;
     }
 

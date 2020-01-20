@@ -37,12 +37,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $this->addStorageFactory(new FilesystemStorageFactory);
-        $this->addStorageFactory(new DoctrineStorageFactory);
-        $this->addStorageFactory(new CustomStorageFactory);
-        $this->addStorageFactory(new Propel1StorageFactory);
-        $this->addStorageFactory(new Propel2StorageFactory);
-
+        $this->addDefaultStorageFactories();
         $mainConfig = $this->getConfiguration($configs, $container);
 
         $config = $this->processConfiguration($mainConfig, $configs);
@@ -75,7 +70,11 @@ class PayumExtension extends Extension implements PrependExtensionInterface
      */
     public function prepend(ContainerBuilder $container)
     {
+        $this->addDefaultStorageFactories();
         $bundles = $container->getParameter('kernel.bundles');
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $payumConfig = $this->processConfiguration(new MainConfiguration($this->storagesFactories), $configs);
 
         if (isset($bundles['DoctrineBundle'])) {
             $config = array_merge(...$container->getExtensionConfig('doctrine'));
@@ -87,18 +86,24 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
                 $container->prependExtensionConfig('doctrine', array(
                     'orm' => array(
-                        'mappings' => array(
-                            'payum' => array(
-                                'is_bundle' => false,
-                                'type' => 'xml',
-                                'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
-                                'prefix' => 'Payum\Core\Model',
+                        'entity_managers' => array(
+                            $payumConfig['entity_manager'] => array(
+                                'mappings' => array(
+                                    'payum' => array(
+                                        'is_bundle' => false,
+                                        'type' => 'xml',
+                                        'dir' => $payumRootDir.'/Bridge/Doctrine/Resources/mapping',
+                                        'prefix' => 'Payum\Core\Model',
+                                    ),
+                                ),
                             ),
                         ),
                     ),
                 ));
             }
         }
+
+        $container->setAlias('payum.entity_manager', \sprintf('doctrine.orm.%s_entity_manager', $payumConfig['entity_manager']));
     }
 
     /**
@@ -310,6 +315,19 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             if (isset($this->storagesFactories[$name])) {
                 return $name;
             }
+        }
+    }
+
+    private function addDefaultStorageFactories()
+    {
+        try {
+            $this->addStorageFactory(new FilesystemStorageFactory);
+            $this->addStorageFactory(new DoctrineStorageFactory);
+            $this->addStorageFactory(new CustomStorageFactory);
+            $this->addStorageFactory(new Propel1StorageFactory);
+            $this->addStorageFactory(new Propel2StorageFactory);
+        } catch (\InvalidArgumentException $e) {
+
         }
     }
 }
