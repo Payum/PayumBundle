@@ -102,8 +102,6 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 ));
             }
         }
-
-        $container->setAlias('payum.entity_manager', \sprintf('doctrine.orm.%s_entity_manager', $payumConfig['entity_manager']));
     }
 
     /**
