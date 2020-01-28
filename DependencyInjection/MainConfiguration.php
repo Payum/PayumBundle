@@ -38,6 +38,12 @@ class MainConfiguration implements ConfigurationInterface
             $rootNode = $tb->root('payum');
         }
 
+        $rootNode
+            ->children()
+                ->scalarNode('entity_manager')
+                    ->defaultValue('default')
+                ->end();
+
         $securityNode = $rootNode->children()
             ->arrayNode('security')->isRequired()
         ;
@@ -55,7 +61,7 @@ class MainConfiguration implements ConfigurationInterface
                 ->prototype('variable')
                 ->treatNullLike([])
         ;
-        
+
         $this->addStoragesSection($rootNode);
 
         return $tb;

@@ -50,6 +50,8 @@ payum:
     gateways:
         offline:
             factory: offline
+
+    entity_manager: default
 ```
 
 _note_ if you're using Symfony 4+ then create `config/packages/payum.yaml` file with contents described above.

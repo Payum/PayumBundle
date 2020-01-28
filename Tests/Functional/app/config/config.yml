@@ -42,3 +42,4 @@ payum:
             password: 'aPassword'
             signature: 'aSignature'
             sandbox: true
+    entity_manager: default
