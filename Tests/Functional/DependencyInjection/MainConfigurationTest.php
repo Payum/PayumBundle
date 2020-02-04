@@ -5,8 +5,9 @@ use Symfony\Component\Config\Definition\Processor;
 use Payum\Bundle\PayumBundle\DependencyInjection\MainConfiguration;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
+use PHPUnit\Framework\TestCase;
 
-class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
+class MainConfigurationTest extends TestCase
 {
     protected $storageFactories = array();
     

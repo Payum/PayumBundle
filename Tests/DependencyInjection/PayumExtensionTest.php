@@ -7,8 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
+use PHPUnit\Framework\TestCase;
 
-class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
+class PayumExtensionTest extends TestCase
 {
     /**
      * @test
