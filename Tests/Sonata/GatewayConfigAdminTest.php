@@ -10,7 +10,7 @@ class GatewayConfigAdminTest extends TestCase
 {
     public static function setUpBeforeClass()
     {
-        throw new \PHPUnit_Framework_SkippedTestError();
+        self::markTestSkipped();
     }
 
     /**

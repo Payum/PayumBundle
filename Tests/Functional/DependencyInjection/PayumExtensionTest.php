@@ -6,10 +6,11 @@ use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Storage\CryptoStorageDecorator;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class PayumExtensionTest extends  \PHPUnit_Framework_TestCase
+class PayumExtensionTest extends TestCase
 {
     /**
      * @test

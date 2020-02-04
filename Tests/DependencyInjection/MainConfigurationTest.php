@@ -3,11 +3,12 @@ namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\MainConfiguration;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
-class MainConfigurationTest extends  \PHPUnit_Framework_TestCase
+class MainConfigurationTest extends TestCase
 {
     protected $storageFactories = array();
 
