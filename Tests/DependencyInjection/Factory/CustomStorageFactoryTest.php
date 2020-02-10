@@ -44,8 +44,8 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new CustomStorageFactory();
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -68,8 +68,8 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new CustomStorageFactory();
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -87,8 +87,8 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new CustomStorageFactory();
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -108,8 +108,8 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new CustomStorageFactory();
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -126,8 +126,8 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new CustomStorageFactory;
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 

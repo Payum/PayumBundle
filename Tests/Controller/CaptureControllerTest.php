@@ -10,7 +10,7 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Payum\Core\Storage\StorageInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ class CaptureControllerTest extends \PHPUnit\Framework\TestCase
     {
         $rc = new \ReflectionClass(CaptureController::class);
 
-        $this->assertTrue($rc->isSubclassOf(Controller::class));
+        $this->assertTrue($rc->isSubclassOf(AbstractController::class));
     }
 
     /**
@@ -43,7 +43,7 @@ class CaptureControllerTest extends \PHPUnit\Framework\TestCase
         $request = Request::create('/');
 
         //guard
-        $this->assertNull($request->getSession());
+        $this->assertFalse($request->hasSession());
 
         $controller->doSessionTokenAction($request);
     }

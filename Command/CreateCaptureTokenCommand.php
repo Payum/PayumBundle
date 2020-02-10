@@ -58,6 +58,8 @@ class CreateCaptureTokenCommand extends Command implements ContainerAwareInterfa
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
         $output->writeln(sprintf('After Url: <info>%s</info>', $token->getAfterUrl() ?: 'null'));
         $output->writeln(sprintf('Details: <info>%s</info>', (string) $token->getDetails()));
+
+        return 0;
     }
 
     /**

@@ -40,7 +40,7 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
         $modelId = $input->getOption('model-id');
         $model = null;
 
-        if  ($modelClass && $modelId) {
+        if ($modelClass && $modelId) {
             if (false == $model = $this->getPayum()->getStorage($modelClass)->find($modelId)) {
                 throw new RuntimeException(sprintf(
                     'Cannot find model with class %s and id %s.',
@@ -55,6 +55,8 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
         $output->writeln(sprintf('Hash: <info>%s</info>', $token->getHash()));
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
         $output->writeln(sprintf('Details: <info>%s</info>', (string) $token->getDetails() ?: 'null'));
+
+        return 0;
     }
 
     /**

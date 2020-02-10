@@ -9,10 +9,8 @@ framework:
     session:
         storage_id: 'session.storage.mock_file'
     secret:          '%secret%'
-    router:          { resource: '%kernel.root_dir%/config/routing.yml' }
+    router:          { resource: '%kernel.project_dir%/Tests/Functional/app/config/routing.yml' }
     default_locale:  '%locale%'
-    templating:
-        engines:                                          [ 'twig']
     form:                                                 true
     csrf_protection:                                      true
     validation:                                           { enable_annotations: true }

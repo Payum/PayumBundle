@@ -7,7 +7,7 @@ use Payum\Core\Reply\HttpRedirect;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -28,7 +28,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     {
         $expectedException = new Exception;
 
-        $event = new GetResponseForExceptionEvent(
+        $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
             Kernel::MASTER_REQUEST,
@@ -46,7 +46,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $listener->onKernelException($event);
 
         $this->assertNull($event->getResponse());
-        $this->assertSame($expectedException, $event->getException());
+        $this->assertSame($expectedException, $event->getThrowable());
         $this->assertFalse($event->isPropagationStopped());
     }
 
@@ -60,7 +60,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $reply = new HttpRedirect($expectedUrl);
         $response = new Response();
 
-        $event = new GetResponseForExceptionEvent(
+        $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
             Kernel::MASTER_REQUEST,
@@ -80,7 +80,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $listener->onKernelException($event);
 
         $this->assertSame($response, $event->getResponse());
-        $this->assertSame($reply, $event->getException());
+        $this->assertSame($reply, $event->getThrowable());
     }
 
     /**
@@ -91,17 +91,12 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $reply = new HttpRedirect('/foo/bar');
         $response = new Response('', 302);
 
-        $event = new GetResponseForExceptionEvent(
+        $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
             Kernel::MASTER_REQUEST,
             $reply
         );
-
-        // BC for SF < 3.3
-        if (method_exists($event, 'allowCustomResponseCode')) {
-            $this->markTestSkipped('BC for SF < 3.3');
-        }
 
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
@@ -130,17 +125,12 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
             'X-Status-Code' => 666,
         ));
 
-        $event = new GetResponseForExceptionEvent(
+        $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
             Kernel::MASTER_REQUEST,
             $reply
         );
-
-        // BC for SF < 3.3
-        if (method_exists($event, 'allowCustomResponseCode')) {
-            $this->markTestSkipped('BC for SF < 3.3');
-        }
 
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
@@ -167,19 +157,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
         $reply = new HttpRedirect('/foo/bar');
         $response = new Response('', 302);
 
-        $eventMock = $this
-            ->getMockBuilder('Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent')
-            ->setMethods(null)
-            ->setConstructorArgs([$this->createHttpKernelMock(),
-                new Request,
-                Kernel::MASTER_REQUEST,
-                $reply])
-            ->getMock();
-
-        // BC for SF < 3.3
-        if (!method_exists($eventMock, 'allowCustomResponseCode')) {
-            $this->markTestSkipped('BC for SF < 3.3');
-        }
+        $event = new ExceptionEvent($this->createHttpKernelMock(), new Request, Kernel::MASTER_REQUEST, $reply);
 
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
@@ -189,18 +167,13 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue($response))
         ;
 
-        $eventMock
-            ->expects($this->once())
-            ->method('allowCustomResponseCode')
-        ;
-
         $listener = new ReplyToHttpResponseListener($converterMock);
 
-        $listener->onKernelException($eventMock);
+        $listener->onKernelException($event);
 
-        $this->assertInstanceOf(Response::class, $eventMock->getResponse());
-        $this->assertEquals(302, $eventMock->getResponse()->getStatusCode());
-        $this->assertEquals(true, $eventMock->isAllowingCustomResponseCode());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
+        $this->assertEquals(302, $event->getResponse()->getStatusCode());
+        $this->assertEquals(true, $event->isAllowingCustomResponseCode());
     }
 
     /**

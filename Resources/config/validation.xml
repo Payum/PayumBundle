@@ -37,7 +37,8 @@
             <constraint name="NotBlank">
                 <option name="groups">Payum</option>
             </constraint>
-            <constraint name="DateTime">
+            <constraint name="Type">
+                <option name="type">DateTimeInterface</option>
                 <option name="groups">Payum</option>
             </constraint>
             <constraint name="Payum\Core\Bridge\Symfony\Validator\Constraints\CreditCardDate">
