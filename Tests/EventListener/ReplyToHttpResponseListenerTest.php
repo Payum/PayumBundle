@@ -89,7 +89,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     public function shouldSetXStatusFromResponseStatusCode()
     {
         $reply = new HttpRedirect('/foo/bar');
-        $response = new Response('', 302);
+        $response = new Response('', 302, ['X-Status-Code' => 302]);
 
         $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
