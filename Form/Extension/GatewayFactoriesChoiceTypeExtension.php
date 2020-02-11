@@ -4,7 +4,6 @@ namespace Payum\Bundle\PayumBundle\Form\Extension;
 use Payum\Core\Bridge\Symfony\Form\Type\GatewayFactoriesChoiceType;
 use Payum\Core\Registry\GatewayFactoryRegistryInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Exception;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GatewayFactoriesChoiceTypeExtension extends AbstractTypeExtension
@@ -53,7 +52,7 @@ class GatewayFactoriesChoiceTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [GatewayFactoriesChoiceType::class];
     }

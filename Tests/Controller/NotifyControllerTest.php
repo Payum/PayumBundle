@@ -5,12 +5,10 @@ use Payum\Bundle\PayumBundle\Controller\NotifyController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Request\Notify;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class NotifyControllerTest extends \PHPUnit\Framework\TestCase
 {
@@ -21,7 +19,7 @@ class NotifyControllerTest extends \PHPUnit\Framework\TestCase
     {
         $rc = new \ReflectionClass(NotifyController::class);
 
-        $this->assertTrue($rc->isSubclassOf(Controller::class));
+        $this->assertTrue($rc->isSubclassOf(AbstractController::class));
     }
 
     /**

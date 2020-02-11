@@ -4,9 +4,9 @@ namespace Payum\Bundle\PayumBundle\Controller;
 use Payum\Core\Payum;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-abstract class PayumController extends Controller
+abstract class PayumController extends AbstractController
 {
     /**
      * @return Payum

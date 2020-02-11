@@ -10,11 +10,11 @@ class CaptureController extends PayumController
 {
     public function doSessionTokenAction(Request $request)
     {
-        if (false == $request->getSession()) {
+        if (false === $request->hasSession()) {
             throw new HttpException(400, 'This controller requires session to be started.');
         }
 
-        if (false == $hash = $request->getSession()->get('payum_token')) {
+        if (null === $hash = $request->getSession()->get('payum_token')) {
             throw new HttpException(400, 'This controller requires token hash to be stored in the session.');
         }
 

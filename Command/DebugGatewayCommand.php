@@ -121,6 +121,8 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
                 $output->writeln(sprintf("\t%s", get_class($api)));
             }
         }
+
+        return 0;
     }
 
     /**

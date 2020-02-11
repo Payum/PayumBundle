@@ -54,6 +54,8 @@ class StatusCommand extends Command implements ContainerAwareInterface
         $this->getPayum()->getGateway($gatewayName)->execute($status);
 
         $output->writeln(sprintf('Status: %s', $status->getValue()));
+
+        return 0;
     }
 
     /**

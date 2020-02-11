@@ -10,7 +10,7 @@ use Payum\Core\Request\Cancel;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Payum\Core\Storage\StorageInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ class CancelControllerTest extends \PHPUnit\Framework\TestCase
     {
         $rc = new \ReflectionClass(CancelController::class);
 
-        $this->assertTrue($rc->isSubclassOf(Controller::class));
+        $this->assertTrue($rc->isSubclassOf(AbstractController::class));
     }
 
     /**

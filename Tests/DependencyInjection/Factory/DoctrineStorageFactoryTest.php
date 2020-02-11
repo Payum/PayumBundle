@@ -42,8 +42,8 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new DoctrineStorageFactory;
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -63,8 +63,8 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new DoctrineStorageFactory;
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 
@@ -85,8 +85,8 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = new DoctrineStorageFactory;
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
 
         $factory->addConfiguration($rootNode);
 

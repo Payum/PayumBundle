@@ -37,8 +37,8 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $factory = $this->createAbstractStorageFactory();
 
-        $tb = new TreeBuilder();
-        $rootNode = $tb->root('foo');
+        $tb = new TreeBuilder('foo');
+        $rootNode = $tb->getRootNode();
         
         $factory->addConfiguration($rootNode);
 
