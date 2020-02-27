@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="Payum\Bundle\PayumBundle\Controller\AuthorizeController" class="Payum\Bundle\PayumBundle\Controller\AuthorizeController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\CancelController" class="Payum\Bundle\PayumBundle\Controller\CancelController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\CaptureController" class="Payum\Bundle\PayumBundle\Controller\CaptureController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\NotifyController" class="Payum\Bundle\PayumBundle\Controller\NotifyController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\PayoutController" class="Payum\Bundle\PayumBundle\Controller\PayoutController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\RefundController" class="Payum\Bundle\PayumBundle\Controller\RefundController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\SyncController" class="Payum\Bundle\PayumBundle\Controller\SyncController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+    </services>
+</container>
