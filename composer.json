@@ -57,6 +57,7 @@
         "doctrine/orm": "~2.5",
         "payum/payum": "^1.5@dev",
         "payum/omnipay-v3-bridge": "^1@alpha",
+        "symfony/http-client": "^4.4|^5",
 
         "php-http/guzzle6-adapter": "^1",
         "omnipay/dummy": "^3@alpha",
