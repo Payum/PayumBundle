@@ -8,6 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class PayumController extends AbstractController
 {
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            'payum' => Payum::class,
+        ]);
+    }
+
     /**
      * @return Payum
      */

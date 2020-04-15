@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="true" />
+
+        <service id="Payum\Bundle\PayumBundle\Controller\AuthorizeController" class="Payum\Bundle\PayumBundle\Controller\AuthorizeController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\CancelController" class="Payum\Bundle\PayumBundle\Controller\CancelController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\CaptureController" class="Payum\Bundle\PayumBundle\Controller\CaptureController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\NotifyController" class="Payum\Bundle\PayumBundle\Controller\NotifyController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\PayoutController" class="Payum\Bundle\PayumBundle\Controller\PayoutController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\RefundController" class="Payum\Bundle\PayumBundle\Controller\RefundController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+        <service id="Payum\Bundle\PayumBundle\Controller\SyncController">
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+            <tag name="container.service_subscriber" />
+        </service>
+
+    </services>
+</container>
