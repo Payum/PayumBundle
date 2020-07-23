@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Storage;
+namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel2StorageFactory;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
