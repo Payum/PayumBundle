@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class PayoutControllerTest extends \PHPUnit\Framework\TestCase
+class PayoutControllerTest extends AbstractControllerTest
 {
     /**
      * @test
@@ -32,57 +32,22 @@ class PayoutControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function shouldExecutePayoutRequest()
     {
-        $request = Request::create('/');
-        $request->query->set('foo', 'fooVal');
+        $this->initMocks();
+        $controller = new PayoutController($this->payum);
 
-        $token = new Token;
-        $token->setGatewayName('theGateway');
-        $token->setAfterUrl('http://example.com/theAfterUrl');
-
-        $httpRequestVerifierMock = $this->createMock(HttpRequestVerifierInterface::class);
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('verify')
-            ->with($this->identicalTo($request))
-            ->will($this->returnValue($token))
-        ;
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('invalidate')
-            ->with($this->identicalTo($token))
-        ;
-
-        $gatewayMock = $this->createMock(GatewayInterface::class);
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Payout::class))
-        ;
-
-        $registryMock = $this->createMock(RegistryInterface::class);
-        $registryMock
-            ->expects($this->once())
-            ->method('getGateway')
-            ->with('theGateway')
-            ->will($this->returnValue($gatewayMock))
-        ;
-
-        $payum = new Payum(
-            $registryMock,
-            $httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
-
-        $container = new Container;
-        $container->set('payum', $payum);
-
-        $controller = new PayoutController;
-        $controller->setContainer($container);
-
-        $response = $controller->doAction($request);
+        $response = $controller->doAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('http://example.com/theAfterUrl', $response->getTargetUrl());
+        $this->assertEquals(self::AFTER_URL, $response->getTargetUrl());
+    }
+
+    protected function initGatewayMock()
+    {
+        $this->gatewayMock = $this->createMock(GatewayInterface::class);
+        $this->gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(Payout::class));
+
     }
 }

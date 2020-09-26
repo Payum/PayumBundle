@@ -1,16 +1,17 @@
 <?php
+
 namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
 use Payum\Bundle\PayumBundle\Controller\NotifyController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Request\Notify;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotifyControllerTest extends \PHPUnit\Framework\TestCase
+class NotifyControllerTest extends TestCase
 {
     /**
      * @test
@@ -34,22 +35,16 @@ class NotifyControllerTest extends \PHPUnit\Framework\TestCase
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(Notify::class))
-        ;
+            ->with($this->isInstanceOf(Notify::class));
 
         $registryMock = $this->createMock(RegistryInterface::class);
         $registryMock
             ->expects($this->once())
             ->method('getGateway')
             ->with('theGatewayName')
-            ->will($this->returnValue($gatewayMock))
-        ;
+            ->will($this->returnValue($gatewayMock));
 
-        $container = new Container;
-        $container->set('payum', $registryMock);
-
-        $controller = new NotifyController;
-        $controller->setContainer($container);
+        $controller = new NotifyController($registryMock);
 
         $response = $controller->doUnsafeAction($request);
 

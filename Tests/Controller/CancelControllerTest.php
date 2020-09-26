@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CancelControllerTest extends \PHPUnit\Framework\TestCase
+class CancelControllerTest extends AbstractControllerTest
 {
     /**
      * @test
@@ -33,58 +33,13 @@ class CancelControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function shouldExecuteCancelRequest()
     {
-        $request = Request::create('/');
-        $request->query->set('foo', 'fooVal');
+        $this->initMocks();
+        $controller = new CancelController($this->payum);
 
-        $token = new Token;
-        $token->setGatewayName('theGateway');
-        $token->setAfterUrl('http://example.com/theAfterUrl');
-
-        $httpRequestVerifierMock = $this->createMock(HttpRequestVerifierInterface::class);
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('verify')
-            ->with($this->identicalTo($request))
-            ->will($this->returnValue($token))
-        ;
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('invalidate')
-            ->with($this->identicalTo($token))
-        ;
-
-        $gatewayMock = $this->createMock(GatewayInterface::class);
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Cancel::class))
-        ;
-
-        $registryMock = $this->createMock(RegistryInterface::class);
-        $registryMock
-            ->expects($this->once())
-            ->method('getGateway')
-            ->with('theGateway')
-            ->will($this->returnValue($gatewayMock))
-        ;
-
-        $payum = new Payum(
-            $registryMock,
-            $httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
-
-        $container = new Container;
-        $container->set('payum', $payum);
-
-        $controller = new CancelController;
-        $controller->setContainer($container);
-
-        $response = $controller->doAction($request);
+        $response = $controller->doAction($this->request);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals('http://example.com/theAfterUrl', $response->getTargetUrl());
+        $this->assertEquals(self::AFTER_URL, $response->getTargetUrl());
     }
 
     /**
@@ -92,57 +47,24 @@ class CancelControllerTest extends \PHPUnit\Framework\TestCase
      */
     public function shouldExecuteCancelRequestWithoutAfterUrl()
     {
-        $request = Request::create('/');
-        $request->query->set('foo', 'fooVal');
+        $this->initMocks();
+        $this->token->setAfterUrl(null);
 
-        $token = new Token;
-        $token->setGatewayName('theGateway');
-        $token->setAfterUrl(null);
+        $controller = new CancelController($this->payum);
 
-        $httpRequestVerifierMock = $this->createMock(HttpRequestVerifierInterface::class);
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('verify')
-            ->with($this->identicalTo($request))
-            ->will($this->returnValue($token))
-        ;
-        $httpRequestVerifierMock
-            ->expects($this->once())
-            ->method('invalidate')
-            ->with($this->identicalTo($token))
-        ;
+        $response = $controller->doAction($this->request);
 
-        $gatewayMock = $this->createMock(GatewayInterface::class);
-        $gatewayMock
+        $this->assertInstanceOf(Response::class, $response);
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+
+    protected function initGatewayMock()
+    {
+        $this->gatewayMock = $this->createMock(GatewayInterface::class);
+        $this->gatewayMock
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(Cancel::class))
         ;
-
-        $registryMock = $this->createMock(RegistryInterface::class);
-        $registryMock
-            ->expects($this->once())
-            ->method('getGateway')
-            ->with('theGateway')
-            ->will($this->returnValue($gatewayMock))
-        ;
-
-        $payum = new Payum(
-            $registryMock,
-            $httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
-
-        $container = new Container;
-        $container->set('payum', $payum);
-
-        $controller = new CancelController;
-        $controller->setContainer($container);
-
-        $response = $controller->doAction($request);
-
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertEquals(204, $response->getStatusCode());
     }
 }
