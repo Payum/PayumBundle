@@ -2,6 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Payum;
+use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,11 +10,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 abstract class PayumController extends AbstractController
 {
     /**
+     * @var Payum
+     */
+    private $payum;
+
+    /**
+     * PayumController constructor.
+     * @param RegistryInterface $payum
+     */
+    public function __construct(RegistryInterface $payum)
+    {
+        $this->payum = $payum;
+    }
+
+    /**
      * @return Payum
      */
     protected function getPayum()
     {
-        return $this->get('payum');
+        return $this->payum;
     }
 
     /**
