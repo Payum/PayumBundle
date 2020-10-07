@@ -4,7 +4,7 @@ namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
 use Payum\Bundle\PayumBundle\Controller\NotifyController;
 use Payum\Core\GatewayInterface;
-use Payum\Core\Registry\RegistryInterface;
+use Payum\Core\Payum;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,7 +37,7 @@ class NotifyControllerTest extends TestCase
             ->method('execute')
             ->with($this->isInstanceOf(Notify::class));
 
-        $registryMock = $this->createMock(RegistryInterface::class);
+        $registryMock = $this->createMock(Payum::class);
         $registryMock
             ->expects($this->once())
             ->method('getGateway')
