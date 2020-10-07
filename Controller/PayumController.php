@@ -16,9 +16,9 @@ abstract class PayumController extends AbstractController
 
     /**
      * PayumController constructor.
-     * @param RegistryInterface $payum
+     * @param Payum $payum
      */
-    public function __construct(RegistryInterface $payum)
+    public function __construct(Payum $payum)
     {
         $this->payum = $payum;
     }
