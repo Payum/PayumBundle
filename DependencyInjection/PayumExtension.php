@@ -53,6 +53,11 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $loader->load('commands.xml');
         $loader->load('form.xml');
 
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['TwigBundle'])) {
+            $loader->load('twig.xml');
+        }
+
         if ($container->getParameter('kernel.debug')) {
             $loader->load('debug.xml');
         }

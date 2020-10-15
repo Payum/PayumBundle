@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="payum.twig.path_registrar" class="Payum\Bundle\PayumBundle\Twig\PathRegistrar" public="true">
+            <argument id="twig" type="service" />
+        </service>
+    </services>
+</container>
