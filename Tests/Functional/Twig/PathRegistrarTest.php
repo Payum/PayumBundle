@@ -33,7 +33,10 @@ class PathRegistrarTest extends WebTestCase
     {
         $this->payum->getGateway('barGateway');
 
-        $templateContent = $this->twig->render('@PayumPaypalExpressCheckout/confirmOrder.html.twig');
+        $templateContent = $this->twig->render(
+            '@PayumPaypalExpressCheckout/confirmOrder.html.twig',
+            ['layout' => false]
+        );
 
         $this->assertContains(
             '<input type="submit" name="confirm" value="I confirm order purchase">',
