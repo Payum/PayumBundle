@@ -1,0 +1,8 @@
+form:
+    credit_card:
+        holder: Naam eigenaar
+        expire_at: Houdbaarheidsdatum
+        number: Kaart nummer
+        security_code: Beveiliging (CVV) Code
+    choice:
+        paypal_express_checkout: Paypal Express Checkout
