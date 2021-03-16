@@ -24,8 +24,11 @@ matrix:
       env: SYMFONY_REQUIRE=^5
     - php: 7.3
       env: SYMFONY_REQUIRE=^5
-    - php: 7.4snapshot
+    - php: 7.4
       env: SYMFONY_REQUIRE=^5
+    - php: 8.0
+      before_install:
+        - composer req alcohol/iso4217:^4.0 --ignore-platform-req=php
 
 before_install:
     - composer self-update
