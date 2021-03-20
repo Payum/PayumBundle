@@ -79,7 +79,7 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child config "driver" under "foo" must be configured.
+     * @expectedExceptionMessageRegExp /The child (node|config) "driver" (at path|under) "foo" must be configured\./
      */
     public function shouldRequireDriverOption()
     {
