@@ -12,8 +12,6 @@ cache:
 
 matrix:
   include:
-    - php: 7.1
-      env: SYMFONY_REQUIRE=^4
     - php: 7.2
       env: SYMFONY_REQUIRE=^4
     - php: 7.3
