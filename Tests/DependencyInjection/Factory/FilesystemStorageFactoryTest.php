@@ -64,7 +64,7 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child config "storage_dir" under "foo" must be configured.
+     * @expectedExceptionMessageRegExp /The child (node|config) "storage_dir" (at path|under) "foo" must be configured\./
      */
     public function shouldRequireStorageDirOption()
     {
