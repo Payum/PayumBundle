@@ -28,7 +28,7 @@ matrix:
       env: SYMFONY_REQUIRE=^5
     - php: 8.0
       before_install:
-        - composer req alcohol/iso4217:^4.0 --ignore-platform-req=php
+        - composer req payum/payum:dev-master
 
 before_install:
     - composer self-update

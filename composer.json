@@ -37,12 +37,13 @@
         }
     ],
     "require": {
-        "php": "^7.1.3",
+        "php": "7.1.3 || ^8.0",
         "payum/core": "^1.6",
         "symfony/framework-bundle": "^4.4 || ^5.0",
         "symfony/form": "^4.4 || ^5.0",
         "symfony/validator": "^4.4 || ^5.0",
-        "symfony/security-csrf": "^4.4 | ^5.0"
+        "symfony/security-csrf": "^4.4 | ^5.0",
+        "payum/payum": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5 || ^8.5",
@@ -55,7 +56,6 @@
         "symfony/yaml": "^4.4 || ^5.0 ",
         "defuse/php-encryption": "^2",
         "doctrine/orm": "~2.5",
-        "payum/payum": "^1.6",
         "payum/omnipay-v3-bridge": "^1@alpha",
 
         "php-http/guzzle6-adapter": "^1",

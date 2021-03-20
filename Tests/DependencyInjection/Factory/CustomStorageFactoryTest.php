@@ -62,7 +62,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child node "service" at path "foo" must be configured.
+     * @expectedExceptionMessage The child config "service" under "foo" must be configured.
      */
     public function shouldRequireServiceOption()
     {

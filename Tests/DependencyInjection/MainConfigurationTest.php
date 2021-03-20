@@ -12,7 +12,7 @@ class MainConfigurationTest extends TestCase
 {
     protected $storageFactories = array();
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->storageFactories = array(
             new FooStorageFactory(),
@@ -458,7 +458,7 @@ class MainConfigurationTest extends TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child node "security" at path "payum" must be configured.
+     * @expectedExceptionMessage The child config "security" under "payum" must be configured.
      */
     public function throwIfSecurityNotConfigured()
     {
@@ -475,7 +475,7 @@ class MainConfigurationTest extends TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child node "token_storage" at path "payum.security" must be configured.
+     * @expectedExceptionMessage The child config "token_storage" under "payum.security" must be configured.
      */
     public function throwIfTokenStorageNotConfigured()
     {
@@ -607,7 +607,7 @@ class MainConfigurationTest extends TestCase
      * @test
      *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child node "config_storage" at path "payum.dynamic_gateways" must be configured.
+     * @expectedExceptionMessage The child config "config_storage" under "payum.dynamic_gateways" must be configured.
      */
     public function throwIfGatewayConfigStorageNotConfigured()
     {
