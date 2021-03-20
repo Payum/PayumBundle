@@ -14,7 +14,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     protected $formFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,17 +44,19 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
             'csrf_protection' => false,
         ));
 
+        $year = date('Y') + 2;
+
         $form->submit(array(
             'day' => 1,
             'month' => 1,
-            'year' => 2020,
+            'year' => $year,
         ));
 
         $this->assertTrue($form->isValid(), $form->getErrors(true, false));
 
         $data = $form->getData();
         $this->assertInstanceOf(\DateTime::class, $data);
-        $this->assertEquals('2020-01-01', $data->format('Y-m-d'));
+        $this->assertEquals($year.'-01-01', $data->format('Y-m-d'));
     }
 
     /**

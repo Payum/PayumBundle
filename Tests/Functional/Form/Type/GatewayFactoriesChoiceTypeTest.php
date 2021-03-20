@@ -14,7 +14,7 @@ class GatewayFactoriesChoiceTypeTest extends WebTestCase
      */
     protected $formFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

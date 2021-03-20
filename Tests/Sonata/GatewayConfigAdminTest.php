@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class GatewayConfigAdminTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::markTestSkipped();
     }

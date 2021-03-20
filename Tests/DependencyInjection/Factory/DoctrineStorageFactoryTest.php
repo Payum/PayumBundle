@@ -13,7 +13,7 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
     public function shouldBeSubClassOfAbstractStorageFactory()
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorageFactory');
-        
+
         $this->assertTrue($rc->isSubclassOf('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory'));
     }
 
@@ -51,7 +51,7 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
         $config = $processor->process($tb->buildTree(), array(array(
             'driver' => 'orm',
         )));
-        
+
         $this->assertArrayHasKey('driver', $config);
         $this->assertEquals('orm', $config['driver']);
     }
@@ -77,9 +77,9 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * 
+     *
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The child node "driver" at path "foo" must be configured.
+     * @expectedExceptionMessage The child config "driver" under "foo" must be configured.
      */
     public function shouldRequireDriverOption()
     {

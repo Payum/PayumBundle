@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 class MainConfigurationTest extends TestCase
 {
     protected $storageFactories = array();
-    
-    protected function setUp()
+
+    protected function setUp(): void
     {
         $this->storageFactories = array(
             new DoctrineStorageFactory,
