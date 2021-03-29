@@ -15,7 +15,7 @@ class CreditCardTypeTest extends WebTestCase
      */
     protected $formFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -43,6 +43,8 @@ class CreditCardTypeTest extends WebTestCase
             'csrf_protection' => false,
         ));
 
+        $year = date('Y') + 2;
+
         $form->submit(array(
             'holder' => 'John Doe',
             'number' => '4111111111111111',
@@ -50,7 +52,7 @@ class CreditCardTypeTest extends WebTestCase
             'expireAt' => array(
                 'day' => 1,
                 'month' => 10,
-                'year' => 2020,
+                'year' => $year,
             ),
         ));
 
@@ -64,7 +66,7 @@ class CreditCardTypeTest extends WebTestCase
         $this->assertEquals('John Doe', $card->getHolder());
         $this->assertEquals('4111111111111111', $card->getNumber());
         $this->assertEquals('123', $card->getSecurityCode());
-        $this->assertEquals('2020-10-31', $card->getExpireAt()->format('Y-m-d'));
+        $this->assertEquals($year.'-10-31', $card->getExpireAt()->format('Y-m-d'));
     }
 
     /**
