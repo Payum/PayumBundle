@@ -42,12 +42,6 @@ class CaptureControllerTest extends AbstractControllerTest
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
         );
-        $this->payum = new Payum(
-            $this->registryMock,
-            $this->httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
 
         $controller = new CaptureController($this->payum);
 
@@ -71,12 +65,7 @@ class CaptureControllerTest extends AbstractControllerTest
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
         );
-        $this->payum = new Payum(
-            $this->registryMock,
-            $this->httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
+
         $controller = new CaptureController($this->payum);
 
         $request = Request::create('/');
@@ -107,12 +96,6 @@ class CaptureControllerTest extends AbstractControllerTest
         $this->registryMock = $this->createMock(RegistryInterface::class);
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
-        );
-        $this->payum = new Payum(
-            $this->registryMock,
-            $this->httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
         );
 
         $controller = new CaptureController($this->payum);
