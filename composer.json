@@ -56,7 +56,7 @@
         "defuse/php-encryption": "^2",
         "doctrine/orm": "~2.5",
         "payum/omnipay-v3-bridge": "^1@alpha",
-
+        "payum/payum": "^1.6",
         "php-http/guzzle6-adapter": "^1",
         "omnipay/dummy": "^3@alpha",
         "omnipay/paypal": "^3@dev",
