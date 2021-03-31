@@ -42,7 +42,9 @@ jobs:
 
       - name: Install PHP 8 dependencies
         if: startsWith(matrix.php, '8')
-        run: composer req --dev payum/payum:dev-master
+        run: |
+            composer req --dev --no-update payum/payum:dev-master
+            composer rem --dev --no-update league/uri-schemes
 
       - name: Install dependencies
         run: composer update
