@@ -6,6 +6,7 @@ use Payum\Bundle\PayumBundle\Controller\RefundController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Refund;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,7 +27,8 @@ class RefundControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteRefundRequest()
     {
-        $controller = new RefundController($this->payum);
+        $controller = new RefundController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
 
         $response = $controller->doAction($this->request);
 
@@ -41,7 +43,8 @@ class RefundControllerTest extends AbstractControllerTest
     {
         $this->token->setAfterUrl(null);
 
-        $controller = new RefundController($this->payum);
+        $controller = new RefundController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
 
         $response = $controller->doAction($this->request);
 

@@ -3,15 +3,11 @@ namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
 use Payum\Bundle\PayumBundle\Controller\CaptureController;
 use Payum\Core\GatewayInterface;
-use Payum\Core\Model\Token;
-use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Request\Capture;
-use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
-use Payum\Core\Storage\StorageInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -43,7 +39,8 @@ class CaptureControllerTest extends AbstractControllerTest
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController($this->payum);
+        $controller = new CaptureController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
 
         $request = Request::create('/');
 
@@ -66,7 +63,8 @@ class CaptureControllerTest extends AbstractControllerTest
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController($this->payum);
+        $controller = new CaptureController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
 
         $request = Request::create('/');
         $request->setSession(new Session(new MockArraySessionStorage()));
@@ -90,16 +88,18 @@ class CaptureControllerTest extends AbstractControllerTest
             ->will($this->returnValue('/payment/capture/theToken?foo=fooVal'))
         ;
 
-        $container = new Container;
-        $container->set('router', $routerMock);
+        $locator = new ServiceLocator([
+            'payum' => function () { return $this->payum; },
+            'router' => function () use ($routerMock) { return $routerMock; }
+        ]);
 
         $this->registryMock = $this->createMock(RegistryInterface::class);
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController($this->payum);
-        $controller->setContainer($container);
+        $controller = new CaptureController();
+        $controller->setContainer($locator);
 
         $this->request = Request::create('/');
         $this->request->query->set('foo', 'fooVal');
@@ -118,7 +118,8 @@ class CaptureControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCaptureRequest()
     {
-        $controller = new CaptureController($this->payum);
+        $controller = new CaptureController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
 
         $response = $controller->doAction($this->request);
 
