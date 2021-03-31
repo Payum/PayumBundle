@@ -57,7 +57,7 @@
         "doctrine/orm": "~2.5",
         "payum/omnipay-v3-bridge": "^1@alpha",
         "payum/payum": "^1.6",
-        "php-http/guzzle6-adapter": "^1",
+        "php-http/guzzle6-adapter": "1.1.1",
         "omnipay/dummy": "^3@alpha",
         "omnipay/paypal": "^3@dev",
         "omnipay/common": "^3@dev",
@@ -65,7 +65,8 @@
         "klarna/checkout": "~1|~2.0",
         "fp/klarna-invoice": "0.1.*",
         "stripe/stripe-php": "~1.0",
-
+        "league/uri-schemes": "^1.1",
+        "doctrine/annotations": "^1.9",
         "ext-curl": "*",
         "ext-pdo_sqlite": "*",
         "ext-soap": "*"
