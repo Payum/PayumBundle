@@ -2,7 +2,6 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Payum;
-use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
