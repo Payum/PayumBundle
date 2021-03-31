@@ -92,7 +92,7 @@ class CaptureControllerTest extends AbstractControllerTest
     {
         $routerMock = $this->createMock(RouterInterface::class);
         $routerMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('generate')
             ->with('payum_capture_do', array(
                 'payum_token' => 'theToken',
@@ -135,7 +135,6 @@ class CaptureControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCaptureRequest()
     {
-        $this->initMocks();
         $controller = new CaptureController($this->payum);
 
         $response = $controller->doAction($this->request);
@@ -148,7 +147,7 @@ class CaptureControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Capture::class))
         ;

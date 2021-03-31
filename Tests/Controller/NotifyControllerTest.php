@@ -33,13 +33,13 @@ class NotifyControllerTest extends TestCase
 
         $gatewayMock = $this->createMock(GatewayInterface::class);
         $gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Notify::class));
 
         $registryMock = $this->createMock(Payum::class);
         $registryMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getGateway')
             ->with('theGatewayName')
             ->will($this->returnValue($gatewayMock));

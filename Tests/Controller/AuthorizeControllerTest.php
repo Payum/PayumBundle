@@ -32,7 +32,6 @@ class AuthorizeControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteAuthorizeRequest()
     {
-        $this->initMocks();
         $controller = new AuthorizeController($this->payum);
 
         $response = $controller->doAction($this->request);
@@ -45,7 +44,7 @@ class AuthorizeControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Authorize::class))
         ;

@@ -23,7 +23,7 @@ abstract class AbstractControllerTest extends TestCase
     protected $payum;
     protected $request;
 
-    protected function initMocks()
+    protected function setUp(): void
     {
         $this->request = Request::create('/');
         $this->request->query->set('foo', 'fooVal');
@@ -36,12 +36,13 @@ abstract class AbstractControllerTest extends TestCase
             HttpRequestVerifierInterface::class
         );
         $this->httpRequestVerifierMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('verify')
             ->with($this->identicalTo($this->request))
             ->will($this->returnValue($this->token));
+
         $this->httpRequestVerifierMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('invalidate')
             ->with($this->identicalTo($this->token));
 
@@ -49,7 +50,7 @@ abstract class AbstractControllerTest extends TestCase
 
         $this->registryMock = $this->createMock(RegistryInterface::class);
         $this->registryMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getGateway')
             ->with(self::GATEWAY_NAME)
             ->will($this->returnValue($this->gatewayMock));
