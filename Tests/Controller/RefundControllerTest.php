@@ -26,7 +26,6 @@ class RefundControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteRefundRequest()
     {
-        $this->initMocks();
         $controller = new RefundController($this->payum);
 
         $response = $controller->doAction($this->request);
@@ -40,7 +39,6 @@ class RefundControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteRefundRequestWithoutAfterUrl()
     {
-        $this->initMocks();
         $this->token->setAfterUrl(null);
 
         $controller = new RefundController($this->payum);
@@ -55,7 +53,7 @@ class RefundControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Refund::class));
 

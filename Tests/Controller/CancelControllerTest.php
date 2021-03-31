@@ -33,7 +33,6 @@ class CancelControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCancelRequest()
     {
-        $this->initMocks();
         $controller = new CancelController($this->payum);
 
         $response = $controller->doAction($this->request);
@@ -47,7 +46,6 @@ class CancelControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCancelRequestWithoutAfterUrl()
     {
-        $this->initMocks();
         $this->token->setAfterUrl(null);
 
         $controller = new CancelController($this->payum);
@@ -62,7 +60,7 @@ class CancelControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Cancel::class))
         ;

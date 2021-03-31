@@ -32,7 +32,6 @@ class PayoutControllerTest extends AbstractControllerTest
      */
     public function shouldExecutePayoutRequest()
     {
-        $this->initMocks();
         $controller = new PayoutController($this->payum);
 
         $response = $controller->doAction($this->request);
@@ -45,7 +44,7 @@ class PayoutControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Payout::class));
 
