@@ -5,59 +5,33 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <defaults autowire="true" autoconfigure="true" />
+
         <service id="Payum\Bundle\PayumBundle\Controller\AuthorizeController" class="Payum\Bundle\PayumBundle\Controller\AuthorizeController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\CancelController" class="Payum\Bundle\PayumBundle\Controller\CancelController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\CaptureController" class="Payum\Bundle\PayumBundle\Controller\CaptureController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\NotifyController" class="Payum\Bundle\PayumBundle\Controller\NotifyController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\PayoutController" class="Payum\Bundle\PayumBundle\Controller\PayoutController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\RefundController" class="Payum\Bundle\PayumBundle\Controller\RefundController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
 
         <service id="Payum\Bundle\PayumBundle\Controller\SyncController" class="Payum\Bundle\PayumBundle\Controller\SyncController" public="true">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
-            <argument type="service" id="payum"/>
             <tag name="container.service_subscriber" />
         </service>
     </services>
