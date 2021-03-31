@@ -8,6 +8,7 @@ use Payum\Core\Payum;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,7 +45,8 @@ class NotifyControllerTest extends TestCase
             ->with('theGatewayName')
             ->will($this->returnValue($gatewayMock));
 
-        $controller = new NotifyController($registryMock);
+        $controller = new NotifyController();
+        $controller->setContainer(new ServiceLocator(['payum' => function () use ($registryMock) { return $registryMock; }]));
 
         $response = $controller->doUnsafeAction($request);
 

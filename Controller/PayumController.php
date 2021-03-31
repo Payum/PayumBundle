@@ -9,25 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 abstract class PayumController extends AbstractController
 {
     /**
-     * @var Payum
-     */
-    private $payum;
-
-    /**
-     * PayumController constructor.
-     * @param Payum $payum
-     */
-    public function __construct(Payum $payum)
-    {
-        $this->payum = $payum;
-    }
-
-    /**
      * @return Payum
      */
     protected function getPayum()
     {
-        return $this->payum;
+        return $this->get('payum');
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            'payum' => Payum::class,
+        ]);
     }
 
     /**
