@@ -1,5 +1,5 @@
 <?php
-namespace Payum\Bundle\PayumBundle\Sonata\Tests;
+namespace Payum\Bundle\PayumBundle\Tests\Sonata;
 
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use PHPUnit\Framework\TestCase;

@@ -1,5 +1,5 @@
 <?php
-namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory\Compiler;
+namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildConfigsPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
