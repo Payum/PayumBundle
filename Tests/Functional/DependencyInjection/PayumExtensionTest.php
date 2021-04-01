@@ -89,6 +89,7 @@ class PayumExtensionTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
@@ -137,6 +138,7 @@ class PayumExtensionTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
@@ -186,21 +188,22 @@ class PayumExtensionTest extends TestCase
 
         $configs = array($config);
 
-        $container = new ContainerBuilder();
-        $container->setParameter('kernel.debug', false);
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
-        $extension->load($configs, $container);
+        $extension->load($configs, $containerBuilder);
 
-        $this->assertTrue($container->hasDefinition('payum.dynamic_gateways.cypher'));
-        $cypher = $container->getDefinition('payum.dynamic_gateways.cypher');
+        $this->assertTrue($containerBuilder->hasDefinition('payum.dynamic_gateways.cypher'));
+        $cypher = $containerBuilder->getDefinition('payum.dynamic_gateways.cypher');
         $this->assertSame(DefuseCypher::class, $cypher->getClass());
         $this->assertSame('aSecretKey', $cypher->getArgument(0));
 
-        $this->assertTrue($container->hasDefinition('payum.dynamic_gateways.encrypted_config_storage'));
+        $this->assertTrue($containerBuilder->hasDefinition('payum.dynamic_gateways.encrypted_config_storage'));
 
-        $storage = $container->getDefinition('payum.dynamic_gateways.encrypted_config_storage');
+        $storage = $containerBuilder->getDefinition('payum.dynamic_gateways.encrypted_config_storage');
         $this->assertSame(CryptoStorageDecorator::class, $storage->getClass());
         $this->assertSame('payum.dynamic_gateways.encrypted_config_storage.inner', (string) $storage->getArgument(0));
         $this->assertSame('payum.dynamic_gateways.cypher', (string) $storage->getArgument(1));
@@ -243,6 +246,7 @@ class PayumExtensionTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
@@ -301,6 +305,7 @@ class PayumExtensionTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
@@ -351,6 +356,7 @@ class PayumExtensionTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
 
         $extension = new PayumExtension;
 
@@ -358,6 +364,71 @@ class PayumExtensionTest extends TestCase
 
         $this->assertFalse($containerBuilder->hasDefinition('payum.dynamic_gateways.gateway_config_admin'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldConfigureTwigPathRegistrar()
+    {
+        $config = array(
+            'security' => array(
+                'token_storage' => array(
+                    'Payum\Core\Model\Token' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'gateways' => array(),
+        );
+
+        $configs = array($config);
+
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', ['TwigBundle' => 'TwigBundle']);
+
+        $extension = new PayumExtension;
+
+        $extension->load($configs, $containerBuilder);
+
+        $this->assertTrue($containerBuilder->hasDefinition('payum.twig.path_registrar'));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotConfigureTwigPathRegistrarWithoutTwig()
+    {
+        $config = array(
+            'security' => array(
+                'token_storage' => array(
+                    'Payum\Core\Model\Token' => array(
+                        'filesystem' => array(
+                            'storage_dir' => sys_get_temp_dir(),
+                            'id_property' => 'hash'
+                        )
+                    )
+                )
+            ),
+            'gateways' => array(),
+        );
+
+        $configs = array($config);
+
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->setParameter('kernel.debug', false);
+        $containerBuilder->setParameter('kernel.bundles', []);
+
+        $extension = new PayumExtension;
+
+        $extension->load($configs, $containerBuilder);
+
+        $this->assertFalse($containerBuilder->hasDefinition('payum.twig.path_registrar'));
+    }
+
 }
 
 class TestGatewayConfig implements GatewayConfigInterface

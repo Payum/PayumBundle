@@ -23,8 +23,10 @@ class BuildConfigsPass implements CompilerPassInterface
 
         $builder = $container->getDefinition('payum.builder');
         if ($container->hasDefinition('twig')) {
-            $config = ['twig.env' => '@twig'];
-
+            $config = [
+                'twig.env' => '@twig',
+                'twig.register_paths' => '@payum.twig.path_registrar'
+            ];
             $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
         }
 

@@ -212,4 +212,35 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expected, $builder->getMethodCalls());
     }
+
+    public function testShouldAddTwigPathRegistrar()
+    {
+        $builder = new Definition();
+        $twig = new Definition();
+
+        $container = new ContainerBuilder();
+        $container->setDefinition('payum.builder', $builder);
+        $container->setDefinition('twig', $twig);
+        $pass = new BuildConfigsPass();
+
+        $pass->process($container);
+
+        $calls = $builder->getMethodCalls();
+
+        $this->assertEquals(#
+            $calls,
+            [
+                [
+                    'addCoreGatewayFactoryConfig',
+                    [
+                        [
+                            'twig.env' => '@twig',
+                            'twig.register_paths' => '@payum.twig.path_registrar'
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+    }
 }
