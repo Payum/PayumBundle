@@ -14,10 +14,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: 7.2
-          - php: 7.3
           - php: 7.4
           - php: 8.0
+          - php: 8.1
 
     steps:
       - name: Checkout
@@ -43,8 +42,8 @@ jobs:
       - name: Install PHP 8 dependencies
         if: startsWith(matrix.php, '8')
         run: |
-            composer req --dev --no-update payum/payum:dev-master
-            composer rem --dev --no-update league/uri-schemes
+          composer req --dev --no-update payum/payum:dev-master
+          composer rem --dev --no-update league/uri-schemes
 
       - name: Install dependencies
         run: composer update
@@ -60,7 +59,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: 7.2
+          - php: 7.4
 
     steps:
       - name: Checkout
