@@ -28,9 +28,6 @@ class CaptureControllerTest extends AbstractControllerTest
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwBadRequestIfSessionNotStartedOnDoSessionAction(): void
     {
@@ -54,9 +51,6 @@ class CaptureControllerTest extends AbstractControllerTest
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwBadRequestIfSessionNotContainPayumTokenOnDoSessionAction(): void
     {

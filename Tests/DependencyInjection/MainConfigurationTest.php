@@ -245,9 +245,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTryToUseNotValidClassAsStorageEntry(): void
     {
@@ -281,9 +278,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTryToAddMoreThenOneStorageForOneEntry(): void
     {
@@ -320,9 +314,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfStorageEntryDefinedWithoutConcreteStorage(): void
     {
@@ -381,9 +372,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfMoreThenOneTokenStorageConfigured(): void
     {
@@ -415,9 +403,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTokenStorageConfiguredWithModelNotImplementingTokenInterface(): void
     {
@@ -444,9 +429,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTokenStorageConfiguredWithNotModelClass(): void
     {
@@ -473,9 +455,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfSecurityNotConfigured(): void
     {
@@ -492,9 +471,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTokenStorageNotConfigured(): void
     {
@@ -513,9 +489,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfMoreThenOneGatewayConfigStorageConfigured(): void
     {
@@ -556,9 +529,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfGatewayConfigStorageConfiguredWithModelNotImplementingGatewayConfigInterface(): void
     {
@@ -594,9 +564,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfGatewayConfigStorageConfiguredWithNotModelClass(): void
     {
@@ -632,9 +599,6 @@ class MainConfigurationTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfGatewayConfigStorageNotConfigured(): void
     {
@@ -746,17 +710,17 @@ class MainConfigurationTest extends TestCase
 
 class FooStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, string $modelClass, array $config): string
+    public function create(ContainerBuilder $container, $modelClass, array $config)
     {
-        return 'serviceId';
+        return 'aStorageId';
     }
 
-    public function getName(): string
+    public function getName()
     {
         return 'foo_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder): void
+    public function addConfiguration(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
@@ -768,17 +732,17 @@ class FooStorageFactory implements StorageFactoryInterface
 
 class BarStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, string $modelClass, array $config): string
+    public function create(ContainerBuilder $container, $modelClass, array $config)
     {
         return 'serviceId';
     }
 
-    public function getName(): string
+    public function getName()
     {
         return 'bar_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder): void
+    public function addConfiguration(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()

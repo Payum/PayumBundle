@@ -64,9 +64,6 @@ class PayumExtensionTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTryToAddStorageFactoryWithEmptyName(): void
     {
@@ -85,9 +82,6 @@ class PayumExtensionTest extends TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function throwIfTryToAddStorageGatewayFactoryWithNameAlreadyAdded(): void
     {
@@ -304,7 +298,7 @@ class PayumExtensionTest extends TestCase
 
 class FeeStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, string $modelClass, array $config): string
+    public function create(ContainerBuilder $container, $modelClass, array $config)
     {
         return 'aStorageId';
     }

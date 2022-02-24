@@ -62,9 +62,6 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function shouldRequireServiceOption(): void
     {
@@ -83,9 +80,6 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function shouldNotAllowEmptyServiceOption(): void
     {
@@ -106,9 +100,6 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function shouldNotAllowNullServiceOption(): void
     {
