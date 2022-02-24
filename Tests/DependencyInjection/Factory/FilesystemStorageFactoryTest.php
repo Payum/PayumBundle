@@ -63,9 +63,6 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function shouldRequireStorageDirOption(): void
     {

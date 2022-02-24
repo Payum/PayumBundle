@@ -78,9 +78,6 @@ class DoctrineStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @test
-     *
-     *
-     *
      */
     public function shouldRequireDriverOption(): void
     {
