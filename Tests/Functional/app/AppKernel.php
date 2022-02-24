@@ -11,7 +11,7 @@ if(Kernel::MAJOR_VERSION===4)
 {
     class AppKernel extends AppKernelShared
     {
-        public function handle(Request $request, $type = HttpKernelInterface::MAIN_REQUEST, $catch = true): Response
+        public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true): Response
         {
             return parent::handle($request, $type, false);
         }

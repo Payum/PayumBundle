@@ -32,5 +32,13 @@ class AppKernelShared extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/config/config.yml');
+
+        if(Kernel::MAJOR_VERSION===4){
+            $loader->load(__DIR__ . '/config/config_sf4.yml');
+        }
+        else
+        {
+            $loader->load(__DIR__ . '/config/config_sf5.yml');
+        }
     }
 }
