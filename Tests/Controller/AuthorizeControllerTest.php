@@ -13,7 +13,7 @@ class AuthorizeControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldBeSubClassOfController()
+    public function shouldBeSubClassOfController(): void
     {
         $rc = new \ReflectionClass(AuthorizeController::class);
 
@@ -23,7 +23,7 @@ class AuthorizeControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldExecuteAuthorizeRequest()
+    public function shouldExecuteAuthorizeRequest(): void
     {
         $controller = new AuthorizeController();
         $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
@@ -34,7 +34,7 @@ class AuthorizeControllerTest extends AbstractControllerTest
         $this->assertEquals(self::AFTER_URL, $response->getTargetUrl());
     }
 
-    protected function initGatewayMock()
+    protected function initGatewayMock(): void
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock

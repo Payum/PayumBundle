@@ -7,10 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
-    /**
-     * @var KernelBrowser
-     */
-    protected $client;
+    protected KernelBrowser $client;
 
     /**
      * @var ContainerInterface
@@ -25,10 +22,7 @@ abstract class WebTestCase extends BaseWebTestCase
         static::$container = static::$kernel->getContainer();
     }
 
-    /**
-     * @return string
-     */
-    public static function getKernelClass()
+    public static function getKernelClass(): string
     {
         require_once __DIR__ . '/app/AppKernel.php';
 

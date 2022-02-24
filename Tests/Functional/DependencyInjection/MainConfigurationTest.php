@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class MainConfigurationTest extends TestCase
 {
-    protected $storageFactories = array();
+    protected array $storageFactories = array();
 
     protected function setUp(): void
     {
@@ -22,8 +22,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithMinimumConfig()
+    public function shouldPassConfigurationProcessingWithMinimumConfig(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -48,8 +50,9 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithMinimumConfigPlusGateway()
+    public function shouldPassConfigurationProcessingWithMinimumConfigPlusGateway(): void
     {
+        $this->expectNotToPerformAssertions();
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -82,8 +85,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithDynamicGateways()
+    public function shouldPassConfigurationProcessingWithDynamicGateways(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -116,8 +121,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithDynamicGatewaysAndEncryption()
+    public function shouldPassConfigurationProcessingWithDynamicGatewaysAndEncryption(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -153,8 +160,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithDynamicGatewaysPlusSonataAdmin()
+    public function shouldPassConfigurationProcessingWithDynamicGatewaysPlusSonataAdmin(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -188,8 +197,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithKlarnaCheckoutGatewayFactory()
+    public function shouldPassConfigurationProcessingWithKlarnaCheckoutGatewayFactory(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -222,8 +233,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithDoctrineStorageFactory()
+    public function shouldPassConfigurationProcessingWithDoctrineStorageFactory(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -262,8 +275,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessingWithFilesystemStorageFactory()
+    public function shouldPassConfigurationProcessingWithFilesystemStorageFactory(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();

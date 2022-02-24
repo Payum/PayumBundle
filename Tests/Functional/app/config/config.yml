@@ -13,7 +13,7 @@ framework:
     default_locale:  '%locale%'
     form:                                                 true
     csrf_protection:                                      true
-    validation:                                           { enable_annotations: true }
+    validation:                                           { enable_annotations: false }
     assets: false
 
 payum:

@@ -8,7 +8,7 @@ class ReplyToHttpResponseListenerTest extends WebTestCase
     /**
      * @test
      */
-    public function couldBeGetFromContainerAsService()
+    public function couldBeGetFromContainerAsService(): void
     {
         $listener = static::$container->get('payum.listener.reply_to_http_response');
 

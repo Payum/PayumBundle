@@ -24,7 +24,7 @@ class GatewayFactoriesChoiceTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function couldBeCreatedByFormFactory()
+    public function couldBeCreatedByFormFactory(): void
     {
         $form = $this->formFactory->create(GatewayFactoriesChoiceType::class);
         $view = $form->createView();

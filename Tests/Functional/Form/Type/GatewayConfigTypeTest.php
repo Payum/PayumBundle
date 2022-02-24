@@ -25,7 +25,7 @@ class GatewayConfigTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function couldBeCreatedByFormFactory()
+    public function couldBeCreatedByFormFactory(): void
     {
         $form = $this->formFactory->create(GatewayConfigType::class, null, array(
             'data_class' => GatewayConfig::class,

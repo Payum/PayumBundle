@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +14,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldImplementStorageFactoryInterface()
+    public function shouldImplementStorageFactoryInterface(): void
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory');
         
@@ -23,7 +24,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldBeAbstract()
+    public function shouldBeAbstract(): void
     {
         $rc = new \ReflectionClass(StorageFactoryInterface::class);
 
@@ -33,8 +34,10 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldAllowAddConfiguration()
+    public function shouldAllowAddConfiguration(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $factory = $this->createAbstractStorageFactory();
 
         $tb = new TreeBuilder('foo');
@@ -49,7 +52,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldAllowCreateStorageAndReturnItsId()
+    public function shouldAllowCreateStorageAndReturnItsId(): void
     {
         $expectedStorage = new Definition();
         
@@ -71,7 +74,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedStorage, $container->getDefinition($actualStorageId));
     }
 
-    protected function assertDefinitionContainsMethodCall(Definition $serviceDefinition, $expectedMethod, $expectedFirstArgument)
+    protected function assertDefinitionContainsMethodCall(Definition $serviceDefinition, $expectedMethod, $expectedFirstArgument): void
     {
         foreach ($serviceDefinition->getMethodCalls() as $methodCall) {
             if ($expectedMethod == $methodCall[0] && $expectedFirstArgument == $methodCall[1][0]) {
@@ -88,7 +91,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|AbstractStorageFactory
+     * @return AbstractStorageFactory|MockObject
      */
     protected function createAbstractStorageFactory()
     {

@@ -9,14 +9,14 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class BuildGatewayFactoriesPassTest extends \PHPUnit\Framework\TestCase
 {
-    public function testShouldImplementCompilerPassInterface()
+    public function testShouldImplementCompilerPassInterface(): void
     {
         $rc = new \ReflectionClass(BuildConfigsPass::class);
 
         $this->assertTrue($rc->implementsInterface(CompilerPassInterface::class));
     }
 
-    public function testShouldAddServiceWithTagToStaticRegistry()
+    public function testShouldAddServiceWithTagToStaticRegistry(): void
     {
         $service = new Definition();
         $service->addTag('payum.gateway_factory', ['factory' => 'foo']);
@@ -34,12 +34,10 @@ class BuildGatewayFactoriesPassTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(['foo' => 'aservice'], $registry->getArgument(2));
     }
 
-    /**
-     * @expectedException \Payum\Core\Exception\LogicException
-     * @expectedExceptionMessage The payum.gateway_factory tag require factory attribute.
-     */
-    public function testThrowIfTagMissFactoryAttribute()
+    public function testThrowIfTagMissFactoryAttribute(): void
     {
+        $this->expectException(\Payum\Core\Exception\LogicException::class);
+        $this->expectExceptionMessage("The payum.gateway_factory tag require factory attribute.");
         $service = new Definition();
         $service->addTag('payum.gateway_factory');
 

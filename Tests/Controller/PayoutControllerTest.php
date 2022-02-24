@@ -13,7 +13,7 @@ class PayoutControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldBeSubClassOfController()
+    public function shouldBeSubClassOfController(): void
     {
         $rc = new \ReflectionClass(PayoutController::class);
 
@@ -23,7 +23,7 @@ class PayoutControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldExecutePayoutRequest()
+    public function shouldExecutePayoutRequest(): void
     {
         $controller = new PayoutController();
         $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
@@ -34,7 +34,7 @@ class PayoutControllerTest extends AbstractControllerTest
         $this->assertEquals(self::AFTER_URL, $response->getTargetUrl());
     }
 
-    protected function initGatewayMock()
+    protected function initGatewayMock(): void
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock

@@ -14,7 +14,7 @@ class CancelControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldBeSubClassOfController()
+    public function shouldBeSubClassOfController(): void
     {
         $rc = new \ReflectionClass(CancelController::class);
 
@@ -24,7 +24,7 @@ class CancelControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldExecuteCancelRequest()
+    public function shouldExecuteCancelRequest(): void
     {
         $controller = new CancelController();
         $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
@@ -38,7 +38,7 @@ class CancelControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldExecuteCancelRequestWithoutAfterUrl()
+    public function shouldExecuteCancelRequestWithoutAfterUrl(): void
     {
         $this->token->setAfterUrl(null);
 
@@ -51,7 +51,7 @@ class CancelControllerTest extends AbstractControllerTest
         $this->assertEquals(204, $response->getStatusCode());
     }
 
-    protected function initGatewayMock()
+    protected function initGatewayMock(): void
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock

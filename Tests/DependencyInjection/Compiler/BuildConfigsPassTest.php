@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
 {
-    public function provideTags()
+    public function provideTags(): array
     {
         return [
             0 => [['name' => 'payum.action'], []],
@@ -182,7 +182,7 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testShouldImplementCompilerPassInterface()
+    public function testShouldImplementCompilerPassInterface(): void
     {
         $rc = new \ReflectionClass(BuildConfigsPass::class);
 
@@ -192,7 +192,7 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideTags
      */
-    public function testShouldAddConfig(array $tagAttributes, $expected)
+    public function testShouldAddConfig(array $tagAttributes, $expected): void
     {
         $tagName = $tagAttributes['name'];
         unset($tagAttributes['name']);

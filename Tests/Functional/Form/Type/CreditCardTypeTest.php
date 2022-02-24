@@ -25,7 +25,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function couldBeCreatedByFormFactory()
+    public function couldBeCreatedByFormFactory(): void
     {
         $form = $this->formFactory->create(CreditCardType::class);
         $view = $form->createView();
@@ -37,7 +37,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldSubmitDataCorrectly()
+    public function shouldSubmitDataCorrectly(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -72,7 +72,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldRequireHolderNotBlank()
+    public function shouldRequireHolderNotBlank(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -96,7 +96,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldRequireNumberNotBlank()
+    public function shouldRequireNumberNotBlank(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -120,7 +120,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldNumberPassLuchValidation()
+    public function shouldNumberPassLuchValidation(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -144,7 +144,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldRequireSecurityCodeNotBlank()
+    public function shouldRequireSecurityCodeNotBlank(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -168,7 +168,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldRequireExpireAtNotBlank()
+    public function shouldRequireExpireAtNotBlank(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
@@ -192,7 +192,7 @@ class CreditCardTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldRequireExpireAtInFuture()
+    public function shouldRequireExpireAtInFuture(): void
     {
         $form = $this->formFactory->create(CreditCardType::class, null, array(
             'csrf_protection' => false,
