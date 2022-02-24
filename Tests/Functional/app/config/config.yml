@@ -7,9 +7,12 @@ framework:
     #translator:      { fallback: %locale% }
     test: ~
     session:
-        storage_id: 'session.storage.mock_file'
+        handler_id: null
+        cookie_secure: auto
+        cookie_samesite: lax
+        storage_factory_id: session.storage.factory.mock_file
     secret:          '%secret%'
-    router:          { resource: '%kernel.project_dir%/Tests/Functional/app/config/routing.yml' }
+    router:          { utf8: true, resource: '%kernel.project_dir%/Tests/Functional/app/config/routing.yml' }
     default_locale:  '%locale%'
     form:                                                 true
     csrf_protection:                                      true

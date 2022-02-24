@@ -65,8 +65,8 @@
         "klarna/checkout": "~1|~2.0",
         "fp/klarna-invoice": "0.1.*",
         "stripe/stripe-php": "~1.0",
-        "league/uri-schemes": "^1.1",
         "doctrine/annotations": "^1.9",
+        "psr/log": "^2",
         "ext-curl": "*",
         "ext-pdo_sqlite": "*",
         "ext-soap": "*"
