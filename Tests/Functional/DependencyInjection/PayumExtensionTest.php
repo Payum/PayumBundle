@@ -15,7 +15,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddGatewayTagWithCorrectGatewayAndFactoryNamesSet()
+    public function shouldAddGatewayTagWithCorrectGatewayAndFactoryNamesSet(): void
     {
         $this->markTestSkipped();
 
@@ -68,7 +68,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldUsePayumBuilderServiceToBuildPayumService()
+    public function shouldUsePayumBuilderServiceToBuildPayumService(): void
     {
         $config = array(
             // 'dynamic_gateways' => array()
@@ -96,7 +96,7 @@ class PayumExtensionTest extends TestCase
 
         $payum = $containerBuilder->getDefinition('payum');
         $this->assertEquals('Payum\Core\Payum', $payum->getClass());
-        $this->assertInternalType('array', $payum->getFactory());
+        $this->assertIsArray($payum->getFactory());
 
         $this->assertInstanceOf(Reference::class, $payum->getFactory()[0]);
         $this->assertEquals('payum.builder', (string) $payum->getFactory()[0]);
@@ -107,7 +107,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldSetGatewayConfigStorageToPayumBuilderIfConfigured()
+    public function shouldSetGatewayConfigStorageToPayumBuilderIfConfigured(): void
     {
         $config = array(
             'dynamic_gateways' => array(
@@ -155,7 +155,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldWrapGatewayConfigStorageByEncryptionDecoratorWhenDefuseEncryptionIsEnabled()
+    public function shouldWrapGatewayConfigStorageByEncryptionDecoratorWhenDefuseEncryptionIsEnabled(): void
     {
         $config = array(
             'dynamic_gateways' => array(
@@ -210,7 +210,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldConfigureSonataAdminClassForGatewayConfigModelSetInStorageSection()
+    public function shouldConfigureSonataAdminClassForGatewayConfigModelSetInStorageSection(): void
     {
         $this->markTestSkipped('Has to wait for Sonata Admin Sf4 compatible release');
 
@@ -265,7 +265,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldInjectCypherToForGatewayConfigAdmin()
+    public function shouldInjectCypherToForGatewayConfigAdmin(): void
     {
         $this->markTestSkipped('Has to wait for Sonata Admin Sf4 compatible release');
 
@@ -320,7 +320,7 @@ class PayumExtensionTest extends TestCase
     /**
      * @test
      */
-    public function shouldNotConfigureSonataAdminClassForGatewayConfigIfDisabled()
+    public function shouldNotConfigureSonataAdminClassForGatewayConfigIfDisabled(): void
     {
         $config = array(
             'dynamic_gateways' => array(
@@ -366,7 +366,7 @@ class TestGatewayConfig implements GatewayConfigInterface
     {
     }
 
-    public function setGatewayName($gatewayName)
+    public function setGatewayName($gatewayName): void
     {
     }
 
@@ -374,11 +374,11 @@ class TestGatewayConfig implements GatewayConfigInterface
     {
     }
 
-    public function setFactoryName($name)
+    public function setFactoryName($name): void
     {
     }
 
-    public function setConfig(array $config)
+    public function setConfig(array $config): void
     {
     }
 

@@ -12,7 +12,7 @@ class Propel2StorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldBeSubClassOfAbstractStorageFactory()
+    public function shouldBeSubClassOfAbstractStorageFactory(): void
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel2StorageFactory');
 
@@ -22,15 +22,16 @@ class Propel2StorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function couldBeConstructedWithoutAnyArguments()
+    public function couldBeConstructedWithoutAnyArguments(): void
     {
+        $this->expectNotToPerformAssertions();
         new Propel2StorageFactory;
     }
 
     /**
      * @test
      */
-    public function shouldAllowGetName()
+    public function shouldAllowGetName(): void
     {
         $factory = new Propel2StorageFactory;
 

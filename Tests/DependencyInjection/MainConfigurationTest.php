@@ -10,7 +10,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 class MainConfigurationTest extends TestCase
 {
-    protected $storageFactories = array();
+    protected array $storageFactories = [];
 
     protected function setUp(): void
     {
@@ -23,16 +23,19 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function couldBeConstructedWithArrayOfGatewayFactoriesAndStorageFactories()
+    public function couldBeConstructedWithArrayOfGatewayFactoriesAndStorageFactories(): void
     {
+        $this->expectNotToPerformAssertions();
         new MainConfiguration($this->storageFactories);
     }
 
     /**
      * @test
      */
-    public function shouldPassConfigurationProcessing()
+    public function shouldPassConfigurationProcessing(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -80,7 +83,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldAddStoragesToAllGatewayByDefault()
+    public function shouldAddStoragesToAllGatewayByDefault(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -122,7 +125,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldAllowDisableAddStoragesToAllGatewayFeature()
+    public function shouldAllowDisableAddStoragesToAllGatewayFeature(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -161,7 +164,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldAllowSetConcreteGatewaysWhereToAddStorages()
+    public function shouldAllowSetConcreteGatewaysWhereToAddStorages(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -202,7 +205,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldAllowSetGatewaysCreatedWithFactoriesWhereToAddStorages()
+    public function shouldAllowSetGatewaysCreatedWithFactoriesWhereToAddStorages(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -243,11 +246,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.storages": The storage entry must be a valid model class. It is set notExistClass
+     *
+     *
      */
-    public function throwIfTryToUseNotValidClassAsStorageEntry()
+    public function throwIfTryToUseNotValidClassAsStorageEntry(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.storages\": The storage entry must be a valid model class. It is set notExistClass");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -277,11 +282,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.storages.stdClass": Only one storage per entry could be selected
+     *
+     *
      */
-    public function throwIfTryToAddMoreThenOneStorageForOneEntry()
+    public function throwIfTryToAddMoreThenOneStorageForOneEntry(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.storages.stdClass\": Only one storage per entry could be selected");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -314,11 +321,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.storages.stdClass": At least one storage must be configured.
+     *
+     *
      */
-    public function throwIfStorageEntryDefinedWithoutConcreteStorage()
+    public function throwIfStorageEntryDefinedWithoutConcreteStorage(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.storages.stdClass\": At least one storage must be configured.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -344,8 +353,10 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldPassIfNoneStorageSelected()
+    public function shouldPassIfNoneStorageSelected(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -371,11 +382,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.security.token_storage": Only one token storage could be configured.
+     *
+     *
      */
-    public function throwIfMoreThenOneTokenStorageConfigured()
+    public function throwIfMoreThenOneTokenStorageConfigured(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.security.token_storage\": Only one token storage could be configured.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -403,11 +416,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.security.token_storage": The token class must implement `Payum\Core\Security\TokenInterface` interface
+     *
+     *
      */
-    public function throwIfTokenStorageConfiguredWithModelNotImplementingTokenInterface()
+    public function throwIfTokenStorageConfiguredWithModelNotImplementingTokenInterface(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.security.token_storage\": The token class must implement `Payum\Core\Security\TokenInterface` interface");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -430,11 +445,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.security.token_storage": The storage entry must be a valid model class.
+     *
+     *
      */
-    public function throwIfTokenStorageConfiguredWithNotModelClass()
+    public function throwIfTokenStorageConfiguredWithNotModelClass(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.security.token_storage\": The storage entry must be a valid model class.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -457,11 +474,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The child (node|config) "security" (at path|under) "payum" must be configured\./
+     *
+     *
      */
-    public function throwIfSecurityNotConfigured()
+    public function throwIfSecurityNotConfigured(): void
     {
+        $this->expectExceptionMessageMatches("/The child (node|config) \"security\" (at path|under) \"payum\" must be configured\./");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -474,11 +493,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The child (node|config) "token_storage" (at path|under) "payum.security" must be configured\./
+     *
+     *
      */
-    public function throwIfTokenStorageNotConfigured()
+    public function throwIfTokenStorageNotConfigured(): void
     {
+        $this->expectExceptionMessageMatches("/The child (node|config) \"token_storage\" (at path|under) \"payum.security\" must be configured\./");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -493,11 +514,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.dynamic_gateways.config_storage": Only one config storage could be configured.
+     *
+     *
      */
-    public function throwIfMoreThenOneGatewayConfigStorageConfigured()
+    public function throwIfMoreThenOneGatewayConfigStorageConfigured(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.dynamic_gateways.config_storage\": Only one config storage could be configured.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -534,11 +557,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.dynamic_gateways.config_storage": The config class must implement `Payum\Core\Model\GatewayConfigInterface` interface
+     *
+     *
      */
-    public function throwIfGatewayConfigStorageConfiguredWithModelNotImplementingGatewayConfigInterface()
+    public function throwIfGatewayConfigStorageConfiguredWithModelNotImplementingGatewayConfigInterface(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.dynamic_gateways.config_storage\": The config class must implement `Payum\Core\Model\GatewayConfigInterface` interface");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -570,11 +595,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Invalid configuration for path "payum.dynamic_gateways.config_storage": The storage entry must be a valid model class.
+     *
+     *
      */
-    public function throwIfGatewayConfigStorageConfiguredWithNotModelClass()
+    public function throwIfGatewayConfigStorageConfiguredWithNotModelClass(): void
     {
+        $this->expectExceptionMessage("Invalid configuration for path \"payum.dynamic_gateways.config_storage\": The storage entry must be a valid model class.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -606,11 +633,13 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The child (node|config) "config_storage" (at path|under) "payum.dynamic_gateways" must be configured\./
+     *
+     *
      */
-    public function throwIfGatewayConfigStorageNotConfigured()
+    public function throwIfGatewayConfigStorageNotConfigured(): void
     {
+        $this->expectExceptionMessageMatches("/The child (node|config) \"config_storage\" (at path|under) \"payum.dynamic_gateways\" must be configured\./");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $configuration = new MainConfiguration($this->storageFactories);
 
         $processor = new Processor();
@@ -635,7 +664,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldTreatNullGatewaysV2AsEmptyArray()
+    public function shouldTreatNullGatewaysV2AsEmptyArray(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -662,7 +691,7 @@ class MainConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function shouldAllowPutAnythingToGatewaysV2AndNotPerformAnyValidations()
+    public function shouldAllowPutAnythingToGatewaysV2AndNotPerformAnyValidations(): void
     {
         $configuration = new MainConfiguration($this->storageFactories);
 
@@ -717,16 +746,17 @@ class MainConfigurationTest extends TestCase
 
 class FooStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config)
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
+        return 'serviceId';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'foo_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         $builder
             ->children()
@@ -738,16 +768,17 @@ class FooStorageFactory implements StorageFactoryInterface
 
 class BarStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config)
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
+        return 'serviceId';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'bar_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         $builder
             ->children()

@@ -14,7 +14,7 @@ class CreateCaptureTokenCommandTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldCreateCaptureTokenWithUrlAsAfterUrl()
+    public function shouldCreateCaptureTokenWithUrlAsAfterUrl(): void
     {
         /** @var RegistryInterface $payum */
         $payum = $this->client->getContainer()->get('payum');
@@ -34,16 +34,16 @@ class CreateCaptureTokenCommandTest extends WebTestCase
             '--after-url' => 'http://google.com/'
         ));
 
-        $this->assertContains('Hash: ', $output);
-        $this->assertContains('Url: http://localhost/payment/capture', $output);
-        $this->assertContains('After Url: http://google.com/?payum_token=', $output);
-        $this->assertContains("Details: $modelClass#$modelId", $output);
+        $this->assertStringContainsString('Hash: ', $output);
+        $this->assertStringContainsString('Url: http://localhost/payment/capture', $output);
+        $this->assertStringContainsString('After Url: http://google.com/?payum_token=', $output);
+        $this->assertStringContainsString("Details: $modelClass#$modelId", $output);
     }
 
     /**
      * @test
      */
-    public function shouldCreateCaptureTokenWithRouteAsAfterUrl()
+    public function shouldCreateCaptureTokenWithRouteAsAfterUrl(): void
     {
         /** @var RegistryInterface $payum */
         $payum = $this->client->getContainer()->get('payum');
@@ -63,19 +63,16 @@ class CreateCaptureTokenCommandTest extends WebTestCase
             '--after-url' => 'foo'
         ));
 
-        $this->assertContains('Hash: ', $output);
-        $this->assertContains('Url: http://localhost/payment/capture', $output);
-        $this->assertContains('After Url: http://localhost/foo/url?payum_token=', $output);
-        $this->assertContains("Details: $modelClass#$modelId", $output);
+        $this->assertStringContainsString('Hash: ', $output);
+        $this->assertStringContainsString('Url: http://localhost/payment/capture', $output);
+        $this->assertStringContainsString('After Url: http://localhost/foo/url?payum_token=', $output);
+        $this->assertStringContainsString("Details: $modelClass#$modelId", $output);
     }
 
     /**
-     * @param Command  $command
      * @param string[] $arguments
-     *
-     * @return string
      */
-    protected function executeConsole(Command $command, array $arguments = array())
+    protected function executeConsole(Command $command, array $arguments = array()): string
     {
         $command->setApplication(new Application($this->client->getKernel()));
         if ($command instanceof ContainerAwareInterface) {

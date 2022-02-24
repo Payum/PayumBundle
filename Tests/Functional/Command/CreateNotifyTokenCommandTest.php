@@ -14,21 +14,21 @@ class CreateNotifyTokenCommandTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldCreateNotifyTokenWithoutModel()
+    public function shouldCreateNotifyTokenWithoutModel(): void
     {
         $output = $this->executeConsole(new CreateNotifyTokenCommand, array(
             'gateway-name' => 'fooGateway'
         ));
 
-        $this->assertContains('Hash: ', $output);
-        $this->assertContains('Url: ', $output);
-        $this->assertContains('Details: null', $output);
+        $this->assertStringContainsString('Hash: ', $output);
+        $this->assertStringContainsString('Url: ', $output);
+        $this->assertStringContainsString('Details: null', $output);
     }
 
     /**
      * @test
      */
-    public function shouldCreateNotifyTokenWithModel()
+    public function shouldCreateNotifyTokenWithModel(): void
     {
         /** @var RegistryInterface $payum */
         $payum = $this->client->getContainer()->get('payum');
@@ -47,18 +47,15 @@ class CreateNotifyTokenCommandTest extends WebTestCase
             '--model-id' => $modelId
         ));
 
-        $this->assertContains('Hash: ', $output);
-        $this->assertContains('Url: ', $output);
-        $this->assertContains("Details: $modelClass#$modelId", $output);
+        $this->assertStringContainsString('Hash: ', $output);
+        $this->assertStringContainsString('Url: ', $output);
+        $this->assertStringContainsString("Details: $modelClass#$modelId", $output);
     }
 
     /**
-     * @param Command  $command
      * @param string[] $arguments
-     *
-     * @return string
      */
-    protected function executeConsole(Command $command, array $arguments = array())
+    protected function executeConsole(Command $command, array $arguments = array()): string
     {
         $command->setApplication(new Application($this->client->getKernel()));
         if ($command instanceof ContainerAwareInterface) {

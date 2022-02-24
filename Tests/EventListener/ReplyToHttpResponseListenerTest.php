@@ -4,6 +4,8 @@ namespace Payum\Bundle\PayumBundle\Tests\EventListener;
 use Payum\Bundle\PayumBundle\EventListener\ReplyToHttpResponseListener;
 use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
 use Payum\Core\Reply\HttpRedirect;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,20 +13,21 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
+class ReplyToHttpResponseListenerTest extends TestCase
 {
     /**
      * @test
      */
-    public function couldBeConstructedWithOneArgument()
+    public function couldBeConstructedWithOneArgument(): void
     {
+        $this->expectNotToPerformAssertions();
         new ReplyToHttpResponseListener($this->createReplyToSymfonyResponseConverterMock());
     }
 
     /**
      * @test
      */
-    public function shouldDoNothingIfExceptionNotInstanceOfReply()
+    public function shouldDoNothingIfExceptionNotInstanceOfReply(): void
     {
         $expectedException = new Exception;
 
@@ -53,7 +56,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldSetResponseReturnedByConverterToEvent()
+    public function shouldSetResponseReturnedByConverterToEvent(): void
     {
         $expectedUrl = '/foo/bar';
 
@@ -86,7 +89,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldCallAllowCustomResponseCode()
+    public function shouldCallAllowCustomResponseCode(): void
     {
         $reply = new HttpRedirect('/foo/bar');
         $response = new Response('', 302);
@@ -111,7 +114,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ReplyToSymfonyResponseConverter
+     * @return MockObject|ReplyToSymfonyResponseConverter
      */
     protected function createReplyToSymfonyResponseConverterMock()
     {
@@ -119,7 +122,7 @@ class ReplyToHttpResponseListenerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|HttpKernelInterface
+     * @return HttpKernelInterface|MockObject
      */
     protected function createHttpKernelMock()
     {

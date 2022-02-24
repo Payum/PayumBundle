@@ -19,7 +19,7 @@ class CaptureControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldBeSubClassOfController()
+    public function shouldBeSubClassOfController(): void
     {
         $rc = new \ReflectionClass(CaptureController::class);
 
@@ -29,11 +29,13 @@ class CaptureControllerTest extends AbstractControllerTest
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
-     * @expectedExceptionMessage This controller requires session to be started.
+     *
+     *
      */
-    public function throwBadRequestIfSessionNotStartedOnDoSessionAction()
+    public function throwBadRequestIfSessionNotStartedOnDoSessionAction(): void
     {
+        $this->expectExceptionMessage("This controller requires session to be started.");
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         $this->registryMock = $this->createMock(RegistryInterface::class);
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
@@ -53,11 +55,13 @@ class CaptureControllerTest extends AbstractControllerTest
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
-     * @expectedExceptionMessage This controller requires token hash to be stored in the session.
+     *
+     *
      */
-    public function throwBadRequestIfSessionNotContainPayumTokenOnDoSessionAction()
+    public function throwBadRequestIfSessionNotContainPayumTokenOnDoSessionAction(): void
     {
+        $this->expectExceptionMessage("This controller requires token hash to be stored in the session.");
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
         $this->registryMock = $this->createMock(RegistryInterface::class);
         $this->httpRequestVerifierMock = $this->createMock(
             HttpRequestVerifierInterface::class
@@ -75,7 +79,7 @@ class CaptureControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldDoRedirectToCaptureWithTokenUrl()
+    public function shouldDoRedirectToCaptureWithTokenUrl(): void
     {
         $routerMock = $this->createMock(RouterInterface::class);
         $routerMock
@@ -116,7 +120,7 @@ class CaptureControllerTest extends AbstractControllerTest
     /**
      * @test
      */
-    public function shouldExecuteCaptureRequest()
+    public function shouldExecuteCaptureRequest(): void
     {
         $controller = new CaptureController();
         $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
@@ -127,7 +131,7 @@ class CaptureControllerTest extends AbstractControllerTest
         $this->assertEquals(self::AFTER_URL, $response->getTargetUrl());
     }
 
-    protected function initGatewayMock()
+    protected function initGatewayMock(): void
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock

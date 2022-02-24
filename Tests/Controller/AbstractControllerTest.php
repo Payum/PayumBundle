@@ -2,6 +2,7 @@
 
 namespace Payum\Bundle\PayumBundle\Tests\Controller;
 
+use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
@@ -16,12 +17,12 @@ abstract class AbstractControllerTest extends TestCase
     protected const GATEWAY_NAME = 'theGateway';
     protected const AFTER_URL = 'http://example.com/theAfterUrl';
 
-    protected $token;
-    protected $httpRequestVerifierMock;
-    protected $gatewayMock;
-    protected $registryMock;
-    protected $payum;
-    protected $request;
+    protected Token $token;
+    protected HttpRequestVerifierInterface $httpRequestVerifierMock;
+    protected GatewayInterface $gatewayMock;
+    protected RegistryInterface $registryMock;
+    protected Payum $payum;
+    protected Request $request;
 
     protected function setUp(): void
     {
@@ -63,5 +64,5 @@ abstract class AbstractControllerTest extends TestCase
         );
     }
 
-    protected abstract function initGatewayMock();
+    abstract protected function initGatewayMock();
 }

@@ -13,58 +13,58 @@ class DebugGatewayCommandTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldOutputDebugInfoAboutSingleGateway()
+    public function shouldOutputDebugInfoAboutSingleGateway(): void
     {
         $output = $this->executeConsole(new DebugGatewayCommand(), array(
             'gateway-name' => 'fooGateway',
         ));
 
-        $this->assertContains('Found 1 gateways', $output);
-        $this->assertContains('fooGateway (Payum\Core\Gateway):', $output);
-        $this->assertContains('Actions:', $output);
-        $this->assertContains('Extensions:', $output);
-        $this->assertContains('Apis:', $output);
+        $this->assertStringContainsString('Found 1 gateways', $output);
+        $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);
+        $this->assertStringContainsString('Actions:', $output);
+        $this->assertStringContainsString('Extensions:', $output);
+        $this->assertStringContainsString('Apis:', $output);
 
-        $this->assertContains('Payum\Offline\Action\CaptureAction', $output);
+        $this->assertStringContainsString('Payum\Offline\Action\CaptureAction', $output);
 
-        $this->assertContains('Payum\Core\Extension\StorageExtension', $output);
-        $this->assertContains('Payum\Core\Storage\FilesystemStorage', $output);
-        $this->assertContains('Payum\Core\Model\ArrayObject', $output);
+        $this->assertStringContainsString('Payum\Core\Extension\StorageExtension', $output);
+        $this->assertStringContainsString('Payum\Core\Storage\FilesystemStorage', $output);
+        $this->assertStringContainsString('Payum\Core\Model\ArrayObject', $output);
     }
 
     /**
      * @test
      */
-    public function shouldOutputDebugInfoAboutAllGateways()
+    public function shouldOutputDebugInfoAboutAllGateways(): void
     {
         $output = $this->executeConsole(new DebugGatewayCommand());
 
-        $this->assertContains('Found 2 gateways', $output);
-        $this->assertContains('fooGateway (Payum\Core\Gateway):', $output);
-        $this->assertContains('barGateway (Payum\Core\Gateway):', $output);
+        $this->assertStringContainsString('Found 2 gateways', $output);
+        $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);
+        $this->assertStringContainsString('barGateway (Payum\Core\Gateway):', $output);
     }
 
     /**
      * @test
      */
-    public function shouldOutputInfoWhatActionsSupports()
+    public function shouldOutputInfoWhatActionsSupports(): void
     {
         $output = $this->executeConsole(new DebugGatewayCommand(), array(
             'gateway-name' => 'fooGateway',
             '--show-supports' => true,
         ));
 
-        $this->assertContains('Found 1 gateways', $output);
-        $this->assertContains('fooGateway (Payum\Core\Gateway):', $output);
-        $this->assertContains('Payum\Offline\Action\CaptureAction', $output);
-        $this->assertContains('$request instanceof Capture &&', $output);
-        $this->assertContains('$request->getModel() instanceof PaymentInterface', $output);
+        $this->assertStringContainsString('Found 1 gateways', $output);
+        $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);
+        $this->assertStringContainsString('Payum\Offline\Action\CaptureAction', $output);
+        $this->assertStringContainsString('$request instanceof Capture &&', $output);
+        $this->assertStringContainsString('$request->getModel() instanceof PaymentInterface', $output);
     }
 
     /**
      * @test
      */
-    public function shouldOutputChoiceListGatewaysForNameGiven()
+    public function shouldOutputChoiceListGatewaysForNameGiven(): void
     {
         $command = new DebugGatewayCommand();
         $command->setApplication(new Application($this->client->getKernel()));
@@ -73,8 +73,8 @@ class DebugGatewayCommandTest extends WebTestCase
             'gateway-name' => 'foo',
         ], ['0']);
 
-        $this->assertContains('Choose a number for more information on the payum gateway', $output);
-        $this->assertContains('[0] fooGateway', $output);
+        $this->assertStringContainsString('Choose a number for more information on the payum gateway', $output);
+        $this->assertStringContainsString('[0] fooGateway', $output);
     }
 
     /**
@@ -84,7 +84,7 @@ class DebugGatewayCommandTest extends WebTestCase
      *
      * @return string
      */
-    protected function executeConsole(Command $command, array $arguments = [], array $inputs = [])
+    protected function executeConsole(Command $command, array $arguments = [], array $inputs = []): string
     {
         if (!$command->getApplication()) {
             $command->setApplication(new Application($this->client->getKernel()));
@@ -110,7 +110,7 @@ class DebugGatewayCommandTest extends WebTestCase
     protected function getInputStream($input)
     {
         $stream = fopen('php://memory', 'r+', false);
-        fputs($stream, $input);
+        fwrite($stream, $input);
         rewind($stream);
 
         return $stream;

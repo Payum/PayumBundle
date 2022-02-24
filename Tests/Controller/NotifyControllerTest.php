@@ -17,7 +17,7 @@ class NotifyControllerTest extends TestCase
     /**
      * @test
      */
-    public function shouldBeSubClassOfController()
+    public function shouldBeSubClassOfController(): void
     {
         $rc = new \ReflectionClass(NotifyController::class);
 
@@ -27,7 +27,7 @@ class NotifyControllerTest extends TestCase
     /**
      * @test
      */
-    public function shouldExecuteNotifyRequestOnDoUnsafe()
+    public function shouldExecuteNotifyRequestOnDoUnsafe(): void
     {
         $request = Request::create('/');
         $request->query->set('gateway', 'theGatewayName');

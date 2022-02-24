@@ -10,7 +10,7 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldBeSubClassOfAbstractStorageFactory()
+    public function shouldBeSubClassOfAbstractStorageFactory(): void
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory');
 
@@ -20,15 +20,16 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function couldBeConstructedWithoutAnyArguments()
+    public function couldBeConstructedWithoutAnyArguments(): void
     {
+        $this->expectNotToPerformAssertions();
         new FilesystemStorageFactory;
     }
 
     /**
      * @test
      */
-    public function shouldAllowGetName()
+    public function shouldAllowGetName(): void
     {
         $factory = new FilesystemStorageFactory;
 
@@ -38,7 +39,7 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldAllowAddConfiguration()
+    public function shouldAllowAddConfiguration(): void
     {
         $factory = new FilesystemStorageFactory;
 
@@ -63,11 +64,13 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp /The child (node|config) "storage_dir" (at path|under) "foo" must be configured\./
+     *
+     *
      */
-    public function shouldRequireStorageDirOption()
+    public function shouldRequireStorageDirOption(): void
     {
+        $this->expectExceptionMessageMatches("/The child (node|config) \"storage_dir\" (at path|under) \"foo\" must be configured\./");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $factory = new FilesystemStorageFactory;
 
         $tb = new TreeBuilder('foo');
@@ -82,7 +85,7 @@ class FilesystemStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldSetIdPropertyToNull()
+    public function shouldSetIdPropertyToNull(): void
     {
         $factory = new FilesystemStorageFactory;
 

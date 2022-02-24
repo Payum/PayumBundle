@@ -24,7 +24,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function couldBeCreatedByFormFactory()
+    public function couldBeCreatedByFormFactory(): void
     {
         $form = $this->formFactory->create(CreditCardExpirationDateType::class);
         $view = $form->createView();
@@ -36,7 +36,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldAllowSubmitExpireDateAsChoice()
+    public function shouldAllowSubmitExpireDateAsChoice(): void
     {
         $form = $this->formFactory->create(CreditCardExpirationDateType::class, null, array(
             'widget' => 'choice',
@@ -62,7 +62,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldHideDaySelectAndSetFirstDayFromChoiceAsValue()
+    public function shouldHideDaySelectAndSetFirstDayFromChoiceAsValue(): void
     {
         $form = $this->formFactory->create(CreditCardExpirationDateType::class, null, array(
             'widget' => 'choice',
@@ -79,7 +79,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldHideDaySelectAndSetDayFromGivenDateTimeAsValue()
+    public function shouldHideDaySelectAndSetDayFromGivenDateTimeAsValue(): void
     {
         $date = new \DateTime('2020-01-10');
 

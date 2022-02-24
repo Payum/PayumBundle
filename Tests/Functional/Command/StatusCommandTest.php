@@ -14,7 +14,7 @@ class StatusCommandTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldReturnNewStatus()
+    public function shouldReturnNewStatus(): void
     {
         /** @var RegistryInterface $payum */
         $payum = $this->client->getContainer()->get('payum');
@@ -33,7 +33,7 @@ class StatusCommandTest extends WebTestCase
             '--model-id' => $modelId
         ));
 
-        $this->assertContains("Status: new", $output);
+        $this->assertStringContainsString("Status: new", $output);
     }
 
     /**
@@ -42,7 +42,7 @@ class StatusCommandTest extends WebTestCase
      *
      * @return string
      */
-    protected function executeConsole(Command $command, array $arguments = array())
+    protected function executeConsole(Command $command, array $arguments = array()): string
     {
         $command->setApplication(new Application($this->client->getKernel()));
         if ($command instanceof ContainerAwareInterface) {

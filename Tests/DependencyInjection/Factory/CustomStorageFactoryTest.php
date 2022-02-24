@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory;
 
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -12,7 +13,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldBeSubClassOfAbstractStorageFactory()
+    public function shouldBeSubClassOfAbstractStorageFactory(): void
     {
         $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory');
 
@@ -22,15 +23,16 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function couldBeConstructedWithoutAnyArguments()
+    public function couldBeConstructedWithoutAnyArguments(): void
     {
+        $this->expectNotToPerformAssertions();
         new CustomStorageFactory();
     }
 
     /**
      * @test
      */
-    public function shouldAllowGetName()
+    public function shouldAllowGetName(): void
     {
         $factory = new CustomStorageFactory();
 
@@ -40,7 +42,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldAllowAddConfiguration()
+    public function shouldAllowAddConfiguration(): void
     {
         $factory = new CustomStorageFactory();
 
@@ -61,11 +63,13 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessageRegExp  /The child (node|config) "service" (at path|under) "foo" must be configured\./
+     *
+     *
      */
-    public function shouldRequireServiceOption()
+    public function shouldRequireServiceOption(): void
     {
+        $this->expectExceptionMessageMatches("/The child (node|config) \"service\" (at path|under) \"foo\" must be configured\./");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $factory = new CustomStorageFactory();
 
         $tb = new TreeBuilder('foo');
@@ -80,11 +84,13 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The path "foo.service" cannot contain an empty value, but got "".
+     *
+     *
      */
-    public function shouldNotAllowEmptyServiceOption()
+    public function shouldNotAllowEmptyServiceOption(): void
     {
+        $this->expectExceptionMessage("The path \"foo.service\" cannot contain an empty value, but got \"\".");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $factory = new CustomStorageFactory();
 
         $tb = new TreeBuilder('foo');
@@ -101,11 +107,13 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage The path "foo.service" cannot contain an empty value, but got null.
+     *
+     *
      */
-    public function shouldNotAllowNullServiceOption()
+    public function shouldNotAllowNullServiceOption(): void
     {
+        $this->expectExceptionMessage("The path \"foo.service\" cannot contain an empty value, but got null.");
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
         $factory = new CustomStorageFactory();
 
         $tb = new TreeBuilder('foo');
@@ -122,7 +130,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldAllowAddShortConfiguration()
+    public function shouldAllowAddShortConfiguration(): void
     {
         $factory = new CustomStorageFactory;
 
@@ -141,7 +149,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
-    public function shouldCreateServiceDefinition()
+    public function shouldCreateServiceDefinition(): void
     {
         $serviceName = 'service.name';
 
@@ -155,7 +163,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|\Symfony\Component\DependencyInjection\ContainerBuilder
+     * @return MockObject|\Symfony\Component\DependencyInjection\ContainerBuilder
      */
     protected function createContainerBuilderMock()
     {
