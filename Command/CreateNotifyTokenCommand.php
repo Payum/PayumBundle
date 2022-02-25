@@ -16,11 +16,18 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
     use ContainerAwareTrait;
 
     protected static $defaultName = 'payum:security:create-notify-token';
+    protected Payum $payum;
+
+    public function __construct(Payum $payum)
+    {
+        $this->payum = $payum;
+        parent::__construct();
+    }
 
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(static::$defaultName)
@@ -33,7 +40,7 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $gatewayName = $input->getArgument('gateway-name');
         $modelClass = $input->getOption('model-class');
@@ -41,7 +48,7 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
         $model = null;
 
         if ($modelClass && $modelId) {
-            if (false == $model = $this->getPayum()->getStorage($modelClass)->find($modelId)) {
+            if (false == $model = $this->payum->getStorage($modelClass)->find($modelId)) {
                 throw new RuntimeException(sprintf(
                     'Cannot find model with class %s and id %s.',
                     $modelClass,
@@ -50,20 +57,12 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
             }
         }
 
-        $token = $this->getPayum()->getTokenFactory()->createNotifyToken($gatewayName, $model);
+        $token = $this->payum->getTokenFactory()->createNotifyToken($gatewayName, $model);
 
         $output->writeln(sprintf('Hash: <info>%s</info>', $token->getHash()));
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
         $output->writeln(sprintf('Details: <info>%s</info>', (string) $token->getDetails() ?: 'null'));
 
         return 0;
-    }
-
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
-    {
-        return $this->container->get('payum');
     }
 }
