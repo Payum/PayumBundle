@@ -6,33 +6,21 @@ use Payum\Core\Security\CypherInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
 
 class GatewayConfigAdmin extends AbstractAdmin
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected FormFactoryInterface $formFactory;
+    protected ?CypherInterface $cypher;
 
-    /**
-     * @var CypherInterface|null
-     */
-    protected $cypher;
-
-    /**
-     * @param FormFactoryInterface $formFactory
-     */
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * @param CypherInterface $cypher
-     */
-    public function setCypher(CypherInterface $cypher)
+    public function setCypher(CypherInterface $cypher): void
     {
         $this->cypher = $cypher;
     }
@@ -40,7 +28,7 @@ class GatewayConfigAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form->reorder(array()); //hack!
     }
@@ -48,7 +36,7 @@ class GatewayConfigAdmin extends AbstractAdmin
     /**
      * {@inheritDoc}
      */
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('gatewayName')
@@ -66,7 +54,7 @@ class GatewayConfigAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function preUpdate($object)
+    public function preUpdate($object): void
     {
         parent::preUpdate($object);
 
@@ -78,7 +66,7 @@ class GatewayConfigAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function prePersist($object)
+    public function prePersist($object): void
     {
         parent::prePersist($object);
 
@@ -104,7 +92,7 @@ class GatewayConfigAdmin extends AbstractAdmin
     /**
      * {@inheritDoc}
      */
-    public function getFormBuilder()
+    public function getFormBuilder(): FormBuilderInterface
     {
         $formBuilder = $this->formFactory->createBuilder(GatewayConfigType::class, $this->getSubject(), array(
             'data_class' => get_class($this->getSubject()),

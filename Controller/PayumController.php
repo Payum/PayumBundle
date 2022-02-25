@@ -8,15 +8,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class PayumController extends AbstractController
 {
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
+    protected Payum $payum;
+
+    public function __construct(Payum $payum)
     {
-        return $this->get('payum');
+        $this->payum = $payum;
     }
 
-    public static function getSubscribedServices()
+    protected function getPayum(): Payum
+    {
+        return $this->payum;
+    }
+
+    public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
             'payum' => Payum::class,
@@ -25,20 +29,16 @@ abstract class PayumController extends AbstractController
 
     /**
      * @deprecated will be removed in 2.0.
-     *
-     * @return HttpRequestVerifierInterface
      */
-    protected function getHttpRequestVerifier()
+    protected function getHttpRequestVerifier(): HttpRequestVerifierInterface
     {
         return $this->getPayum()->getHttpRequestVerifier();
     }
 
     /**
      * @deprecated will be removed in 2.0.
-     *
-     * @return GenericTokenFactoryInterface
      */
-    protected function getTokenFactory()
+    protected function getTokenFactory(): GenericTokenFactoryInterface
     {
         return $this->getPayum()->getTokenFactory();
     }

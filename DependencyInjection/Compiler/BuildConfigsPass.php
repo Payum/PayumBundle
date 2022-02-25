@@ -9,7 +9,7 @@ class BuildConfigsPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $configs = $this->processTagData($container->findTaggedServiceIds('payum.action'), 'payum.action.', 'payum.prepend_actions');
         $configs = array_replace_recursive(
@@ -41,7 +41,7 @@ class BuildConfigsPass implements CompilerPassInterface
         }
     }
 
-    protected function processTagData(array $tagData, $namePrefix, $prependKey)
+    protected function processTagData(array $tagData, $namePrefix, $prependKey): array
     {
         $coreGatewayFactoryConfig = [];
         $gatewaysFactoriesConfigs = [];
@@ -49,6 +49,7 @@ class BuildConfigsPass implements CompilerPassInterface
 
         foreach ($tagData as $serviceId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
+                /** @noinspection SlowArrayOperationsInLoopInspection */
                 $attributes = array_replace(['alias' => null, 'factory' => null, 'gateway' => null,  'all' => false, 'prepend' => false], $attributes);
 
                 $name = $attributes['alias'] ?: $serviceId;
@@ -62,6 +63,7 @@ class BuildConfigsPass implements CompilerPassInterface
                             $coreGatewayFactoryConfig[$prependKey] = [];
                         }
 
+                        /** @noinspection UnsupportedStringOffsetOperationsInspection */
                         $coreGatewayFactoryConfig[$prependKey][] = $name;
                     }
                 } elseif ($attributes['factory']) {

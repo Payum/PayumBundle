@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotifyController extends PayumController
 {
-    public function doUnsafeAction(Request $request)
+    public function doUnsafeAction(Request $request): Response
     {
         $gateway = $this->getPayum()->getGateway($request->get('gateway'));
 
@@ -16,7 +16,7 @@ class NotifyController extends PayumController
         return new Response('', 204);
     }
 
-    public function doAction(Request $request)
+    public function doAction(Request $request): Response
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 

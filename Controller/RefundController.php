@@ -2,11 +2,16 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Request\Refund;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class RefundController extends PayumController
 {
+    /**
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
     public function doAction(Request $request)
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);

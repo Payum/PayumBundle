@@ -12,7 +12,7 @@ class MainConfiguration implements ConfigurationInterface
     /**
      * @var StorageFactoryInterface[]
      */
-    protected $storageFactories = array();
+    protected array $storageFactories = array();
 
     /**
      * @param StorageFactoryInterface[] $storageFactories
@@ -27,7 +27,7 @@ class MainConfiguration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $tb = new TreeBuilder('payum');
         $rootNode = $tb->getRootNode();
@@ -55,10 +55,7 @@ class MainConfiguration implements ConfigurationInterface
         return $tb;
     }
 
-    /**
-     * @param ArrayNodeDefinition $rootPrototypeNode
-     */
-    protected function addStoragesSection(ArrayNodeDefinition $rootPrototypeNode)
+    protected function addStoragesSection(ArrayNodeDefinition $rootPrototypeNode): void
     {
         $storageNode = $rootPrototypeNode->children()
                 ->arrayNode('storages')
@@ -127,10 +124,7 @@ class MainConfiguration implements ConfigurationInterface
         }
     }
 
-    /**
-     * @param ArrayNodeDefinition $securityNode
-     */
-    protected function addSecuritySection(ArrayNodeDefinition $securityNode)
+    protected function addSecuritySection(ArrayNodeDefinition $securityNode): void
     {
         $storageNode = $securityNode->children()
             ->arrayNode('token_storage')
@@ -186,10 +180,7 @@ class MainConfiguration implements ConfigurationInterface
         }
     }
 
-    /**
-     * @param ArrayNodeDefinition $dynamicGatewaysNode
-     */
-    protected function addDynamicGatewaysSection(ArrayNodeDefinition $dynamicGatewaysNode)
+    protected function addDynamicGatewaysSection(ArrayNodeDefinition $dynamicGatewaysNode): void
     {
         $dynamicGatewaysNode->children()
             ->booleanNode('sonata_admin')->defaultFalse()
