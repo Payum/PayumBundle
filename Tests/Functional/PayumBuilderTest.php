@@ -23,11 +23,10 @@ class PayumBuilderTest extends WebTestCase
         /** @var PayumBuilder $builder */
         $builder = static::$container->get('payum.builder');
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed. Attribut is not public in Payum\Core\PayumBuilder'
-        );
-        #$this->assertAttributeInstanceOf(CoreGatewayFactoryBuilder::class, 'coreGatewayFactory', $builder);
-        #$this->assertInstanceOf(CoreGatewayFactoryBuilder::class, $builder->coreGatewayFactory);
+        $reflected_constraint = (new \ReflectionObject($builder))->getProperty('coreGatewayFactory');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($builder);
+        $this->assertInstanceOf(CoreGatewayFactoryBuilder::class, $constraint);
     }
 
     public function testShouldContainHttpRequestVerifierBuilder(): void
@@ -35,11 +34,10 @@ class PayumBuilderTest extends WebTestCase
         /** @var PayumBuilder $builder */
         $builder = static::$container->get('payum.builder');
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed. Attribut is not public in Payum\Core\PayumBuilder'
-        );
-        #$this->assertAttributeInstanceOf(HttpRequestVerifierBuilder::class, 'httpRequestVerifier', $builder);
-        #$this->assertInstanceOf(HttpRequestVerifierBuilder::class, $builder->httpRequestVerifier);
+        $reflected_constraint = (new \ReflectionObject($builder))->getProperty('httpRequestVerifier');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($builder);
+        $this->assertInstanceOf(HttpRequestVerifierBuilder::class, $constraint);
     }
 
     public function testShouldContainTokenFactoryBuilder(): void
@@ -47,11 +45,10 @@ class PayumBuilderTest extends WebTestCase
         /** @var PayumBuilder $builder */
         $builder = static::$container->get('payum.builder');
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed. Attribut is not public in Payum\Core\PayumBuilder'
-        );
-        #$this->assertAttributeInstanceOf(TokenFactoryBuilder::class, 'tokenFactory', $builder);
-        #$this->assertInstanceOf(TokenFactoryBuilder::class, $builder->tokenFactory);
+        $reflected_constraint = (new \ReflectionObject($builder))->getProperty('tokenFactory');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($builder);
+        $this->assertInstanceOf(TokenFactoryBuilder::class, $constraint);
     }
 
     public function testShouldContainMainRegistry(): void
@@ -59,11 +56,10 @@ class PayumBuilderTest extends WebTestCase
         /** @var PayumBuilder $builder */
         $builder = static::$container->get('payum.builder');
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed. Attribut is not public in Payum\Core\Bridge\Symfony\ContainerAwareRegistry'
-        );
-        #$this->assertAttributeInstanceOf(ContainerAwareRegistry::class, 'mainRegistry', $builder);
-        #$this->assertInstanceOf(ContainerAwareRegistry::class, $builder->mainRegistry);
+        $reflected_constraint = (new \ReflectionObject($builder))->getProperty('mainRegistry');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($builder);
+        $this->assertInstanceOf(ContainerAwareRegistry::class, $constraint);
     }
 
     public function testShouldContainGenericTokenFactoryPaths(): void
@@ -71,17 +67,15 @@ class PayumBuilderTest extends WebTestCase
         /** @var PayumBuilder $builder */
         $builder = static::$container->get('payum.builder');
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed.'
-        );
+        $reflected_constraint = (new \ReflectionObject($builder))->getProperty('genericTokenFactoryPaths');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($builder);
 
-        $this->assertAttributeEquals([
-            'capture' => 'payum_capture_do',
-            'notify' => 'payum_notify_do',
-            'authorize' => 'payum_authorize_do',
-            'refund' => 'payum_refund_do',
-            'cancel' => 'payum_cancel_do',
-            'payout' => 'payum_payout_do',
-        ], 'genericTokenFactoryPaths', $builder);
+        $this->assertEquals('payum_capture_do', $constraint['capture']);
+        $this->assertEquals('payum_notify_do', $constraint['notify']);
+        $this->assertEquals('payum_authorize_do', $constraint['authorize']);
+        $this->assertEquals('payum_refund_do', $constraint['refund']);
+        $this->assertEquals('payum_cancel_do', $constraint['cancel']);
+        $this->assertEquals('payum_payout_do', $constraint['payout']);
     }
 }
