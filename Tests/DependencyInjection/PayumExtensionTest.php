@@ -47,9 +47,8 @@ class PayumExtensionTest extends TestCase
     {
         $factory = $this->createMock(StorageFactoryInterface::class);
         $factory
-            ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue('theFoo'))
+            ->willReturn('theFoo')
         ;
 
         $extension = new PayumExtension;
@@ -73,7 +72,7 @@ class PayumExtensionTest extends TestCase
         $factoryWithEmptyName
             ->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue(''))
+            ->willReturn('')
         ;
 
         $extension = new PayumExtension;
@@ -91,7 +90,7 @@ class PayumExtensionTest extends TestCase
         $factory
             ->expects($this->atLeastOnce())
             ->method('getName')
-            ->will($this->returnValue('theFoo'))
+            ->willReturn('theFoo')
         ;
 
         $extension = new PayumExtension;
