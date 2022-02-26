@@ -55,11 +55,11 @@ class PayumExtensionTest extends TestCase
         $extension = new PayumExtension;
         $extension->addStorageFactory($factory);
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed.'
-        );
+        $reflected_constraint = (new \ReflectionObject($extension))->getProperty('storagesFactories');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($extension);
 
-        $this->assertAttributeContains($factory, 'storagesFactories', $extension);
+        $this->assertEquals($factory, $constraint["theFoo"]);
     }
 
     /**

@@ -37,11 +37,10 @@ class PayumTest extends WebTestCase
         $tokenFactory = $payum->getTokenFactory();
         $this->assertInstanceOf(GenericTokenFactory::class, $tokenFactory);
 
-        $this->markTestIncomplete(
-            'Replacement for PhpUnit9 needed. Attribut is not public in Payum\Core\Bridge\Symfony\Security\TokenFactory'
-        );
-        #$this->assertAttributeInstanceOf(TokenFactory::class, 'tokenFactory', $tokenFactory);
-        #$this->assertInstanceOf(TokenFactory::class, $tokenFactory->tokenFactory);
+        $reflected_constraint = (new \ReflectionObject($tokenFactory))->getProperty('tokenFactory');
+        $reflected_constraint->setAccessible(TRUE);
+        $constraint = $reflected_constraint->getValue($tokenFactory);
+        $this->assertInstanceOf(TokenFactory::class, $constraint);
     }
 
     public function testShouldReturnTokenStorage(): void
