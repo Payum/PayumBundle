@@ -9,6 +9,7 @@ use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Payum\Core\Storage\StorageInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,9 +19,16 @@ abstract class AbstractControllerTest extends TestCase
     protected const AFTER_URL = 'http://example.com/theAfterUrl';
 
     protected Token $token;
-    protected HttpRequestVerifierInterface $httpRequestVerifierMock;
-    protected GatewayInterface $gatewayMock;
-    protected RegistryInterface $registryMock;
+
+    /** @var RegistryInterface&MockObject */
+    protected $httpRequestVerifierMock;
+
+    /** @var GatewayInterface&MockObject */
+    protected $gatewayMock;
+
+    /** @var RegistryInterface&MockObject */
+    protected $registryMock;
+
     protected Payum $payum;
     protected Request $request;
 
