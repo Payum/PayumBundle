@@ -21,7 +21,7 @@ There are several ways to add it to a gateway:
     payum:
         gateways:
             a_gateway:
-                factory: a_factory:
+                factory: a_factory
                 payum.action.foo: @payumActionServiceId
     ```
 
