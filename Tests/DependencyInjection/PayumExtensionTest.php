@@ -54,7 +54,7 @@ class PayumExtensionTest extends TestCase
         $extension = new PayumExtension;
         $extension->addStorageFactory($factory);
 
-        $reflected_constraint = (new \ReflectionObject($extension))->getProperty('storagesFactories');
+        $reflectedConstraint = (new \ReflectionObject($extension))->getProperty('storagesFactories');
         $reflected_constraint->setAccessible(true);
         $constraint = $reflected_constraint->getValue($extension);
 
