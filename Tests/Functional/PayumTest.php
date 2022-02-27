@@ -37,9 +37,9 @@ class PayumTest extends WebTestCase
         $tokenFactory = $payum->getTokenFactory();
         $this->assertInstanceOf(GenericTokenFactory::class, $tokenFactory);
 
-        $reflected_constraint = (new \ReflectionObject($tokenFactory))->getProperty('tokenFactory');
-        $reflected_constraint->setAccessible(TRUE);
-        $constraint = $reflected_constraint->getValue($tokenFactory);
+        $reflectedConstraint = (new \ReflectionObject($tokenFactory))->getProperty('tokenFactory');
+        $reflectedConstraint->setAccessible(true);
+        $constraint = $reflectedConstraint->getValue($tokenFactory);
         $this->assertInstanceOf(TokenFactory::class, $constraint);
     }
 
