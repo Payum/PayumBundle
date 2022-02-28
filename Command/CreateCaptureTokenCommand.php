@@ -16,13 +16,6 @@ class CreateCaptureTokenCommand extends Command implements ContainerAwareInterfa
     use ContainerAwareTrait;
 
     protected static $defaultName = 'payum:security:create-capture-token';
-    protected Payum $payum;
-
-    public function __construct(Payum $payum)
-    {
-        $this->payum = $payum;
-        parent::__construct();
-    }
 
     /**
      * {@inheritDoc}
@@ -50,7 +43,7 @@ class CreateCaptureTokenCommand extends Command implements ContainerAwareInterfa
 
         $model = null;
         if ($modelClass && $modelId) {
-            if (false == $model = $this->payum->getStorage($modelClass)->find($modelId)) {
+            if (false == $model = $this->getPayum()->getStorage($modelClass)->find($modelId)) {
                 throw new RuntimeException(sprintf(
                     'Cannot find model with class %s and id %s.',
                     $modelClass,
@@ -59,7 +52,7 @@ class CreateCaptureTokenCommand extends Command implements ContainerAwareInterfa
             }
         }
 
-        $token = $this->payum->getTokenFactory()->createCaptureToken($gatewayName, $model, $afterUrl);
+        $token = $this->getPayum()->getTokenFactory()->createCaptureToken($gatewayName, $model, $afterUrl);
 
         $output->writeln(sprintf('Hash: <info>%s</info>', $token->getHash()));
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
@@ -67,5 +60,13 @@ class CreateCaptureTokenCommand extends Command implements ContainerAwareInterfa
         $output->writeln(sprintf('Details: <info>%s</info>', (string) $token->getDetails()));
 
         return 0;
+    }
+
+    /**
+     * @return Payum
+     */
+    protected function getPayum()
+    {
+        return $this->container->get('payum');
     }
 }

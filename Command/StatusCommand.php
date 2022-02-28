@@ -2,7 +2,6 @@
 namespace Payum\Bundle\PayumBundle\Command;
 
 use Payum\Core\Exception\RuntimeException;
-use Payum\Core\Payum;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Request\GetHumanStatus;
 use Symfony\Component\Console\Command\Command;
@@ -18,18 +17,11 @@ class StatusCommand extends Command implements ContainerAwareInterface
     use ContainerAwareTrait;
 
     protected static $defaultName = 'payum:status';
-    protected Payum $payum;
-
-    public function __construct(Payum $payum)
-    {
-        $this->payum = $payum;
-        parent::__construct();
-    }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this
             ->setName(static::$defaultName)
@@ -43,13 +35,13 @@ class StatusCommand extends Command implements ContainerAwareInterface
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $gatewayName = $input->getArgument('gateway-name');
         $modelClass = $input->getOption('model-class');
         $modelId = $input->getOption('model-id');
 
-        $storage = $this->payum->getStorage($modelClass);
+        $storage = $this->getPayum()->getStorage($modelClass);
         if (false == $model = $storage->find($modelId)) {
             throw new RuntimeException(sprintf(
                 'Cannot find model with class %s and id %s.',
@@ -59,10 +51,18 @@ class StatusCommand extends Command implements ContainerAwareInterface
         }
 
         $status = new GetHumanStatus($model);
-        $this->payum->getGateway($gatewayName)->execute($status);
+        $this->getPayum()->getGateway($gatewayName)->execute($status);
 
         $output->writeln(sprintf('Status: %s', $status->getValue()));
 
         return 0;
+    }
+
+    /**
+     * @return RegistryInterface
+     */
+    protected function getPayum()
+    {
+        return $this->container->get('payum');
     }
 }
