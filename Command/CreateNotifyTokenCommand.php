@@ -20,7 +20,7 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(static::$defaultName)
@@ -33,7 +33,7 @@ class CreateNotifyTokenCommand extends Command implements ContainerAwareInterfac
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $gatewayName = $input->getArgument('gateway-name');
         $modelClass = $input->getOption('model-class');

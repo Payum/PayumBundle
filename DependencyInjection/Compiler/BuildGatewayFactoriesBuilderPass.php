@@ -11,7 +11,7 @@ class BuildGatewayFactoriesBuilderPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $builder = $container->getDefinition('payum.builder');
         foreach ($container->findTaggedServiceIds('payum.gateway_factory_builder') as $serviceId => $tagAttributes) {

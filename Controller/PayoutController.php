@@ -2,12 +2,12 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Request\Payout;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PayoutController extends PayumController
 {
-    public function doAction(Request $request)
+    public function doAction(Request $request): RedirectResponse
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 

@@ -23,13 +23,11 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(static::$defaultName)
-            ->setAliases(array(
-                'payum:gateway:debug',
-            ))
+            ->setAliases(['payum:gateway:debug'])
             ->addArgument('gateway-name', InputArgument::OPTIONAL, 'The gateway name you want to get information about.')
             ->addOption('show-supports', null, InputOption::VALUE_NONE, 'Show what actions supports.')
         ;
@@ -38,7 +36,7 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $gateways = $this->getPayum()->getGateways();
 

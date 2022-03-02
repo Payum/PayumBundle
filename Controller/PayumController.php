@@ -16,6 +16,7 @@ abstract class PayumController extends AbstractController
         return $this->get('payum');
     }
 
+    /** @return string[] */
     public static function getSubscribedServices()
     {
         return array_merge(parent::getSubscribedServices(), [

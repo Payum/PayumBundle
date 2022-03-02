@@ -7,7 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RefundController extends PayumController
 {
-    public function doAction(Request $request)
+    /**
+     * @throws \Exception
+     */
+    public function doAction(Request $request): Response
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 

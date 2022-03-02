@@ -2,11 +2,12 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Request\Sync;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SyncController extends PayumController
 {
-    public function doAction(Request $request)
+    public function doAction(Request $request): RedirectResponse
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 

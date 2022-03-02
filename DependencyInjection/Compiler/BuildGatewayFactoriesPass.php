@@ -11,7 +11,7 @@ class BuildGatewayFactoriesPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition('payum.static_registry');
 

@@ -7,29 +7,22 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class ReplyToHttpResponseListener
 {
-    /**
-     * @var ReplyToSymfonyResponseConverter
-     */
-    private $replyToSymfonyResponseConverter;
+    private ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter;
 
-    /**
-     * @param ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter
-     */
     public function __construct(ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter)
     {
         $this->replyToSymfonyResponseConverter = $replyToSymfonyResponseConverter;
     }
 
-    /**
-     * @param ExceptionEvent $event
-     */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if (false === $event->getThrowable() instanceof ReplyInterface) {
             return;
         }
 
-        $response = $this->replyToSymfonyResponseConverter->convert($event->getThrowable());
+        /** @var $throwable ReplyInterface */
+        $throwable = $event->getThrowable();
+        $response = $this->replyToSymfonyResponseConverter->convert($throwable);
 
         $event->allowCustomResponseCode();
 
