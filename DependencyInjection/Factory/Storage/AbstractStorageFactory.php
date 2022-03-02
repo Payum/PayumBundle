@@ -10,7 +10,7 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function create(ContainerBuilder $container, $modelClass, array $config)
+    public function create(ContainerBuilder $container, $modelClass, array $config): string
     {
         $storageId = sprintf('payum.storage.%s', strtolower(str_replace(array('\\\\', '\\'), '_', $modelClass)));
 
@@ -22,19 +22,9 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
         return $storageId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param string $modelClass
-     * @param array $config
-     *
-     * @return Definition
-     */
-    abstract protected function createStorage(ContainerBuilder $container, $modelClass, array $config);
+    abstract protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): Definition;
 }

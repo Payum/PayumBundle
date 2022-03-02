@@ -12,15 +12,12 @@ class FilesystemStorageFactory extends AbstractStorageFactory
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'filesystem';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         parent::addConfiguration($builder);
         
@@ -30,10 +27,7 @@ class FilesystemStorageFactory extends AbstractStorageFactory
         ->end();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createStorage(ContainerBuilder $container, $modelClass, array $config)
+    protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
         $loader->load('filesystem.xml');

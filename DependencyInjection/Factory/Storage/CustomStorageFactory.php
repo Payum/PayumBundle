@@ -10,23 +10,17 @@ class CustomStorageFactory extends AbstractStorageFactory
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'custom';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function createStorage(ContainerBuilder $container, $modelClass, array $config)
+    protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
         return new ChildDefinition($config['service']);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         parent::addConfiguration($builder);
 

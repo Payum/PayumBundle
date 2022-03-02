@@ -12,15 +12,12 @@ class DoctrineStorageFactory extends AbstractStorageFactory
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'doctrine';
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         parent::addConfiguration($builder);
         
@@ -33,10 +30,7 @@ class DoctrineStorageFactory extends AbstractStorageFactory
             ->end();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected function createStorage(ContainerBuilder $container, $modelClass, array $config)
+    protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
         $loader->load('doctrine.'.$config['driver'].'.xml');
