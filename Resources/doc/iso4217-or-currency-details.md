@@ -52,11 +52,11 @@ echo $currency->getCountry(); // US
 
 ## Next 
 
-* [The architecture](the-architecture.md).
-* [Supported gateways](supported-gateways.md).
+* [The architecture](https://github.com/Payum/Payum/blob/master/docs/the-architecture.md).
+* [Supported gateways](https://github.com/Payum/Payum/blob/master/docs/supported-gateways.md).
 * [Storages](storages.md).
-* [Capture script](capture-script.md).
-* [Authorize script](authorize-script.md).
-* [Done script](done-script.md).
+* [Capture script](get-it-started.md).
+* [Authorize](authorize.md).
+* [Done script](purchase_done_action.md).
 
 Back to [index](index.md).

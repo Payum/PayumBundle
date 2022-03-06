@@ -8,7 +8,7 @@ The tag `payum.gateway` could be used if you want to register your service as a 
 The service must implement `Payum\Core\GatewayInterface`.
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 services:
     acme.foo_gateway:
@@ -30,7 +30,7 @@ The tag `payum.action` could be used if you want to register your service as an 
 The service must implement `Payum\Core\Action\ActionInterface`.
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 services:
     acme.foo_action:
@@ -58,7 +58,7 @@ The tag `payum.api` could be used if you want to register your service as an api
 The service could be any object.
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 services:
     acme.foo_api:
@@ -86,7 +86,7 @@ The tag `payum.extension` could be used if you want to register your service as 
 The service must implement `Payum\Core\Extension\ExtensionInterface`.
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 services:
     acme.foo_extension:
@@ -114,7 +114,7 @@ The tag `payum.gateway_factory` could be used if you want to register your servi
 The service must implement `Payum\Core\GatewayFactoryInterface`.
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 services:
     acme.foo_gateway_factory:

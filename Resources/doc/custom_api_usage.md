@@ -73,7 +73,7 @@ services:
 When we are done we can tell payum to use this service instead of default one:
 
 ```yaml
-# app/config/config.yml
+# config/packages/payum.yml
 
 payum:
     gateways:

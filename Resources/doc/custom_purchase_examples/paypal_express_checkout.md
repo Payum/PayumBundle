@@ -1,10 +1,10 @@
-# Paypal express checkout
+# PayPal express checkout
 
 Steps:
 
 * [Download libraries](#download-libraries)
-* [Configure gateway](#configure-context)
-* [Prepare payment](#prepare-payment)
+* [Configure gateway](#configure-gateway)
+* [Prepare payment](#prepare-gateway)
 
 _**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration same as described there._
 
@@ -13,13 +13,13 @@ _**Note**: We assume you followed all steps in [get it started](https://github.c
 Run the following command:
 
 ```bash
-$ php composer.phar require "payum/paypal-express-checkout-nvp"
+$ composer require "payum/paypal-express-checkout-nvp"
 ```
 
 ## Configure gateway
 
 ```yaml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     gateways:

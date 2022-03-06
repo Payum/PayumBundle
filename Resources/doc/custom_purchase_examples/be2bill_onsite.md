@@ -3,7 +3,7 @@
 Steps:
 
 * [Download libraries](#download-libraries)
-* [Configure gateway](#configure-context)
+* [Configure gateway](#configure-gateway)
 * [Prepare payment](#prepare-payment)
 
 _**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration same as described there._
@@ -13,13 +13,13 @@ _**Note**: We assume you followed all steps in [get it started](https://github.c
 Run the following command:
 
 ```bash
-$ php composer.phar require "payum/be2bill"
+$ composer require "payum/be2bill"
 ```
 
 ## Configure gateway
 
 ```yaml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     gateways:
@@ -73,8 +73,8 @@ class PaymentController extends Controller
          * This is the trick.
          * You have also configure these urls in the account configuration section on be2bill site:
          *
-         * return url: http://your-domain-here.dev/payment/capture/session-token
-         * cancel url: http://your-domain-here.dev/payment/capture/session-token
+         * return url: https://your-domain-here.dev/payment/capture/session-token
+         * cancel url: https://your-domain-here.dev/payment/capture/session-token
          */
         $request->getSession()->set('payum_token', $captureToken->getHash());
 
