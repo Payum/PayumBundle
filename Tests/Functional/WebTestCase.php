@@ -8,7 +8,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class WebTestCase extends BaseWebTestCase
 {
     protected KernelBrowser $client;
-    protected static ContainerInterface $container;
+
+    /* @var $container ContainerInterface */
+    protected static $container;
 
     protected function setUp(): void
     {
