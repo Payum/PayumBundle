@@ -6,7 +6,7 @@ The preferred way to install the library is using [composer](http://getcomposer.
 Run composer require to add dependencies to _composer.json_:
 
 ```bash
-php composer.phar require "payum/payum-bundle" "payum/offline" "php-http/guzzle6-adapter"
+php composer.phar require "payum/payum-bundle" "payum/offline" "php-http/guzzle7-adapter"
 ```
 
 _**Note**: Where payum/offline is a php payum extension, you can for example change it to payum/paypal-express-checkout-nvp or payum/stripe. Look at [supported gateways](https://github.com/Payum/Core/blob/master/Resources/docs/supported-gateways.md) to find out what you can use._

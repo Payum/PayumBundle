@@ -7,6 +7,7 @@ use Payum\Core\Request\Generic;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class PayumCollector extends DataCollector implements ExtensionInterface
 {
@@ -16,7 +17,7 @@ class PayumCollector extends DataCollector implements ExtensionInterface
     private array $contexts = [];
 
     /**
-     * @var array
+     * @var array|Data
      */
     protected $data = [];
 
