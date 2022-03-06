@@ -1,0 +1,8 @@
+form:
+    credit_card:
+        holder: Karteninhaber
+        expire_at: Gültig bis
+        number: Kartennummer
+        security_code: Sicherheitscode
+    choice:
+        paypal_express_checkout: Paypal Express Checkout
