@@ -16,11 +16,7 @@ class CreditCardTypeTest extends WebTestCase
     {
         parent::setUp();
 
-        #$this->formFactory = static::$kernel->getContainer()->get('form.factory');
-        #$this->formFactory = $this->client->getContainer()->get('form.factory');
-        #$this->formFactory = static::$container->get('form.factory');static::getContainer()->get
         $this->formFactory = static::getContainer()->get('form.factory');
-        #dump($this->formFactory);
     }
 
     /**
