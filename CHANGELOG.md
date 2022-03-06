@@ -4,6 +4,7 @@
 
 * Symfony < 5 support is dropped
 * PHP < 8 support is dropped
+* BC Break: Add more strong types to `StorageFactoryInterface`
 * deprecated function `PayumController->getHttpRequestVerifier()` removed
 * deprecated function `PayumController->getTokenFactory()` removed
 * Please see UPGRADE.md
