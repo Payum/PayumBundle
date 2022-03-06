@@ -192,7 +192,7 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideTags
      */
-    public function testShouldAddConfig(array $tagAttributes, $expected): void
+    public function testShouldAddConfig(array $tagAttributes, mixed $expected): void
     {
         $tagName = $tagAttributes['name'];
         unset($tagAttributes['name']);

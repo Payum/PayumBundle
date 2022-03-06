@@ -16,7 +16,10 @@ class CreateNotifyTokenCommandTest extends WebTestCase
      */
     public function shouldCreateNotifyTokenWithoutModel(): void
     {
-        $output = $this->executeConsole(new CreateNotifyTokenCommand, array(
+        /** @var RegistryInterface $payum */
+        $payum = $this->client->getContainer()->get('payum');
+
+        $output = $this->executeConsole(new CreateNotifyTokenCommand($payum), array(
             'gateway-name' => 'fooGateway'
         ));
 
@@ -41,7 +44,7 @@ class CreateNotifyTokenCommandTest extends WebTestCase
 
         $modelId = $storage->identify($model)->getId();
 
-        $output = $this->executeConsole(new CreateNotifyTokenCommand, array(
+        $output = $this->executeConsole(new CreateNotifyTokenCommand($payum), array(
             'gateway-name' => 'fooGateway',
             '--model-class' => $modelClass,
             '--model-id' => $modelId

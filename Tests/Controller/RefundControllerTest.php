@@ -27,8 +27,7 @@ class RefundControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteRefundRequest(): void
     {
-        $controller = new RefundController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new RefundController($this->payum);
 
         $response = $controller->doAction($this->request);
 
@@ -43,8 +42,7 @@ class RefundControllerTest extends AbstractControllerTest
     {
         $this->token->setAfterUrl(null);
 
-        $controller = new RefundController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new RefundController($this->payum);
 
         $response = $controller->doAction($this->request);
 
@@ -56,9 +54,8 @@ class RefundControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->any())
             ->method('execute')
-            ->with($this->isInstanceOf(Refund::class));
-
+            ->with($this->isInstanceOf(Refund::class))
+        ;
     }
 }

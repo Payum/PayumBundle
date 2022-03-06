@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.0 (2022-03-xx)
+
+* Symfony < 5 support is dropped
+* PHP < 8 support is dropped
+* deprecated function `PayumController->getHttpRequestVerifier()` removed
+* deprecated function `PayumController->getTokenFactory()` removed
+* Please see UPGRADE.md
+
 ## 2.3.1 (2018-08-19)
 
 * Make profiler dynamic

@@ -17,7 +17,7 @@ class BuildGatewaysPass implements CompilerPassInterface
         $servicesIds = [];
         foreach ($container->findTaggedServiceIds('payum.gateway') as $serviceId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (false == isset($attributes['gateway'])) {
+                if (false === isset($attributes['gateway'])) {
                     throw new LogicException('The payum.gateway tag require gateway attribute.');
                 }
 

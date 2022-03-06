@@ -710,17 +710,17 @@ class MainConfigurationTest extends TestCase
 
 class FooStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config)
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
         return 'aStorageId';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'foo_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         $builder
             ->children()
@@ -732,17 +732,17 @@ class FooStorageFactory implements StorageFactoryInterface
 
 class BarStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config)
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
         return 'serviceId';
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'bar_storage';
     }
 
-    public function addConfiguration(ArrayNodeDefinition $builder)
+    public function addConfiguration(ArrayNodeDefinition $builder): void
     {
         $builder
             ->children()

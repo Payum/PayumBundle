@@ -3,22 +3,23 @@ namespace Payum\Bundle\PayumBundle\Command;
 
 use Payum\Core\Extension\StorageExtension;
 use Payum\Core\Gateway;
-use Payum\Core\Registry\RegistryInterface;
+use Payum\Core\Payum;
 use Payum\Core\Storage\AbstractStorage;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class DebugGatewayCommand extends Command implements ContainerAwareInterface
+#[AsCommand(name: 'debug:payum:gateway', aliases: ['payum:gateway:debug'])]
+class DebugGatewayCommand extends Command
 {
-    use ContainerAwareTrait;
-
-    protected static $defaultName = 'debug:payum:gateway';
+    public function __construct(protected Payum $payum)
+    {
+        parent::__construct();
+    }
 
     /**
      * {@inheritDoc}
@@ -26,8 +27,6 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
     protected function configure(): void
     {
         $this
-            ->setName(static::$defaultName)
-            ->setAliases(['payum:gateway:debug'])
             ->addArgument('gateway-name', InputArgument::OPTIONAL, 'The gateway name you want to get information about.')
             ->addOption('show-supports', null, InputOption::VALUE_NONE, 'Show what actions supports.')
         ;
@@ -35,15 +34,16 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
 
     /**
      * {@inheritDoc}
+     * @throws \ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $gateways = $this->getPayum()->getGateways();
+        $gateways = $this->payum->getGateways();
 
         if ($gatewayName = $input->getArgument('gateway-name')) {
             $gatewayName = $this->findProperGatewayName($input, $output, $gateways, $gatewayName);
             $gateways = array(
-                $gatewayName => $this->getPayum()->getGateway($gatewayName),
+                $gatewayName => $this->payum->getGateway($gatewayName),
             );
         }
 
@@ -55,7 +55,7 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
             $output->writeln('');
             $output->writeln(sprintf('%s (%s):', $name, get_class($gateway)));
 
-            if (false == $gateway instanceof Gateway) {
+            if (false === $gateway instanceof Gateway) {
                 continue;
             }
 
@@ -120,15 +120,10 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
-    /**
-     * @param \ReflectionMethod $reflectionMethod
-     *
-     * @return array
-     */
-    protected function getMethodCode(\ReflectionMethod $reflectionMethod)
+    protected function getMethodCode(\ReflectionMethod $reflectionMethod): array
     {
         $file = file($reflectionMethod->getFileName());
 
@@ -140,15 +135,7 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
         return array_values($methodCodeLines);
     }
 
-    /**
-     * @return RegistryInterface
-     */
-    protected function getPayum()
-    {
-        return $this->container->get('payum');
-    }
-
-    private function findProperGatewayName(InputInterface $input, OutputInterface $output, $gateways, $name)
+    private function findProperGatewayName(InputInterface $input, OutputInterface $output, array $gateways, string $name)
     {
         $helperSet = $this->getHelperSet();
         if (!$helperSet->has('question') || isset($gateways[$name]) || !$input->isInteractive()) {
@@ -165,14 +152,14 @@ class DebugGatewayCommand extends Command implements ContainerAwareInterface
         return $this->getHelper('question')->ask($input, $output, $question);
     }
 
-    private function findGatewaysContaining($gateways, $name)
+    private function findGatewaysContaining(array $gateways, string $name): array
     {
         $threshold = 1e3;
         $foundGateways = array();
 
         foreach ($gateways as $gatewayName => $gateway) {
             $lev = levenshtein($name, $gatewayName);
-            if ($lev <= strlen($name) / 3 || false !== strpos($gatewayName, $name)) {
+            if ($lev <= strlen($name) / 3 || str_contains($gatewayName, $name)) {
                 $foundGateways[$gatewayName] = isset($foundGateways[$gatewayName]) ? $foundGateways[$gateway] - $lev : $lev;
             }
         }

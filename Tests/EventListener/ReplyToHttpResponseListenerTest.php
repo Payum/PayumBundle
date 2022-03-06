@@ -34,7 +34,7 @@ class ReplyToHttpResponseListenerTest extends TestCase
         $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            Kernel::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $expectedException
         );
 
@@ -66,7 +66,7 @@ class ReplyToHttpResponseListenerTest extends TestCase
         $event = new ExceptionEvent(
             $this->createHttpKernelMock(),
             new Request,
-            Kernel::MASTER_REQUEST,
+            HttpKernelInterface::MAIN_REQUEST,
             $reply
         );
 
@@ -75,7 +75,7 @@ class ReplyToHttpResponseListenerTest extends TestCase
             ->expects($this->once())
             ->method('convert')
             ->with($this->identicalTo($reply))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
         $listener = new ReplyToHttpResponseListener($converterMock);
@@ -94,14 +94,14 @@ class ReplyToHttpResponseListenerTest extends TestCase
         $reply = new HttpRedirect('/foo/bar');
         $response = new Response('', 302);
 
-        $event = new ExceptionEvent($this->createHttpKernelMock(), new Request, Kernel::MASTER_REQUEST, $reply);
+        $event = new ExceptionEvent($this->createHttpKernelMock(), new Request, HttpKernelInterface::MAIN_REQUEST, $reply);
 
         $converterMock = $this->createReplyToSymfonyResponseConverterMock();
         $converterMock
             ->expects($this->once())
             ->method('convert')
             ->with($this->identicalTo($reply))
-            ->will($this->returnValue($response))
+            ->willReturn($response)
         ;
 
         $listener = new ReplyToHttpResponseListener($converterMock);
@@ -113,19 +113,13 @@ class ReplyToHttpResponseListenerTest extends TestCase
         $this->assertEquals(true, $event->isAllowingCustomResponseCode());
     }
 
-    /**
-     * @return MockObject|ReplyToSymfonyResponseConverter
-     */
-    protected function createReplyToSymfonyResponseConverterMock()
+    protected function createReplyToSymfonyResponseConverterMock(): MockObject|ReplyToSymfonyResponseConverter
     {
-        return $this->createMock('Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter');
+        return $this->createMock(ReplyToSymfonyResponseConverter::class);
     }
 
-    /**
-     * @return HttpKernelInterface|MockObject
-     */
-    protected function createHttpKernelMock()
+    protected function createHttpKernelMock(): HttpKernelInterface|MockObject
     {
-        return $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        return $this->createMock(HttpKernelInterface::class);
     }
 }

@@ -26,8 +26,7 @@ class CancelControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCancelRequest(): void
     {
-        $controller = new CancelController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new CancelController($this->payum);
 
         $response = $controller->doAction($this->request);
 
@@ -42,8 +41,7 @@ class CancelControllerTest extends AbstractControllerTest
     {
         $this->token->setAfterUrl(null);
 
-        $controller = new CancelController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new CancelController($this->payum);
 
         $response = $controller->doAction($this->request);
 
@@ -55,7 +53,6 @@ class CancelControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Cancel::class))
         ;

@@ -5,13 +5,25 @@ parameters:
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
-    test: ~
+    test: true
     secret:          '%secret%'
     router:          { utf8: true, resource: '%kernel.project_dir%/Tests/Functional/app/config/routing.yml' }
     default_locale:  '%locale%'
-    form:                                                 true
-    csrf_protection:                                      true
+    form:            true
+    csrf_protection: true
     assets: false
+    session:
+        handler_id: null
+        cookie_secure: auto
+        cookie_samesite: lax
+        storage_factory_id: session.storage.factory.mock_file
+        #validation: { enable_annotations: false }
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
 
 payum:
     storages:

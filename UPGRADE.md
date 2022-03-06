@@ -2,6 +2,13 @@
 
 Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
+## 2.4.x to 3.0
+
+* Symfony < 5 support is dropped
+* PHP < 8 support is dropped
+* deprecated function `PayumController->getHttpRequestVerifier()` removed. Use `payum->getHttpRequestVerifier()`
+* deprecated function `PayumController->getTokenFactory()` removed. Use `payum->getTokenFactory()`
+
 ## 2.0 to 2.1
 
 * `payum.http_client` service was removed. Use gateway's config to overwrite it.

@@ -25,8 +25,7 @@ class PayoutControllerTest extends AbstractControllerTest
      */
     public function shouldExecutePayoutRequest(): void
     {
-        $controller = new PayoutController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new PayoutController($this->payum);
 
         $response = $controller->doAction($this->request);
 
