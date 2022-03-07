@@ -19,7 +19,7 @@ $ composer require "payum/be2bill"
 ## Configure gateway
 
 ```yaml
-##config/packages/payum.yml
+#config/packages/payum.yml
 
 payum:
     gateways:
