@@ -3,7 +3,7 @@
 Steps:
 
 * [Download libraries](#download-libraries)
-* [Configure gateway](#configure-context)
+* [Configure gateway](#configure-gateway)
 * [Prepare payment](#prepare-payment)
 
 _**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration same as described there._
@@ -13,13 +13,13 @@ _**Note**: We assume you followed all steps in [get it started](https://github.c
 Run the following command:
 
 ```bash
-$ php composer.phar require "payum/omnipay-bridge" "omnipay/paypal:~2.0"
+$ composer require "payum/omnipay-bridge" "omnipay/paypal:~2.0"
 ```
 
 ## Configure gateway
 
 ```yaml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     gateways:

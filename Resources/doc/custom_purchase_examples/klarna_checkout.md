@@ -3,7 +3,7 @@
 Steps:
 
 * [Download libraries](#download-libraries)
-* [Configure gateway](#configure-context)
+* [Configure gateway](#configure-gateway)
 * [Prepare payment](#prepare-payment)
 
 _**Note**: We assume you followed all steps in [get it started](https://github.com/Payum/PayumBundle/blob/master/Resources/doc/get_it_started.md) and your basic configuration same as described there._
@@ -13,13 +13,13 @@ _**Note**: We assume you followed all steps in [get it started](https://github.c
 Run the following command:
 
 ```bash
-$ php composer.phar require "payum/klarna-checkout:@stable"
+$ composer require "payum/klarna-checkout:@stable"
 ```
 
 ## Configure gateway
 
 ```yaml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     gateways:
@@ -66,8 +66,8 @@ class PaymentController extends Controller
         );
 
         $details['merchant'] = array(
-            'terms_uri' => 'http://example.com/terms',
-            'checkout_uri' => 'http://example.com/fuck',
+            'terms_uri' => 'https://example.com/terms',
+            'checkout_uri' => 'https://example.com/fuck',
             'confirmation_uri' => $captureToken->getTargetUrl(),
             'push_uri' => $this->getTokenFactory()->createNotifyToken($gatewayName, $details)->getTargetUrl()
         );

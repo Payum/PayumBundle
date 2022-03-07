@@ -30,17 +30,15 @@ class GatewayConfig extends BaseGatewayConfig
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var integer $id
      */
-    protected $id;
+    protected int $id;
 }
 ```
 
 next, you have to add mapping of the basic entity you've just extended, and configure payum's extension:
 
 ```yml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     dynamic_gateways:
