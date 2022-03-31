@@ -6,32 +6,27 @@ The preferred way to install the library is using [composer](http://getcomposer.
 Run composer require to add dependencies to _composer.json_:
 
 ```bash
-php composer.phar require "payum/payum-bundle" "payum/offline" "php-http/guzzle7-adapter"
+composer require "payum/payum-bundle" "payum/offline" "php-http/guzzle7-adapter"
 ```
 
 _**Note**: Where payum/offline is a php payum extension, you can for example change it to payum/paypal-express-checkout-nvp or payum/stripe. Look at [supported gateways](https://github.com/Payum/Core/blob/master/Resources/docs/supported-gateways.md) to find out what you can use._
 
-_**Note**: Use payum/payum if you want to install all gateways at once._
-
-Enable the bundle in the kernel:
+Enable the bundle in the kernel (only if you do not use Symfony Flex):
 
 ``` php
 <?php
-// app/AppKernel.php
+// config/bundles.php
 
-public function registerBundles()
-{
-    $bundles = array(
+return [
         // ...
-        new Payum\Bundle\PayumBundle\PayumBundle(),
-    );
-}
+        Payum\Bundle\PayumBundle\PayumBundle::class => ['all' => true],
+];
 ```
 
 So now after you registered the bundle let's import routing.
 
 ```yaml
-# app/config/routing.yml
+# config/routes/payum.yaml
 
 payum_all:
     resource: "@PayumBundle/Resources/config/routing/all.xml"
@@ -77,17 +72,15 @@ class Payment extends BasePayment
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     *
-     * @var integer $id
      */
-    protected $id;
+    protected int $id;
 }
 ```
 
 next, you have to add mapping of the basic entities you are extended, and configure payum's storages:
 
 ```yml
-#app/config/config.yml
+#config/packages/payum.yml
 
 payum:
     security:
