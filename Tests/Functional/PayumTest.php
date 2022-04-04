@@ -79,7 +79,7 @@ class PayumTest extends WebTestCase
 
         $factories = $payum->getGatewayFactories();
         $this->assertIsArray($factories);
-        $this->assertGreaterThan(10, count($factories));
+        $this->assertGreaterThan(5, count($factories));
     }
 
     public function testShouldReturnGatewayFactory(): void
