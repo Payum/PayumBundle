@@ -38,7 +38,7 @@
     ],
     "require": {
         "php": ">=8.0.2",
-        "payum/core": "^1.7",
+        "payum/payum": "1.x-dev",
         "symfony/framework-bundle": "^5.4 || ^6.0",
         "symfony/form": "^5.4 || ^6.0",
         "symfony/validator": "^5.4 || ^6.0",
@@ -63,6 +63,7 @@
         "symfony/phpunit-bridge": "^6.0",
         "symfony/templating": "^5.4 || ^6.0",
         "symfony/twig-bundle": "^5.4 || ^6.0",
+        "symfony/web-profiler-bundle": "^5.4 || ^6.0",
         "symfony/yaml": "^5.4 || ^6.0",
         "twig/twig": "^2.0 || ^3.0"
     },
@@ -82,5 +83,7 @@
     },
     "config": {
         "bin-dir": "bin"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
