@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5.0 (2022-07-xx)
+
+* Support for Symfony 5.0 - 5.3 dropped
+* Added support for Symfony 6.0
+* Minimum Payum Core dependency updated to 1.7.2
+
 ## 2.3.1 (2018-08-19)
 
 * Make profiler dynamic

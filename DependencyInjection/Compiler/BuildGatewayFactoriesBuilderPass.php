@@ -16,7 +16,7 @@ class BuildGatewayFactoriesBuilderPass implements CompilerPassInterface
         $builder = $container->getDefinition('payum.builder');
         foreach ($container->findTaggedServiceIds('payum.gateway_factory_builder') as $serviceId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                if (false == isset($attributes['factory'])) {
+                if (false === isset($attributes['factory'])) {
                     throw new LogicException('The payum.gateway_factory tag require factory attribute.');
                 }
 

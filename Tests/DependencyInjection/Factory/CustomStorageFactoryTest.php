@@ -1,12 +1,12 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory;
 
-
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory;
 
 class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -15,9 +15,9 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function shouldBeSubClassOfAbstractStorageFactory(): void
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\CustomStorageFactory');
+        $rc = new \ReflectionClass(CustomStorageFactory::class);
 
-        $this->assertTrue($rc->isSubclassOf('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory'));
+        $this->assertTrue($rc->isSubclassOf(AbstractStorageFactory::class));
     }
 
     /**
@@ -158,6 +158,6 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected function createContainerBuilderMock()
     {
-        return $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder', array(), array(), '', false);
+        return $this->createMock(ContainerBuilder::class);
     }
 }

@@ -16,9 +16,9 @@ class CancelController extends PayumController
 
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
         $gateway->execute(new Cancel($token));
-        
+
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
-        
+
         return $token->getAfterUrl() ?
             $this->redirect($token->getAfterUrl()) :
             new Response('', 204)

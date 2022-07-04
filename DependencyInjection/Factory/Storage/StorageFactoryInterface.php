@@ -10,18 +10,16 @@ interface StorageFactoryInterface
      * @param string $modelClass
      * @return string The payment serviceId
      */
-    function create(ContainerBuilder $container, $modelClass, array $config);
+    public function create(ContainerBuilder $container, $modelClass, array $config);
 
     /**
      * The storage name,
      * For example filesystem, doctrine, propel etc.
-     *
-     * @return string
      */
-    function getName();
+    public function getName();
 
     /**
      * @return void
      */
-    function addConfiguration(ArrayNodeDefinition $builder);
+    public function addConfiguration(ArrayNodeDefinition $builder);
 }

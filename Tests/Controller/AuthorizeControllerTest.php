@@ -25,8 +25,7 @@ class AuthorizeControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteAuthorizeRequest(): void
     {
-        $controller = new AuthorizeController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new AuthorizeController($this->payum);
 
         $response = $controller->doAction($this->request);
 

@@ -8,7 +8,7 @@ Let's say you already purchased an order and now you want to refund it.
 use Payum\Core\Request\Refund;
 use Payum\Core\Request\GetHumanStatus;
 
-$gateway = $this->get('payum')->getGateway('offline');
+$gateway = $this->payum->getGateway('offline');
 
 $gateway->execute(new Refund($payment));
 $gateway->execute($status = new GetHumanStatus($payment));

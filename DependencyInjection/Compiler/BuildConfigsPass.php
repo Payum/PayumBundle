@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class BuildConfigsPass implements CompilerPassInterface
 {
@@ -23,12 +24,12 @@ class BuildConfigsPass implements CompilerPassInterface
 
         $builder = $container->getDefinition('payum.builder');
         if ($container->hasDefinition('twig')) {
-            $config = ['twig.env' => '@twig'];
+            $config = ['twig.env' => new Reference('twig')];
 
             $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
         }
 
-        if (false == empty($configs[0])) {
+        if (false === empty($configs[0])) {
             $builder->addMethodCall('addCoreGatewayFactoryConfig', [$configs[0]]);
         }
 
@@ -41,7 +42,7 @@ class BuildConfigsPass implements CompilerPassInterface
         }
     }
 
-    protected function processTagData(array $tagData, $namePrefix, $prependKey): array
+    protected function processTagData(array $tagData, string $namePrefix, string $prependKey): array
     {
         $coreGatewayFactoryConfig = [];
         $gatewaysFactoriesConfigs = [];
@@ -59,7 +60,7 @@ class BuildConfigsPass implements CompilerPassInterface
                     $coreGatewayFactoryConfig[$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        if (false == isset($coreGatewayFactoryConfig[$prependKey])) {
+                        if (false === isset($coreGatewayFactoryConfig[$prependKey])) {
                             $coreGatewayFactoryConfig[$prependKey] = [];
                         }
 
@@ -67,28 +68,28 @@ class BuildConfigsPass implements CompilerPassInterface
                         $coreGatewayFactoryConfig[$prependKey][] = $name;
                     }
                 } elseif ($attributes['factory']) {
-                    if (false == isset($gatewaysFactoriesConfigs[$attributes['factory']])) {
+                    if (false === isset($gatewaysFactoriesConfigs[$attributes['factory']])) {
                         $gatewaysFactoriesConfigs[$attributes['factory']] = [];
                     }
 
                     $gatewaysFactoriesConfigs[$attributes['factory']][$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        if (false == isset($gatewaysFactoriesConfigs[$attributes['factory']][$prependKey])) {
+                        if (false === isset($gatewaysFactoriesConfigs[$attributes['factory']][$prependKey])) {
                             $gatewaysFactoriesConfigs[$attributes['factory']][$prependKey] = [];
                         }
 
                         $gatewaysFactoriesConfigs[$attributes['factory']][$prependKey][] = $name;
                     }
                 } elseif ($attributes['gateway']) {
-                    if (false == isset($gatewaysConfigs[$attributes['gateway']])) {
+                    if (false === isset($gatewaysConfigs[$attributes['gateway']])) {
                         $gatewaysConfigs[$attributes['gateway']] = [];
                     }
 
                     $gatewaysConfigs[$attributes['gateway']][$name] = "@$serviceId";
 
                     if ($attributes['prepend']) {
-                        if (false == isset($gatewaysConfigs[$attributes['gateway']][$prependKey])) {
+                        if (false === isset($gatewaysConfigs[$attributes['gateway']][$prependKey])) {
                             $gatewaysConfigs[$attributes['gateway']][$prependKey] = [];
                         }
 

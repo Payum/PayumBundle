@@ -16,8 +16,8 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function shouldImplementStorageFactoryInterface(): void
     {
-        $rc = new \ReflectionClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory');
-        
+        $rc = new \ReflectionClass(AbstractStorageFactory::class);
+
         $this->assertTrue($rc->implementsInterface(StorageFactoryInterface::class));
     }
 
@@ -42,7 +42,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
         $tb = new TreeBuilder('foo');
         $rootNode = $tb->getRootNode();
-        
+
         $factory->addConfiguration($rootNode);
 
         $processor = new Processor();
@@ -55,14 +55,14 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     public function shouldAllowCreateStorageAndReturnItsId(): void
     {
         $expectedStorage = new Definition();
-        
+
         $factory = $this->createAbstractStorageFactory();
         $factory
             ->expects($this->once())
             ->method('createStorage')
-            ->will($this->returnCallback(function() use ($expectedStorage) {
+            ->willReturnCallback(function () use ($expectedStorage) {
                 return $expectedStorage;
-            }))
+            })
         ;
 
         $container = new ContainerBuilder;
@@ -77,7 +77,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     protected function assertDefinitionContainsMethodCall(Definition $serviceDefinition, $expectedMethod, $expectedFirstArgument): void
     {
         foreach ($serviceDefinition->getMethodCalls() as $methodCall) {
-            if ($expectedMethod == $methodCall[0] && $expectedFirstArgument == $methodCall[1][0]) {
+            if ($expectedMethod === $methodCall[0] && $expectedFirstArgument === $methodCall[1][0]) {
                 return;
             }
         }
@@ -95,6 +95,6 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
      */
     protected function createAbstractStorageFactory()
     {
-        return $this->getMockForAbstractClass('Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\AbstractStorageFactory');
+        return $this->getMockForAbstractClass(AbstractStorageFactory::class);
     }
 }

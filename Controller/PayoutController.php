@@ -13,9 +13,9 @@ class PayoutController extends PayumController
 
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
         $gateway->execute(new Payout($token));
-        
+
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
-        
+
         return $this->redirect($token->getAfterUrl());
     }
 }

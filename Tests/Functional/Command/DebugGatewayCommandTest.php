@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 
 use Payum\Bundle\PayumBundle\Command\DebugGatewayCommand;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
+use Payum\Core\Registry\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -15,7 +16,10 @@ class DebugGatewayCommandTest extends WebTestCase
      */
     public function shouldOutputDebugInfoAboutSingleGateway(): void
     {
-        $output = $this->executeConsole(new DebugGatewayCommand(), array(
+        /** @var RegistryInterface $payum */
+        $payum = $this->client->getContainer()->get('payum');
+
+        $output = $this->executeConsole(new DebugGatewayCommand($payum), array(
             'gateway-name' => 'fooGateway',
         ));
 
@@ -37,7 +41,10 @@ class DebugGatewayCommandTest extends WebTestCase
      */
     public function shouldOutputDebugInfoAboutAllGateways(): void
     {
-        $output = $this->executeConsole(new DebugGatewayCommand());
+        /** @var RegistryInterface $payum */
+        $payum = $this->client->getContainer()->get('payum');
+
+        $output = $this->executeConsole(new DebugGatewayCommand($payum));
 
         $this->assertStringContainsString('Found 2 gateways', $output);
         $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);
@@ -49,7 +56,10 @@ class DebugGatewayCommandTest extends WebTestCase
      */
     public function shouldOutputInfoWhatActionsSupports(): void
     {
-        $output = $this->executeConsole(new DebugGatewayCommand(), array(
+        /** @var RegistryInterface $payum */
+        $payum = $this->client->getContainer()->get('payum');
+
+        $output = $this->executeConsole(new DebugGatewayCommand($payum), array(
             'gateway-name' => 'fooGateway',
             '--show-supports' => true,
         ));
@@ -66,7 +76,10 @@ class DebugGatewayCommandTest extends WebTestCase
      */
     public function shouldOutputChoiceListGatewaysForNameGiven(): void
     {
-        $command = new DebugGatewayCommand();
+        /** @var RegistryInterface $payum */
+        $payum = $this->client->getContainer()->get('payum');
+
+        $command = new DebugGatewayCommand($payum);
         $command->setApplication(new Application($this->client->getKernel()));
 
         $output = $this->executeConsole($command, [
@@ -77,13 +90,6 @@ class DebugGatewayCommandTest extends WebTestCase
         $this->assertStringContainsString('[0] fooGateway', $output);
     }
 
-    /**
-     * @param Command $command
-     * @param string[] $arguments
-     * @param string[] $inputs
-     *
-     * @return string
-     */
     protected function executeConsole(Command $command, array $arguments = [], array $inputs = []): string
     {
         if (!$command->getApplication()) {

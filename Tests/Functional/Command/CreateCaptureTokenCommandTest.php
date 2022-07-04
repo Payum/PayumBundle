@@ -27,7 +27,7 @@ class CreateCaptureTokenCommandTest extends WebTestCase
 
         $modelId = $storage->identify($model)->getId();
 
-        $output = $this->executeConsole(new CreateCaptureTokenCommand, array(
+        $output = $this->executeConsole(new CreateCaptureTokenCommand($payum), array(
             'gateway-name' => 'fooGateway',
             '--model-class' => $modelClass,
             '--model-id' => $modelId,
@@ -56,7 +56,7 @@ class CreateCaptureTokenCommandTest extends WebTestCase
 
         $modelId = $storage->identify($model)->getId();
 
-        $output = $this->executeConsole(new CreateCaptureTokenCommand, array(
+        $output = $this->executeConsole(new CreateCaptureTokenCommand($payum), array(
             'gateway-name' => 'fooGateway',
             '--model-class' => $modelClass,
             '--model-id' => $modelId,

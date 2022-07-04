@@ -10,7 +10,7 @@ class ReplyToHttpResponseListenerTest extends WebTestCase
      */
     public function couldBeGetFromContainerAsService(): void
     {
-        $listener = static::$container->get('payum.listener.reply_to_http_response');
+        $listener = static::getContainer()->get('payum.listener.reply_to_http_response');
 
         $this->assertInstanceOf('Payum\Bundle\PayumBundle\EventListener\ReplyToHttpResponseListener', $listener);
     }

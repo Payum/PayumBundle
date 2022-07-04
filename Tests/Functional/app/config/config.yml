@@ -1,7 +1,7 @@
 parameters:
     locale:            'en'
     secret:            'ThisTokenIsNotSoSecretChangeIt'
-        
+
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -9,8 +9,8 @@ framework:
     secret:          '%secret%'
     router:          { utf8: true, resource: '%kernel.project_dir%/Tests/Functional/app/config/routing.yml' }
     default_locale:  '%locale%'
-    form:                                                 true
-    csrf_protection:                                      true
+    form:            true
+    csrf_protection: true
     assets: false
 
 payum:

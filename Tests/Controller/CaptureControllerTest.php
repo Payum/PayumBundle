@@ -38,8 +38,7 @@ class CaptureControllerTest extends AbstractControllerTest
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new CaptureController($this->payum);
 
         $request = Request::create('/');
 
@@ -61,8 +60,7 @@ class CaptureControllerTest extends AbstractControllerTest
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new CaptureController($this->payum);
 
         $request = Request::create('/');
         $request->setSession(new Session(new MockArraySessionStorage()));
@@ -83,7 +81,7 @@ class CaptureControllerTest extends AbstractControllerTest
                 'payum_token' => 'theToken',
                 'foo' => 'fooVal',
             ))
-            ->will($this->returnValue('/payment/capture/theToken?foo=fooVal'))
+            ->willReturn('/payment/capture/theToken?foo=fooVal')
         ;
 
         $locator = new ServiceLocator([
@@ -96,7 +94,7 @@ class CaptureControllerTest extends AbstractControllerTest
             HttpRequestVerifierInterface::class
         );
 
-        $controller = new CaptureController();
+        $controller = new CaptureController($this->payum);
         $controller->setContainer($locator);
 
         $this->request = Request::create('/');
@@ -116,8 +114,7 @@ class CaptureControllerTest extends AbstractControllerTest
      */
     public function shouldExecuteCaptureRequest(): void
     {
-        $controller = new CaptureController();
-        $controller->setContainer(new ServiceLocator(['payum' => function () { return $this->payum; }]));
+        $controller = new CaptureController($this->payum);
 
         $response = $controller->doAction($this->request);
 
@@ -129,7 +126,6 @@ class CaptureControllerTest extends AbstractControllerTest
     {
         $this->gatewayMock = $this->createMock(GatewayInterface::class);
         $this->gatewayMock
-            ->expects($this->any())
             ->method('execute')
             ->with($this->isInstanceOf(Capture::class))
         ;

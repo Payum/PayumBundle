@@ -27,7 +27,7 @@ class StatusCommandTest extends WebTestCase
 
         $modelId = $storage->identify($model)->getId();
 
-        $output = $this->executeConsole(new StatusCommand, array(
+        $output = $this->executeConsole(new StatusCommand($payum), array(
             'gateway-name' => 'fooGateway',
             '--model-class' => $modelClass,
             '--model-id' => $modelId
@@ -36,12 +36,6 @@ class StatusCommandTest extends WebTestCase
         $this->assertStringContainsString("Status: new", $output);
     }
 
-    /**
-     * @param Command  $command
-     * @param string[] $arguments
-     *
-     * @return string
-     */
     protected function executeConsole(Command $command, array $arguments = array()): string
     {
         $command->setApplication(new Application($this->client->getKernel()));

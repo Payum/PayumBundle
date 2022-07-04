@@ -108,13 +108,15 @@ Create a capture token and delegate the job to capture action.
 
 namespace Acme\PaymentBundle\Controller;
 
-class PaymentController extends Controller 
+use Payum\Bundle\PayumBundle\Controller\PayumController;
+
+class PaymentController extends PayumController
 {
     public function prepareAction() 
     {
         $gatewayName = 'offline';
         
-        $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\Payment');
+        $storage = $this->payum->getStorage('Acme\PaymentBundle\Entity\Payment');
         
         $payment = $storage->create();
         $payment->setNumber(uniqid());
@@ -126,7 +128,7 @@ class PaymentController extends Controller
         
         $storage->update($payment);
         
-        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
+        $captureToken = $this->payum->getTokenFactory()->createCaptureToken(
             $gatewayName, 
             $payment, 
             'done' // the route to redirect after capture
@@ -153,21 +155,22 @@ namespace Acme\PaymentBundle\Controller;
 use Payum\Core\Request\GetHumanStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Payum\Bundle\PayumBundle\Controller\PayumController;
 
-class PaymentController extends Controller 
+class PaymentController extends PayumController
 {
     public function doneAction(Request $request)
     {
-        $token = $this->get('payum')->getHttpRequestVerifier()->verify($request);
+        $token = $this->payum->getHttpRequestVerifier()->verify($request);
         
-        $gateway = $this->get('payum')->getGateway($token->getGatewayName());
+        $gateway = $this->payum->getGateway($token->getGatewayName());
         
         // you can invalidate the token. The url could not be requested any more.
-        // $this->get('payum')->getHttpRequestVerifier()->invalidate($token);
+        // $this->payum->getHttpRequestVerifier()->invalidate($token);
         
         // Once you have token you can get the model from the storage directly. 
         //$identity = $token->getDetails();
-        //$payment = $this->get('payum')->getStorage($identity->getClass())->find($identity);
+        //$payment = $this->payum->getStorage($identity->getClass())->find($identity);
         
         // or Payum can fetch the model for you while executing a request (Preferred).
         $gateway->execute($status = new GetHumanStatus($token));

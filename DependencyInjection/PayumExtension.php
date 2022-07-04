@@ -11,6 +11,7 @@ use Payum\Core\Gateway;
 use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -143,7 +144,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
             $container->getDefinition($storageId)->addTag('payum.storage', array('model_class' => $modelClass));
 
-            if (false !== strpos($storageId, '.storage.')) {
+            if (str_contains($storageId, '.storage.')) {
                 $storageExtensionId = str_replace('.storage.', '.extension.storage.', $storageId);
             } else {
                 throw new LogicException(sprintf('In order to add storage to extension the storage "%s" has to contains ".storage." inside.', $storageId));
@@ -226,7 +227,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if ($dynamicGatewaysConfig['sonata_admin']) {
             throw new \LogicException('Not supported. Has to wait till Sonata Admin 4.x will be released.');
 
-            if (false == class_exists(AbstractAdmin::class)) {
+            if (false === class_exists(AbstractAdmin::class)) {
                 throw new LogicException('Admin class does not exists. Did you install SonataAdmin bundle?');
             }
 
@@ -273,7 +274,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): MainConfiguration
     {
         return new MainConfiguration($this->storagesFactories);
     }

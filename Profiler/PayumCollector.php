@@ -7,6 +7,7 @@ use Payum\Core\Request\Generic;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class PayumCollector extends DataCollector implements ExtensionInterface
 {
@@ -16,7 +17,7 @@ class PayumCollector extends DataCollector implements ExtensionInterface
     private array $contexts = [];
 
     /**
-     * @var array
+     * @var array|Data
      */
     protected $data = [];
 
@@ -43,9 +44,7 @@ class PayumCollector extends DataCollector implements ExtensionInterface
             ];
 
             if ($request instanceof Generic) {
-                $contextData['model_class'] = is_object($request->getModel()) ?
-                    get_class($request->getModel()) :
-                    gettype($request->getModel())
+                $contextData['model_class'] = get_debug_type($request->getModel())
                 ;
 
                 $contextData['model_short_class'] = is_object($request->getModel()) ?
@@ -114,7 +113,7 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         $previousContext = null;
 
         foreach ($this->data as $index => $contextData) {
-            if ($contextData['deep'] == 0) {
+            if ($contextData['deep'] === 0) {
                 $str .= $this->formatRequest($contextData).PHP_EOL;
 
                 continue;
@@ -124,11 +123,11 @@ class PayumCollector extends DataCollector implements ExtensionInterface
                 $str .= $this->formatAction($contextData).PHP_EOL;
             }
 
-            if (false == array_key_exists($index + 1, $this->data) && $contextData['reply_class']) {
+            if (false === array_key_exists($index + 1, $this->data) && $contextData['reply_class']) {
                 $str .= $this->formatReply($contextData).PHP_EOL;
             }
 
-            if (false == array_key_exists($index + 1, $this->data) && $contextData['exception_class']) {
+            if (false === array_key_exists($index + 1, $this->data) && $contextData['exception_class']) {
                 $str .= $this->formatException($contextData).PHP_EOL;
             }
         }

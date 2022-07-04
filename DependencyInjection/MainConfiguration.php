@@ -6,6 +6,8 @@ use Payum\Core\Exception\LogicException;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Payum\Core\Model\GatewayConfigInterface;
+use Payum\Core\Security\TokenInterface;
 
 class MainConfiguration implements ConfigurationInterface
 {
@@ -65,7 +67,7 @@ class MainConfiguration implements ConfigurationInterface
                         unset($storages['extension']);
 
                         foreach($storages as $key => $value) {
-                            if (false == class_exists($key)) {
+                            if (false === class_exists($key)) {
                                 throw new LogicException(sprintf(
                                     'The storage entry must be a valid model class. It is set %s',
                                     $key
@@ -87,7 +89,7 @@ class MainConfiguration implements ConfigurationInterface
                     $storages = $v;
                     unset($storages['extension']);
 
-                    if (count($storages) == 0) {
+                    if (count($storages) === 0) {
                         throw new LogicException('At least one storage must be configured.');
                     }
                     if (count($storages) > 1) {
@@ -132,7 +134,7 @@ class MainConfiguration implements ConfigurationInterface
             ->validate()
             ->ifTrue(function($v) {
                 foreach($v as $key => $value) {
-                    if (false == class_exists($key)) {
+                    if (false === class_exists($key)) {
                         throw new LogicException(sprintf(
                             'The storage entry must be a valid model class. It is set %s',
                             $key
@@ -140,7 +142,7 @@ class MainConfiguration implements ConfigurationInterface
                     }
 
                     $rc = new \ReflectionClass($key);
-                    if (false == $rc->implementsInterface('Payum\Core\Security\TokenInterface')) {
+                    if (false === $rc->implementsInterface(TokenInterface::class)) {
                         throw new LogicException('The token class must implement `Payum\Core\Security\TokenInterface` interface');
                     }
 
@@ -160,7 +162,7 @@ class MainConfiguration implements ConfigurationInterface
         $storageNode
             ->validate()
             ->ifTrue(function($v) {
-                if (count($v) == 0) {
+                if (count($v) === 0) {
                     throw new LogicException('At least one storage must be configured.');
                 }
                 if (count($v) > 1) {
@@ -192,7 +194,7 @@ class MainConfiguration implements ConfigurationInterface
             ->validate()
             ->ifTrue(function($v) {
                 foreach($v as $key => $value) {
-                    if (false == class_exists($key)) {
+                    if (false === class_exists($key)) {
                         throw new LogicException(sprintf(
                             'The storage entry must be a valid model class. It is set %s',
                             $key
@@ -200,7 +202,7 @@ class MainConfiguration implements ConfigurationInterface
                     }
 
                     $rc = new \ReflectionClass($key);
-                    if (false == $rc->implementsInterface('Payum\Core\Model\GatewayConfigInterface')) {
+                    if (false === $rc->implementsInterface(GatewayConfigInterface::class)) {
                         throw new LogicException('The config class must implement `Payum\Core\Model\GatewayConfigInterface` interface');
                     }
 
@@ -220,7 +222,7 @@ class MainConfiguration implements ConfigurationInterface
         $storageNode
             ->validate()
             ->ifTrue(function($v) {
-                if (count($v) == 0) {
+                if (count($v) === 0) {
                     throw new LogicException('At least one storage must be configured.');
                 }
                 if (count($v) > 1) {

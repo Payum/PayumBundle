@@ -6,19 +6,22 @@ use Payum\Core\Bridge\Symfony\Form\Type\CreditCardExpirationDateType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 
 class CreditCardExpirationDateTypeTest extends WebTestCase
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
+    protected ?FormFactoryInterface $formFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->formFactory = static::$container->get('form.factory');
+        $this->formFactory = static::getContainer()->get('form.factory');
     }
 
     /**
@@ -26,6 +29,14 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
+        if (Kernel::MAJOR_VERSION === 6) {
+            /** @var RequestStack $requestStack */
+            $requestStack = self::getContainer()->get(RequestStack::class);
+            $request = Request::createFromGlobals();
+            $request->setSession(new Session(new MockArraySessionStorage()));
+            $requestStack->push($request);
+        }
+
         $form = $this->formFactory->create(CreditCardExpirationDateType::class);
         $view = $form->createView();
 
@@ -44,7 +55,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
             'csrf_protection' => false,
         ));
 
-        $year = date('Y') + 2;
+        $year = (int) date('Y') + 2;
 
         $form->submit(array(
             'day' => 1,

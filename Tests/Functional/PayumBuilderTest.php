@@ -12,7 +12,7 @@ class PayumBuilderTest extends WebTestCase
     public function testCouldBeGetFromContainerAsService(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $this->assertInstanceOf(PayumBuilder::class, $builder);
     }
@@ -21,7 +21,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainCoreGatewayFactoryBuilder(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('coreGatewayFactory');
         $reflectedConstraint->setAccessible(true);
@@ -32,7 +32,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainHttpRequestVerifierBuilder(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('httpRequestVerifier');
         $reflectedConstraint->setAccessible(true);
@@ -43,7 +43,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainTokenFactoryBuilder(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('tokenFactory');
         $reflectedConstraint->setAccessible(true);
@@ -54,7 +54,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainMainRegistry(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('mainRegistry');
         $reflectedConstraint->setAccessible(true);
@@ -65,7 +65,7 @@ class PayumBuilderTest extends WebTestCase
     public function testShouldContainGenericTokenFactoryPaths(): void
     {
         /** @var PayumBuilder $builder */
-        $builder = static::$container->get('payum.builder');
+        $builder = static::getContainer()->get('payum.builder');
 
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('genericTokenFactoryPaths');
         $reflectedConstraint->setAccessible(true);
