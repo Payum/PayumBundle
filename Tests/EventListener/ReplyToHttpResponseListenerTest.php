@@ -113,12 +113,18 @@ class ReplyToHttpResponseListenerTest extends TestCase
         $this->assertEquals(true, $event->isAllowingCustomResponseCode());
     }
 
-    protected function createReplyToSymfonyResponseConverterMock(): MockObject|ReplyToSymfonyResponseConverter
+    /**
+     * @return MockObject|ReplyToSymfonyResponseConverter
+     */
+    protected function createReplyToSymfonyResponseConverterMock()
     {
         return $this->createMock(ReplyToSymfonyResponseConverter::class);
     }
 
-    protected function createHttpKernelMock(): HttpKernelInterface|MockObject
+    /**
+     * @return HttpKernelInterface|MockObject
+     */
+    protected function createHttpKernelMock()
     {
         return $this->createMock(HttpKernelInterface::class);
     }

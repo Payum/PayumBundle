@@ -7,8 +7,12 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 class ReplyToHttpResponseListener
 {
-    public function __construct(private ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter)
-    {}
+    private ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter;
+
+    public function __construct(ReplyToSymfonyResponseConverter $replyToSymfonyResponseConverter)
+    {
+        $this->replyToSymfonyResponseConverter = $replyToSymfonyResponseConverter;
+    }
 
     public function onKernelException(ExceptionEvent $event): void
     {

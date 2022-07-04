@@ -9,13 +9,13 @@ class PayoutController extends PayumController
 {
     public function doAction(Request $request): RedirectResponse
     {
-        $token = $this->payum->getHttpRequestVerifier()->verify($request);
+        $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        $gateway = $this->payum->getGateway($token->getGatewayName());
+        $gateway = $this->getPayum()->getGateway($token->getGatewayName());
         $gateway->execute(new Payout($token));
-        
-        $this->payum->getHttpRequestVerifier()->invalidate($token);
-        
+
+        $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
+
         return $this->redirect($token->getAfterUrl());
     }
 }

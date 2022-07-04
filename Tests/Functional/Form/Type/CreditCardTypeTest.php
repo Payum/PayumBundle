@@ -24,7 +24,6 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
-        $this->markTestIncomplete('Symfony6 needs now a session. Rewrite in request-context');
         $form = $this->formFactory->create(CreditCardType::class);
         $view = $form->createView();
 

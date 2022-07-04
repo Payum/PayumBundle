@@ -5,40 +5,81 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults autowire="true" autoconfigure="true" />
-
-        <service id="Payum\Bundle\PayumBundle\Controller\AuthorizeController" class="Payum\Bundle\PayumBundle\Controller\AuthorizeController" public="true">
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\PayumController"
+                class="Payum\Bundle\PayumBundle\Controller\PayumController"
+                abstract="true"
+        >
             <argument type="service" id="payum" />
+        </service>
+
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\AuthorizeController"
+                class="Payum\Bundle\PayumBundle\Controller\AuthorizeController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\CancelController" class="Payum\Bundle\PayumBundle\Controller\CancelController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\CancelController"
+                class="Payum\Bundle\PayumBundle\Controller\CancelController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\CaptureController" class="Payum\Bundle\PayumBundle\Controller\CaptureController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\CaptureController"
+                class="Payum\Bundle\PayumBundle\Controller\CaptureController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\NotifyController" class="Payum\Bundle\PayumBundle\Controller\NotifyController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\NotifyController"
+                class="Payum\Bundle\PayumBundle\Controller\NotifyController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\PayoutController" class="Payum\Bundle\PayumBundle\Controller\PayoutController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\PayoutController"
+                class="Payum\Bundle\PayumBundle\Controller\PayoutController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\RefundController" class="Payum\Bundle\PayumBundle\Controller\RefundController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\RefundController"
+                class="Payum\Bundle\PayumBundle\Controller\RefundController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
 
-        <service id="Payum\Bundle\PayumBundle\Controller\SyncController" class="Payum\Bundle\PayumBundle\Controller\SyncController" public="true">
-            <argument type="service" id="payum" />
+        <service
+                id="Payum\Bundle\PayumBundle\Controller\SyncController"
+                class="Payum\Bundle\PayumBundle\Controller\SyncController"
+                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
+                public="true"
+                autowire="true"
+        >
             <tag name="container.service_subscriber" />
         </service>
     </services>

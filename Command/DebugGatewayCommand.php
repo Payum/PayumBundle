@@ -16,8 +16,13 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 #[AsCommand(name: 'debug:payum:gateway', aliases: ['payum:gateway:debug'])]
 class DebugGatewayCommand extends Command
 {
-    public function __construct(protected Payum $payum)
+    protected static $defaultName = 'debug:payum:gateway';
+
+    protected Payum $payum;
+
+    public function __construct(Payum $payum)
     {
+        $this->payum = $payum;
         parent::__construct();
     }
 
@@ -27,6 +32,8 @@ class DebugGatewayCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName(self::$defaultName)
+            ->setAliases(['payum:gateway:debug'])
             ->addArgument('gateway-name', InputArgument::OPTIONAL, 'The gateway name you want to get information about.')
             ->addOption('show-supports', null, InputOption::VALUE_NONE, 'Show what actions supports.')
         ;
@@ -120,7 +127,7 @@ class DebugGatewayCommand extends Command
             }
         }
 
-        return Command::SUCCESS;
+        return 0;
     }
 
     protected function getMethodCode(\ReflectionMethod $reflectionMethod): array

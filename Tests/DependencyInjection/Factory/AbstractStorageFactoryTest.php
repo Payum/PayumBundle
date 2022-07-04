@@ -17,7 +17,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     public function shouldImplementStorageFactoryInterface(): void
     {
         $rc = new \ReflectionClass(AbstractStorageFactory::class);
-        
+
         $this->assertTrue($rc->implementsInterface(StorageFactoryInterface::class));
     }
 
@@ -42,7 +42,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
 
         $tb = new TreeBuilder('foo');
         $rootNode = $tb->getRootNode();
-        
+
         $factory->addConfiguration($rootNode);
 
         $processor = new Processor();
@@ -55,7 +55,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     public function shouldAllowCreateStorageAndReturnItsId(): void
     {
         $expectedStorage = new Definition();
-        
+
         $factory = $this->createAbstractStorageFactory();
         $factory
             ->expects($this->once())
@@ -90,7 +90,10 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
         ));
     }
 
-    protected function createAbstractStorageFactory(): AbstractStorageFactory|MockObject
+    /**
+     * @return AbstractStorageFactory|MockObject
+     */
+    protected function createAbstractStorageFactory()
     {
         return $this->getMockForAbstractClass(AbstractStorageFactory::class);
     }

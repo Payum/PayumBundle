@@ -9,7 +9,9 @@ abstract class WebTestCase extends BaseWebTestCase
 {
     protected KernelBrowser $client;
 
-    /* @var $container ContainerInterface */
+    /*
+     * @var $container ContainerInterface
+     */
     protected static $container;
 
     protected function setUp(): void

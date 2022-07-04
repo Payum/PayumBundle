@@ -274,7 +274,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface|MainConfiguration|null
+    public function getConfiguration(array $config, ContainerBuilder $container): MainConfiguration
     {
         return new MainConfiguration($this->storagesFactories);
     }

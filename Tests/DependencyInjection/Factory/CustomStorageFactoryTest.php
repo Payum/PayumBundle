@@ -153,7 +153,10 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($serviceName, $containerBuilder->getDefinition($storageId)->getParent());
     }
 
-    protected function createContainerBuilderMock(): ContainerBuilder|MockObject
+    /**
+     * @return MockObject|\Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    protected function createContainerBuilderMock()
     {
         return $this->createMock(ContainerBuilder::class);
     }

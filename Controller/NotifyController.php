@@ -9,7 +9,7 @@ class NotifyController extends PayumController
 {
     public function doUnsafeAction(Request $request): Response
     {
-        $gateway = $this->payum->getGateway($request->get('gateway'));
+        $gateway = $this->getPayum()->getGateway($request->get('gateway'));
 
         $gateway->execute(new Notify(null));
 
@@ -18,9 +18,9 @@ class NotifyController extends PayumController
 
     public function doAction(Request $request): Response
     {
-        $token = $this->payum->getHttpRequestVerifier()->verify($request);
+        $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
-        $gateway = $this->payum->getGateway($token->getGatewayName());
+        $gateway = $this->getPayum()->getGateway($token->getGatewayName());
 
         $gateway->execute(new Notify($token));
 

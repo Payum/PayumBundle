@@ -8,8 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GatewayFactoriesChoiceTypeExtension extends AbstractTypeExtension
 {
-    public function __construct(private GatewayFactoryRegistryInterface $gatewayFactoryRegistry)
-    {}
+    private GatewayFactoryRegistryInterface $gatewayFactoryRegistry;
+
+    public function __construct(GatewayFactoryRegistryInterface $gatewayFactoryRegistry)
+    {
+        $this->gatewayFactoryRegistry = $gatewayFactoryRegistry;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,6 +33,11 @@ class GatewayFactoriesChoiceTypeExtension extends AbstractTypeExtension
                 'translation_domain' => 'PayumBundle',
             ]);
         }
+    }
+
+    public function getExtendedType(): string
+    {
+        return GatewayFactoriesChoiceType::class;
     }
 
     /**

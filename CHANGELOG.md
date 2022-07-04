@@ -1,13 +1,10 @@
 # Changelog
 
-## 3.0.0 (2022-03-xx)
+## 2.5.0 (2022-07-xx)
 
-* Symfony < 5 support is dropped
-* PHP < 8 support is dropped
-* BC Break: Add more strong types to `StorageFactoryInterface`
-* deprecated function `PayumController->getHttpRequestVerifier()` removed
-* deprecated function `PayumController->getTokenFactory()` removed
-* Please see UPGRADE.md
+* Support for Symfony 5.0 - 5.3 dropped
+* Added support for Symfony 6.0
+* Minimum Payum Core dependency updated to 1.7.2
 
 ## 2.3.1 (2018-08-19)
 
