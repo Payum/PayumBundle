@@ -60,7 +60,7 @@ jobs:
       - name: Install Symfony Flex
         run: |
           composer require symfony/flex:^1 --no-update
-          composer config --no-plugins allow-plugins.symfony/flex
+          composer config --no-plugins allow-plugins.symfony/flex true
 
       - name: Install dependencies
         run: composer update
