@@ -15,21 +15,18 @@ The factory would create the desired api using database or what ever else you wa
 namespace Acme\PaymentBundle\Payum\Api;
 
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Factory
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
+    private string $username;
+    private string $password;
+    private string $signature;
+    
+    public function __construct(string $username, string $password, string $signature)
     {
-        $this->container = $container;
+        $this->username = $username;
+        $this->password = $password;
+        $this->signature = $signature;
     }
 
     /**
@@ -38,9 +35,9 @@ class Factory
     public function createPaypalExpressCheckoutApi()
     {
         return new Api(array(
-            'username' => $this->container->getParameter('paypal.express_checkout.username'),
-            'password' => $this->container->getParameter('paypal.express_checkout.password'),
-            'signature' => $this->container->getParameter('paypal.express_checkout.signature'),
+            'username' => $this->username,
+            'password' => $this->password,
+            'signature' => $this->signature,
             'sandbox' => true
         ));
     }
@@ -61,7 +58,9 @@ services:
     acme.payment.payum.api.factory:
         class: Acme\PaymentBundle\Payum\Api\Factory
         arguments:
-            - @service_container
+            $username: '%env(PAYPAL_EXPRESS_CHECKOUT_USERNAME)%'
+            $password: '%env(PAYPAL_EXPRESS_CHECKOUT_PASSWORD)%'
+            $signature: '%env(PAYPAL_EXPRESS_CHECKOUT_SIGNATURE)%'
 
     acme.payment.payum.paypal_express_checkout_api:
         class: Payum\Paypal\ExpressCheckout\Nvp\Api

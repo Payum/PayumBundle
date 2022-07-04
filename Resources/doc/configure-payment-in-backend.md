@@ -62,13 +62,15 @@ Let's say you created a gateway with name `paypal`. Here we will show you how to
 
 namespace Acme\PaymentBundle\Controller;
 
-class PaymentController extends Controller 
+use Payum\Bundle\PayumBundle\Controller\PayumController;
+
+class PaymentController extends PayumController
 {
     public function prepareAction() 
     {
         $gatewayName = 'paypal';
         
-        $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\Payment');
+        $storage = $this->payum->getStorage('Acme\PaymentBundle\Entity\Payment');
         
         $payment = $storage->create();
         $payment->setNumber(uniqid());
@@ -80,7 +82,7 @@ class PaymentController extends Controller
         
         $storage->update($payment);
         
-        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
+        $captureToken = $this->payum->getTokenFactory()->createCaptureToken(
             $gatewayName, 
             $payment, 
             'done' // the route to redirect after capture
