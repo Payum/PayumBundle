@@ -32,7 +32,7 @@ class DebugGatewayCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName(self::$defaultName)
+            ->setName(static::$defaultName)
             ->setAliases(['payum:gateway:debug'])
             ->addArgument('gateway-name', InputArgument::OPTIONAL, 'The gateway name you want to get information about.')
             ->addOption('show-supports', null, InputOption::VALUE_NONE, 'Show what actions supports.')
