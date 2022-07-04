@@ -23,7 +23,7 @@ jobs:
           - php: 8.0
             symfony: 5.4.*
           - php: 8.0
-            symfony: 6.0
+            symfony: 6.0.*
           - php: 8.1
             symfony: 4.4.*
           - php: 8.1
@@ -64,9 +64,6 @@ jobs:
 
       - name: Install dependencies
         run: composer update
-
-      - name: Update Symfony (After Flex install)
-        run: composer update symfony/*
 
       - name: Run unit tests
         run: bin/phpunit

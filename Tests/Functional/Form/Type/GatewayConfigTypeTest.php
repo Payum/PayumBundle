@@ -7,6 +7,10 @@ use Payum\Core\Model\GatewayConfig;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class GatewayConfigTypeTest extends WebTestCase
 {
@@ -16,7 +20,7 @@ class GatewayConfigTypeTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->formFactory = static::$container->get('form.factory');
+        $this->formFactory = static::getContainer()->get('form.factory');
     }
 
     /**
@@ -24,6 +28,12 @@ class GatewayConfigTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
+        /** @var RequestStack $requestStack */
+        $requestStack = self::getContainer()->get(RequestStack::class);
+        $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $requestStack->push($request);
+
         $form = $this->formFactory->create(GatewayConfigType::class, null, [
             'data_class' => GatewayConfig::class,
         ]);

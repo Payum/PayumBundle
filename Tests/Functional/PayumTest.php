@@ -16,7 +16,7 @@ class PayumTest extends WebTestCase
     public function testCouldBeGetFromContainerAsService(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $this->assertInstanceOf(Payum::class, $payum);
     }
@@ -24,7 +24,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnHttpRequestVerifyRequest(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $this->assertInstanceOf(HttpRequestVerifier::class, $payum->getHttpRequestVerifier());
     }
@@ -32,7 +32,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnTokenFactory(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $tokenFactory = $payum->getTokenFactory();
         $this->assertInstanceOf(GenericTokenFactory::class, $tokenFactory);
@@ -46,7 +46,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnTokenStorage(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $storage = $payum->getTokenStorage();
         $this->assertInstanceOf(StorageInterface::class, $storage);
@@ -55,7 +55,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnStorages(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $storages = $payum->getStorages();
         $this->assertIsArray($storages);
@@ -65,7 +65,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnGateways(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $gateways = $payum->getGateways();
         $this->assertIsArray($gateways);
@@ -75,7 +75,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnGatewaysFactories(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $factories = $payum->getGatewayFactories();
         $this->assertIsArray($factories);
@@ -85,7 +85,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnGatewayFactory(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $this->assertInstanceOf(PaypalExpressCheckoutGatewayFactory::class, $payum->getGatewayFactory('paypal_express_checkout'));
         $this->assertInstanceOf(StripeJsGatewayFactory::class, $payum->getGatewayFactory('stripe_js'));
@@ -94,7 +94,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnGateway(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $this->assertInstanceOf(GatewayInterface::class, $payum->getGateway('fooGateway'));
         $this->assertInstanceOf(GatewayInterface::class, $payum->getGateway('barGateway'));
@@ -103,7 +103,7 @@ class PayumTest extends WebTestCase
     public function testShouldReturnStorage(): void
     {
         /** @var Payum $payum */
-        $payum = static::$container->get('payum');
+        $payum = static::getContainer()->get('payum');
 
         $this->assertInstanceOf(StorageInterface::class, $payum->getStorage(ArrayObject::class));
     }

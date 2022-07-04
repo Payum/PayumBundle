@@ -15,7 +15,7 @@ class GatewayFactoriesChoiceTypeTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->formFactory = static::$container->get('form.factory');
+        $this->formFactory = static::getContainer()->get('form.factory');
     }
 
     /**
