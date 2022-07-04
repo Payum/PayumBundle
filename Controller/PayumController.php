@@ -1,16 +1,16 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Controller;
 
+use Payum\Bundle\PayumBundle\Traits\ControllerTrait;
 use Payum\Core\Payum;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use function sprintf;
-use function trigger_error;
-use const E_USER_DEPRECATED;
 
 abstract class PayumController extends AbstractController
 {
+    use ControllerTrait;
+
     protected ?Payum $payum = null;
 
     public function __construct(?Payum $payum = null)
@@ -48,13 +48,6 @@ abstract class PayumController extends AbstractController
         }
 
         return $this->payum ?? $this->container->get('payum');
-    }
-
-    public static function getSubscribedServices(): array
-    {
-        return array_merge(parent::getSubscribedServices(), [
-            'payum' => Payum::class,
-        ]);
     }
 
     /**
