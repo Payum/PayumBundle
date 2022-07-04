@@ -55,7 +55,7 @@ jobs:
           restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
 
       - name: Install Symfony ${{ matrix.symfony }}
-        run: composer require --no-update ${{ matrix.symfony }}
+        run: composer config extra.symfony.require ${{ matrix.symfony-version }}
 
       - name: Install dependencies
         run: composer update
