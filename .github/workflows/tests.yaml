@@ -58,7 +58,7 @@ jobs:
         run: composer config extra.symfony.require ${{ matrix.symfony }}
 
       - name: Install Symfony Flex
-        run: composer require symfony/flex --no-update
+        run: composer require symfony/flex:^1 --no-update
 
       - name: Install dependencies
         run: composer update
