@@ -36,12 +36,6 @@
             "homepage": "https://github.com/Payum/PayumBundle/contributors"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../payum"
-        }
-    ],
     "require": {
         "php": "^7.4 || ^8.0",
         "payum/core": "^1.7.2",
