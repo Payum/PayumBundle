@@ -15,7 +15,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
     {
         parent::setUp();
 
-        $this->formFactory = static::getContainer()->get('form.factory');
+        $this->formFactory = static::$container->get('form.factory');
     }
 
     /**

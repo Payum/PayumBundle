@@ -61,6 +61,6 @@ class StatusCommand extends Command
 
         $output->writeln(sprintf('Status: %s', $status->getValue()));
 
-        return Command::SUCCESS;
+        return 0;
     }
 }

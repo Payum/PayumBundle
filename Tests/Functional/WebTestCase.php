@@ -9,7 +9,7 @@ abstract class WebTestCase extends BaseWebTestCase
 {
     protected KernelBrowser $client;
 
-    /*
+    /**
      * @var $container ContainerInterface
      */
     protected static $container;

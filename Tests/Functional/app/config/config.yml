@@ -1,7 +1,7 @@
 parameters:
     locale:            'en'
     secret:            'ThisTokenIsNotSoSecretChangeIt'
-        
+
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -12,11 +12,6 @@ framework:
     form:            true
     csrf_protection: true
     assets: false
-    session:
-        handler_id: null
-        cookie_secure: auto
-        cookie_samesite: lax
-        storage_factory_id: session.storage.factory.mock_file
 
 payum:
     storages:
