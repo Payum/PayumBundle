@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 
 class CreditCardExpirationDateTypeTest extends WebTestCase
@@ -28,11 +29,13 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
-        /** @var RequestStack $requestStack */
-        $requestStack = self::getContainer()->get(RequestStack::class);
-        $request = Request::createFromGlobals();
-        $request->setSession(new Session(new MockArraySessionStorage()));
-        $requestStack->push($request);
+        if (Kernel::MAJOR_VERSION === 6) {
+            /** @var RequestStack $requestStack */
+            $requestStack = self::getContainer()->get(RequestStack::class);
+            $request = Request::createFromGlobals();
+            $request->setSession(new Session(new MockArraySessionStorage()));
+            $requestStack->push($request);
+        }
 
         $form = $this->formFactory->create(CreditCardExpirationDateType::class);
         $view = $form->createView();
