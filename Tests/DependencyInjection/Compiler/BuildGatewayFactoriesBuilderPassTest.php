@@ -1,9 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildConfigsPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesBuilderPass;
-use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

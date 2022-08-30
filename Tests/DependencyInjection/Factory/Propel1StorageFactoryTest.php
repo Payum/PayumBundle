@@ -3,8 +3,6 @@
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Factory;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\Propel1StorageFactory;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Processor;
 
 class Propel1StorageFactoryTest extends \PHPUnit\Framework\TestCase
 {

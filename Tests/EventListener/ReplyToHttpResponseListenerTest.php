@@ -115,7 +115,7 @@ class ReplyToHttpResponseListenerTest extends TestCase
     /**
      * @return MockObject|ReplyToSymfonyResponseConverter
      */
-    protected function createReplyToSymfonyResponseConverterMock()
+    protected function createReplyToSymfonyResponseConverterMock(): MockObject|ReplyToSymfonyResponseConverter
     {
         return $this->createMock(ReplyToSymfonyResponseConverter::class);
     }
@@ -123,17 +123,13 @@ class ReplyToHttpResponseListenerTest extends TestCase
     /**
      * @return HttpKernelInterface|MockObject
      */
-    protected function createHttpKernelMock()
+    protected function createHttpKernelMock(): HttpKernelInterface|MockObject
     {
         return $this->createMock(HttpKernelInterface::class);
     }
 
     private function getRequestType(): int
     {
-        if (defined(HttpKernelInterface::class . '::MAIN_REQUEST')) {
-            return HttpKernelInterface::MAIN_REQUEST;
-        }
-
-        return HttpKernelInterface::MASTER_REQUEST;
+        return HttpKernelInterface::MAIN_REQUEST;
     }
 }

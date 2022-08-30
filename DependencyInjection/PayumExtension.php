@@ -11,7 +11,6 @@ use Payum\Core\Gateway;
 use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 
 class CreditCardExpirationDateTypeTest extends WebTestCase
 {

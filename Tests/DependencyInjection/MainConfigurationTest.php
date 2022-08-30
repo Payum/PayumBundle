@@ -710,7 +710,7 @@ class MainConfigurationTest extends TestCase
 
 class FooStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config): string
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
         return 'aStorageId';
     }
@@ -732,7 +732,7 @@ class FooStorageFactory implements StorageFactoryInterface
 
 class BarStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config): string
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
         return 'serviceId';
     }

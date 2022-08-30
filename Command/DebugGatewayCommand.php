@@ -16,13 +16,8 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 #[AsCommand(name: 'debug:payum:gateway', aliases: ['payum:gateway:debug'])]
 class DebugGatewayCommand extends Command
 {
-    protected static $defaultName = 'debug:payum:gateway';
-
-    protected Payum $payum;
-
-    public function __construct(Payum $payum)
+    public function __construct(protected Payum $payum)
     {
-        $this->payum = $payum;
         parent::__construct();
     }
 
@@ -32,8 +27,6 @@ class DebugGatewayCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName(static::$defaultName)
-            ->setAliases(['payum:gateway:debug'])
             ->addArgument('gateway-name', InputArgument::OPTIONAL, 'The gateway name you want to get information about.')
             ->addOption('show-supports', null, InputOption::VALUE_NONE, 'Show what actions supports.')
         ;
@@ -127,7 +120,7 @@ class DebugGatewayCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function getMethodCode(\ReflectionMethod $reflectionMethod): array
@@ -142,7 +135,7 @@ class DebugGatewayCommand extends Command
         return array_values($methodCodeLines);
     }
 
-    private function findProperGatewayName(InputInterface $input, OutputInterface $output, array $gateways, string $name)
+    private function findProperGatewayName(InputInterface $input, OutputInterface $output, array $gateways, string $name): string
     {
         $helperSet = $this->getHelperSet();
         if (!$helperSet->has('question') || isset($gateways[$name]) || !$input->isInteractive()) {

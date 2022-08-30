@@ -297,7 +297,7 @@ class PayumExtensionTest extends TestCase
 
 class FeeStorageFactory implements StorageFactoryInterface
 {
-    public function create(ContainerBuilder $container, $modelClass, array $config): string
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string
     {
         return 'aStorageId';
     }

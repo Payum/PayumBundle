@@ -5,7 +5,6 @@ use Payum\Bundle\PayumBundle\Controller\CancelController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Cancel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 

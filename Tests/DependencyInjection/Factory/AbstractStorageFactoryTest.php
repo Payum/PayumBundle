@@ -93,7 +93,7 @@ class AbstractStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @return AbstractStorageFactory|MockObject
      */
-    protected function createAbstractStorageFactory()
+    protected function createAbstractStorageFactory(): AbstractStorageFactory|MockObject
     {
         return $this->getMockForAbstractClass(AbstractStorageFactory::class);
     }

@@ -7,10 +7,9 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 interface StorageFactoryInterface
 {
     /**
-     * @param string $modelClass
      * @return string The payment serviceId
      */
-    public function create(ContainerBuilder $container, $modelClass, array $config);
+    public function create(ContainerBuilder $container, string $modelClass, array $config): string;
 
     /**
      * The storage name,
@@ -18,8 +17,5 @@ interface StorageFactoryInterface
      */
     public function getName();
 
-    /**
-     * @return void
-     */
-    public function addConfiguration(ArrayNodeDefinition $builder);
+    public function addConfiguration(ArrayNodeDefinition $builder): void;
 }

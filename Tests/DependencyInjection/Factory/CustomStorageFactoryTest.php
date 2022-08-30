@@ -156,7 +156,7 @@ class CustomStorageFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @return MockObject|\Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    protected function createContainerBuilderMock()
+    protected function createContainerBuilderMock(): ContainerBuilder|MockObject
     {
         return $this->createMock(ContainerBuilder::class);
     }

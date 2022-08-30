@@ -113,7 +113,7 @@ class DebugGatewayCommandTest extends WebTestCase
         return $commandTester->getDisplay();
     }
 
-    protected function getInputStream($input)
+    protected function getInputStream($input): bool
     {
         $stream = fopen('php://memory', 'r+', false);
         fwrite($stream, $input);
