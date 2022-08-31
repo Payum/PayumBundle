@@ -14,14 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: 8.0
-            symfony: 5.4.*
-          - php: 8.0
-            symfony: 6.0.*
-          - php: 8.1
-            symfony: 5.4.*
-          - php: 8.1
-            symfony: 6.0.*
           - php: 8.1
             symfony: 6.1.*
 

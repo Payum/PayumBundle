@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'payum:security:create-notify-token')]
 class CreateNotifyTokenCommand extends Command
 {
-    public function __construct(private Payum $payum)
+    public function __construct(private readonly Payum $payum)
     {
         parent::__construct();
     }

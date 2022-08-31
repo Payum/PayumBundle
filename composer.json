@@ -37,16 +37,16 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "payum/core": "^1.7.2",
-        "symfony/framework-bundle": "^5.4 || ^6.0",
-        "symfony/form": "^5.4 || ^6.0",
-        "symfony/validator": "^5.4 || ^6.0",
-        "symfony/security-csrf": "^5.4 || ^6.0"
+        "php": "^8.1",
+        "payum/core": "^1.7.3",
+        "symfony/framework-bundle": "^6.1",
+        "symfony/form": "^6.1",
+        "symfony/validator": "^6.1",
+        "symfony/security-csrf": "^6.1"
     },
     "require-dev": {
         "defuse/php-encryption": "^2.3",
-        "doctrine/orm": "^2.8",
+        "doctrine/orm": "^2.9",
         "omnipay/common": "^3@dev",
         "omnipay/dummy": "^3@alpha",
         "omnipay/paypal": "^3@dev",
@@ -57,15 +57,14 @@
         "php-http/guzzle7-adapter": "^1.0",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
-        "psr/log": "^1 || ^2",
         "stripe/stripe-php": "~7.0",
-        "symfony/browser-kit": "^5.4 || ^6.0",
-        "symfony/expression-language": "^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "^6.0",
-        "symfony/templating": "^5.4 || ^6.0",
-        "symfony/twig-bundle": "^5.4 || ^6.0",
-        "symfony/web-profiler-bundle": "^5.4 || ^6.0",
-        "symfony/yaml": "^5.4 || ^6.0",
+        "symfony/browser-kit": "^6.1",
+        "symfony/expression-language": "^6.1",
+        "symfony/phpunit-bridge": "^6.1",
+        "symfony/templating": "^6.1",
+        "symfony/twig-bundle": "^6.1",
+        "symfony/web-profiler-bundle": "^6.1",
+        "symfony/yaml": "^6.1",
         "twig/twig": "^2.0 || ^3.0"
     },
     "suggest": {
