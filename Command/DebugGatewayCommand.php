@@ -125,7 +125,7 @@ class DebugGatewayCommand extends Command
     }
 
     /**
-     * @return array<int, string>
+     * @return list<string>
      */
     protected function getMethodCode(\ReflectionMethod $reflectionMethod): array
     {
