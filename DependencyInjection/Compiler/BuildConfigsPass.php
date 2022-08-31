@@ -43,7 +43,7 @@ class BuildConfigsPass implements CompilerPassInterface
     }
 
     /**
-     * @return array[]
+     * @return list<array>
      */
     protected function processTagData(array $tagData, string $namePrefix, string $prependKey): array
     {
