@@ -41,7 +41,7 @@ class CreateNotifyTokenCommand extends Command
         $model = null;
 
         if ($modelClass && $modelId) {
-            if (false === $model = $this->payum->getStorage($modelClass)->find($modelId)) {
+            if (!$model = $this->payum->getStorage($modelClass)->find($modelId)) {
                 throw new RuntimeException(sprintf(
                     'Cannot find model with class %s and id %s.',
                     $modelClass,

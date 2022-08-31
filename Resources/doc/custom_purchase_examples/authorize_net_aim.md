@@ -46,11 +46,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends Controller
 {
-    public function prepareAuthorizeNetPaymentAction(Request $request)
+    public function prepareAuthorizeNetPaymentAction(Request $request, Payum $payum)
     {
         $gatewayName = 'your_gateway_name';
     
-        $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
+        $storage = $payum->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
     
         /** @var \Acme\PaymentBundle\Entity\PaymentDetails $details */
         $details = $storage->create();
@@ -59,7 +59,7 @@ class PaymentController extends Controller
         $details['clientemail'] = 'user@email.com';
         $storage->update($details);
         
-        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
+        $captureToken = $payum->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_gateway_done' // the route to redirect after capture

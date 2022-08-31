@@ -42,6 +42,9 @@ class BuildConfigsPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * @return array[]
+     */
     protected function processTagData(array $tagData, string $namePrefix, string $prependKey): array
     {
         $coreGatewayFactoryConfig = [];

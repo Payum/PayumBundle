@@ -15,6 +15,9 @@ class CustomStorageFactory extends AbstractStorageFactory
         return 'custom';
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
         return new ChildDefinition($config['service']);

@@ -30,6 +30,9 @@ class DoctrineStorageFactory extends AbstractStorageFactory
             ->end();
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));

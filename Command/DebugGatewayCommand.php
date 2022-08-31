@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Command;
 
 use Payum\Core\Extension\StorageExtension;
 use Payum\Core\Gateway;
+use Payum\Core\GatewayInterface;
 use Payum\Core\Payum;
 use Payum\Core\Storage\AbstractStorage;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -55,7 +56,7 @@ class DebugGatewayCommand extends Command
             $output->writeln('');
             $output->writeln(sprintf('%s (%s):', $name, get_class($gateway)));
 
-            if (false === $gateway instanceof Gateway) {
+            if (!$gateway instanceof Gateway) {
                 continue;
             }
 
@@ -123,6 +124,9 @@ class DebugGatewayCommand extends Command
         return Command::SUCCESS;
     }
 
+    /**
+     * @return array<int, string>
+     */
     protected function getMethodCode(\ReflectionMethod $reflectionMethod): array
     {
         $file = file($reflectionMethod->getFileName());
@@ -135,6 +139,9 @@ class DebugGatewayCommand extends Command
         return array_values($methodCodeLines);
     }
 
+    /**
+     * @param array<string, GatewayInterface> $gateways
+     */
     private function findProperGatewayName(InputInterface $input, OutputInterface $output, array $gateways, string $name): string
     {
         $helperSet = $this->getHelperSet();
@@ -152,6 +159,10 @@ class DebugGatewayCommand extends Command
         return $this->getHelper('question')->ask($input, $output, $question);
     }
 
+    /**
+     * @param array<string, GatewayInterface> $gateways
+     * @return array<int, string>
+     */
     private function findGatewaysContaining(array $gateways, string $name): array
     {
         $threshold = 1e3;

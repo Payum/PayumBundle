@@ -141,6 +141,9 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         $this->data = [];
     }
 
+    /**
+     * @param array<string, mixed> $contextData
+     */
     protected function formatAction(array $contextData): string
     {
         return sprintf(
@@ -151,6 +154,9 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $contextData
+     */
     protected function formatReply(array $contextData): string
     {
         return sprintf(
@@ -160,6 +166,9 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $contextData
+     */
     protected function formatException(array $contextData): string
     {
         return sprintf(
@@ -169,6 +178,9 @@ class PayumCollector extends DataCollector implements ExtensionInterface
         );
     }
 
+    /**
+     * @param array<string, mixed> $contextData
+     */
     protected function formatRequest(array $contextData): string
     {
         return sprintf(

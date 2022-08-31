@@ -20,7 +20,7 @@ class ReplyToHttpResponseListener
             return;
         }
 
-        /** @var $throwable ReplyInterface */
+        /** @var ReplyInterface $throwable */
         $throwable = $event->getThrowable();
         $response = $this->replyToSymfonyResponseConverter->convert($throwable);
 

@@ -55,6 +55,7 @@
         "payum/stripe": "^1.7",
         "payum/omnipay-v3-bridge": "^1@alpha",
         "php-http/guzzle7-adapter": "^1.0",
+        "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
         "psr/log": "^1 || ^2",
         "stripe/stripe-php": "~7.0",
@@ -75,6 +76,9 @@
     },
     "autoload-dev": {
         "psr-4": { "Payum\\Bundle\\PayumBundle\\Tests\\": "Tests/" }
+    },
+    "scripts": {
+        "phpstan": "env COLUMNS=200 phpstan"
     },
     "extra": {
         "branch-alias": {

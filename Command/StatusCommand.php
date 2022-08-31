@@ -42,7 +42,7 @@ class StatusCommand extends Command
         $modelId = $input->getOption('model-id');
 
         $storage = $this->payum->getStorage($modelClass);
-        if (false === $model = $storage->find($modelId)) {
+        if (!$model = $storage->find($modelId)) {
             throw new RuntimeException(sprintf(
                 'Cannot find model with class %s and id %s.',
                 $modelClass,

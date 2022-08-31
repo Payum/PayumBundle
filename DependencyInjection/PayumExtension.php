@@ -168,6 +168,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $securityConfig
+     */
     protected function loadSecurity(array $securityConfig, ContainerBuilder $container): void
     {
         foreach ($securityConfig['token_storage'] as $tokenClass => $tokenStorageConfig) {
@@ -183,6 +186,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $dynamicGatewaysConfig
+     */
     protected function loadDynamicGateways(array $dynamicGatewaysConfig, ContainerBuilder $container): void
     {
         $configClass = null;
@@ -278,6 +284,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         return new MainConfiguration($this->storagesFactories);
     }
 
+    /**
+     * @param array<string, mixed> $storageConfig
+     */
     protected function findSelectedStorageFactoryNameInStorageConfig(array $storageConfig): string
     {
         foreach ($storageConfig as $name => $value) {

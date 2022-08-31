@@ -26,5 +26,8 @@ abstract class AbstractStorageFactory implements StorageFactoryInterface
     {
     }
 
+    /**
+     * @param array<string, mixed> $config
+     */
     abstract protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): Definition;
 }
