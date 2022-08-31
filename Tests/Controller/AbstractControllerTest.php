@@ -20,14 +20,9 @@ abstract class AbstractControllerTest extends TestCase
 
     protected Token $token;
 
-    /** @var RegistryInterface&MockObject */
-    protected $httpRequestVerifierMock;
-
-    /** @var GatewayInterface&MockObject */
-    protected $gatewayMock;
-
-    /** @var RegistryInterface&MockObject */
-    protected $registryMock;
+    protected HttpRequestVerifierInterface&MockObject $httpRequestVerifierMock;
+    protected GatewayInterface&MockObject $gatewayMock;
+    protected RegistryInterface&MockObject $registryMock;
 
     protected Payum $payum;
     protected Request $request;

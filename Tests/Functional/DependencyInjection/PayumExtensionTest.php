@@ -1,7 +1,6 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
 use Payum\Core\Model\GatewayConfigInterface;

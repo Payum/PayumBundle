@@ -11,10 +11,8 @@ namespace Acme\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\Token;
 
-/**
- * @ORM\Table
- * @ORM\Entity
- */
+#[ORM\Table]
+#[ORM\Entity]
 class PaymentToken extends Token
 {
 }
@@ -27,17 +25,13 @@ namespace Acme\PaymentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Payum\Core\Model\ArrayObject;
 
-/**
- * @ORM\Table
- * @ORM\Entity
- */
+#[ORM\Table]
+#[ORM\Entity]
 class PaymentDetails extends ArrayObject
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     protected int $id;
 }
 ```
@@ -85,9 +79,7 @@ namespace Acme\PaymentBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as Mongo;
 use Payum\Core\Model\Token;
 
-/**
- * @Mongo\Document
- */
+#[Mongo\Document]
 class PaymentToken extends Token
 {
 }
@@ -100,14 +92,10 @@ namespace Acme\PaymentBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as Mongo;
 use Payum\Core\Model\ArrayObject;
 
-/**
- * @Mongo\Document
- */
+#[Mongo\Document]
 class PaymentDetails extends ArrayObject
 {
-    /**
-     * @Mongo\Id
-     */
+    #[Mongo\Id]
     protected int $id;
 }
 ```
@@ -147,7 +135,7 @@ _**Note**: You should use commented path if you install payum/payum package._
 
 ## Propel.
 
-Firstly, you will need to build your schema schema. You can either use your own schema or you can copy the schema into your resources\config file from Payum\Core\Bridge\Propel\Resources\config\schema.xml
+Firstly, you will need to build your schema. You can either use your own schema or you can copy the schema into your resources\config file from Payum\Core\Bridge\Propel\Resources\config\schema.xml
 Once this has been done you will need to implement the required classes
 
 ```php

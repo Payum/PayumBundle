@@ -48,13 +48,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends Controller
 {
-    public function prepareBe2BillPaymentAction(Request $request)
+    public function prepareBe2BillPaymentAction(Request $request, Payum $payum)
     {
         $gatewayName = 'your_gateway_name';
 
-        $storage = $this->getPayum()->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
+        $storage = $payum->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
 
-        /** @var PaymentDetails */
+        /** @var PaymentDetails $details */
         $details = $storage->create();
         //be2bill amount format is cents: for example:  100.05 (EUR). will be 10005.
         $details['AMOUNT'] = 10005;
@@ -63,7 +63,7 @@ class PaymentController extends Controller
         $details['ORDERID'] = 'orderId'.uniqid();
         $storage->update($details);
 
-        $captureToken = $this->getTokenFactory()->createCaptureToken(
+        $captureToken = $payum->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_payment_done' // the route to redirect after capture;

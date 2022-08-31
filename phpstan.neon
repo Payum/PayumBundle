@@ -1,0 +1,14 @@
+#includes:
+    #- phpstan-baseline.neon
+
+parameters:
+    paths:
+        - Command
+        - Controller
+        - DependencyInjection
+        - EventListener
+        - Form
+        - Profiler
+        - Resources
+        - Traits
+    level: 6

@@ -11,7 +11,6 @@ use Payum\Core\Security\HttpRequestVerifierInterface;
 use Payum\Core\Storage\StorageInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

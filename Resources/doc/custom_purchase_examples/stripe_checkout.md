@@ -47,11 +47,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends Controller
 {
-    public function prepareStripeJsPaymentAction(Request $request)
+    public function prepareStripeJsPaymentAction(Request $request, Payum $payum)
     {
         $gatewayName = 'your_gateway_name';
 
-        $storage = $this->getPayum()->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
+        $storage = $payum->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
 
         /** @var PaymentDetails $details */
         $details = $storage->create();
@@ -60,7 +60,7 @@ class PaymentController extends Controller
         $details["description"] = 'a description';
         $storage->update($details);
         
-        $captureToken = $this->get('payum')->getTokenFactory()->createCaptureToken(
+        $captureToken = $payum->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_payment_done' // the route to redirect after capture;

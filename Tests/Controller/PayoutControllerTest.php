@@ -5,7 +5,6 @@ use Payum\Bundle\PayumBundle\Controller\PayoutController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Payout;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PayoutControllerTest extends AbstractControllerTest

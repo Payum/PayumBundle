@@ -42,7 +42,7 @@ class GatewayConfigAdminTest extends TestCase
 
         $admin->setFormFactory($formFactoryMock);
 
-        $this->assertAttributeSame($formFactoryMock, 'formFactory', $admin);
+        $this->assertSame($formFactoryMock, $admin->getFormBuilder());
     }
 }
 

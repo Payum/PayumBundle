@@ -13,14 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'payum:security:create-notify-token')]
 class CreateNotifyTokenCommand extends Command
 {
-    protected static $defaultName = 'payum:security:create-notify-token';
-
-    private Payum $payum;
-
-    public function __construct(Payum $payum)
+    public function __construct(private readonly Payum $payum)
     {
-        $this->payum = $payum;
-
         parent::__construct();
     }
 
@@ -30,7 +24,6 @@ class CreateNotifyTokenCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName(static::$defaultName)
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name associated with the token')
             ->addOption('model-class', null, InputOption::VALUE_OPTIONAL, 'The model class associated with the token')
             ->addOption('model-id', null, InputOption::VALUE_OPTIONAL, 'The model id associated with the token')
@@ -48,7 +41,7 @@ class CreateNotifyTokenCommand extends Command
         $model = null;
 
         if ($modelClass && $modelId) {
-            if (false === $model = $this->payum->getStorage($modelClass)->find($modelId)) {
+            if (!$model = $this->payum->getStorage($modelClass)->find($modelId)) {
                 throw new RuntimeException(sprintf(
                     'Cannot find model with class %s and id %s.',
                     $modelClass,
@@ -63,6 +56,6 @@ class CreateNotifyTokenCommand extends Command
         $output->writeln(sprintf('Url: <info>%s</info>', $token->getTargetUrl()));
         $output->writeln(sprintf('Details: <info>%s</info>', (string) $token->getDetails() ?: 'null'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

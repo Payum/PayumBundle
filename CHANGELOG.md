@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0 (2022-09-xx)
+
+* Support for Symfony < 6.1 dropped
+* Support for PHP < 8.1 dropped
+* remove deprecated functions getPayum, getHttpRequestVerifier and getTokenFactory in PayumController
+
 ## 2.5.0 (2022-07-xx)
 
 * Support for Symfony 5.0 - 5.3 dropped

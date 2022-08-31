@@ -46,11 +46,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends Controller
 {
-    public function preparePaypalExpressCheckoutPaymentAction()
+    public function preparePaypalExpressCheckoutPaymentAction(Payum $payum)
     {
         $paymentName = 'your_gateway_name';
 
-        $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
+        $storage = $payum->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
 
         /** @var \Acme\PaymentBundle\Entity\PaymentDetails $details */
         $details = $storage->create();
@@ -59,7 +59,7 @@ class PaymentController extends Controller
         $details['locale'] = 'sv-se';
         $storage->update($details);
 
-        $captureToken = $this->getTokenFactory()->createCaptureToken(
+        $captureToken = $payum->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_payment_done'
@@ -69,7 +69,7 @@ class PaymentController extends Controller
             'terms_uri' => 'https://example.com/terms',
             'checkout_uri' => 'https://example.com/fuck',
             'confirmation_uri' => $captureToken->getTargetUrl(),
-            'push_uri' => $this->getTokenFactory()->createNotifyToken($gatewayName, $details)->getTargetUrl()
+            'push_uri' => $payum->getTokenFactory()->createNotifyToken($gatewayName, $details)->getTargetUrl()
         );
         $details['cart'] = array(
             'items' => array(

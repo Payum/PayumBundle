@@ -37,17 +37,16 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "payum/core": "^1.7.2",
-        "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.0",
-        "symfony/form": "^4.4.20 || ^5.4 || ^6.0",
-        "symfony/validator": "^4.4 || ^5.4 || ^6.0",
-        "symfony/security-csrf": "^4.4 || ^5.4 || ^6.0",
-        "symfony/polyfill-php80": "^1.26"
+        "php": "^8.1",
+        "payum/core": "^1.7.3",
+        "symfony/framework-bundle": "^6.1",
+        "symfony/form": "^6.1",
+        "symfony/validator": "^6.1",
+        "symfony/security-csrf": "^6.1"
     },
     "require-dev": {
-        "defuse/php-encryption": "^2",
-        "doctrine/orm": "^2.8",
+        "defuse/php-encryption": "^2.3",
+        "doctrine/orm": "^2.9",
         "omnipay/common": "^3@dev",
         "omnipay/dummy": "^3@alpha",
         "omnipay/paypal": "^3@dev",
@@ -56,16 +55,16 @@
         "payum/stripe": "^1.7",
         "payum/omnipay-v3-bridge": "^1@alpha",
         "php-http/guzzle7-adapter": "^1.0",
+        "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9.5",
-        "psr/log": "^1 || ^2",
         "stripe/stripe-php": "~7.0",
-        "symfony/browser-kit": "^4.4 || ^5.4 || ^6.0",
-        "symfony/expression-language": "^4.4 || ^5.4 || ^6.0",
-        "symfony/phpunit-bridge": "^4.4 || ^5.4 || ^6.0",
-        "symfony/templating": "^4.4 || ^5.4 || ^6.0",
-        "symfony/twig-bundle": "^4.4 || ^5.4 || ^6.0",
-        "symfony/web-profiler-bundle": "^4.4 || ^5.4 || ^6.0",
-        "symfony/yaml": "^4.4 || ^5.4 || ^6.0",
+        "symfony/browser-kit": "^6.1",
+        "symfony/expression-language": "^6.1",
+        "symfony/phpunit-bridge": "^6.1",
+        "symfony/templating": "^6.1",
+        "symfony/twig-bundle": "^6.1",
+        "symfony/web-profiler-bundle": "^6.1",
+        "symfony/yaml": "^6.1",
         "twig/twig": "^2.0 || ^3.0"
     },
     "suggest": {
@@ -76,6 +75,9 @@
     },
     "autoload-dev": {
         "psr-4": { "Payum\\Bundle\\PayumBundle\\Tests\\": "Tests/" }
+    },
+    "scripts": {
+        "phpstan": "env COLUMNS=200 phpstan"
     },
     "extra": {
         "branch-alias": {

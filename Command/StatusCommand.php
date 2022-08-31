@@ -14,13 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'payum:status', description: 'Allows to get a payment status.')]
 class StatusCommand extends Command
 {
-    protected static $defaultName = 'payum:status';
-
-    protected Payum $payum;
-
-    public function __construct(Payum $payum)
+    public function __construct(protected Payum $payum)
     {
-        $this->payum = $payum;
         parent::__construct();
     }
 
@@ -30,7 +25,6 @@ class StatusCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName(static::$defaultName)
             ->setDescription('Allows to get a payment status.')
             ->addArgument('gateway-name', InputArgument::REQUIRED, 'The gateway name')
             ->addOption('model-class', null, InputOption::VALUE_REQUIRED, 'The model class')
@@ -48,7 +42,7 @@ class StatusCommand extends Command
         $modelId = $input->getOption('model-id');
 
         $storage = $this->payum->getStorage($modelClass);
-        if (false === $model = $storage->find($modelId)) {
+        if (!$model = $storage->find($modelId)) {
             throw new RuntimeException(sprintf(
                 'Cannot find model with class %s and id %s.',
                 $modelClass,
@@ -61,6 +55,6 @@ class StatusCommand extends Command
 
         $output->writeln(sprintf('Status: %s', $status->getValue()));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

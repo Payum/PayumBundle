@@ -46,11 +46,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaymentController extends Controller
 {
-    public function prepareKlarnaInvoiceAction()
+    public function prepareKlarnaInvoiceAction(Payum $payum)
     {
         $gatewayName = 'your_gateway_name';
 
-        $storage = $this->get('payum')->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
+        $storage = $payum->getStorage('Acme\PaymentBundle\Entity\PaymentDetails');
 
         /** @var \Acme\PaymentBundle\Entity\PaymentDetails $details */
         $payment = $payum->getPayment($paymentName);
@@ -78,7 +78,7 @@ class PaymentController extends Controller
         );
         $storage->update($details);
 
-        $captureToken = $this->getTokenFactory()->createCaptureToken(
+        $captureToken = $payum->getTokenFactory()->createCaptureToken(
             $gatewayName,
             $details,
             'acme_payment_done'
