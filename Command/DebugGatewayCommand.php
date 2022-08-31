@@ -161,7 +161,7 @@ class DebugGatewayCommand extends Command
 
     /**
      * @param array<string, GatewayInterface> $gateways
-     * @return array<int, string>
+     * @return list<string>
      */
     private function findGatewaysContaining(array $gateways, string $name): array
     {
