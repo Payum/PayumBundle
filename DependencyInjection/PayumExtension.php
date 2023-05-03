@@ -32,11 +32,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
      * @var StorageFactoryInterface[]
      */
     protected array $storagesFactories = array();
-    
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->addStorageFactory(new FilesystemStorageFactory);
         $this->addStorageFactory(new DoctrineStorageFactory);
         $this->addStorageFactory(new CustomStorageFactory);
