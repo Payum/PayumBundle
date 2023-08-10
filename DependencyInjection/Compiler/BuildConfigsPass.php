@@ -23,12 +23,6 @@ class BuildConfigsPass implements CompilerPassInterface
         );
 
         $builder = $container->getDefinition('payum.builder');
-        if ($container->hasDefinition('twig')) {
-            $config = ['twig.env' => new Reference('twig')];
-
-            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
-        }
-
         if (false === empty($configs[0])) {
             $builder->addMethodCall('addCoreGatewayFactoryConfig', [$configs[0]]);
         }
@@ -39,6 +33,12 @@ class BuildConfigsPass implements CompilerPassInterface
 
         foreach ($configs[2] as $gatewayName => $gatewayConfig) {
             $builder->addMethodCall('addGateway', [$gatewayName, $gatewayConfig]);
+        }
+
+        if ($container->hasDefinition('twig')) {
+            $config = ['twig.env' => new Reference('twig')];
+
+            $builder->addMethodCall('addCoreGatewayFactoryConfig', [$config]);
         }
     }
 
