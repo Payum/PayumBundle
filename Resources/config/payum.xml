@@ -18,7 +18,7 @@
 
         <defaults public="true" />
 
-        <service id="payum.builder" class="Payum\Core\PayumBuilder">
+        <service id="payum.builder" class="Payum\Core\PayumBuilder" shared="false">
             <call method="setMainRegistry">
                 <argument type="service" id="payum.static_registry" />
             </call>
