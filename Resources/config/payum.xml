@@ -18,7 +18,7 @@
 
         <defaults public="true" />
 
-        <service id="payum.builder" class="Payum\Core\PayumBuilder" shared="false">
+        <service id="payum.builder" class="Payum\Core\PayumBuilder" public="false">
             <call method="setMainRegistry">
                 <argument type="service" id="payum.static_registry" />
             </call>
@@ -46,7 +46,7 @@
             </call>
         </service>
 
-        <service id="payum" class="Payum\Core\Payum">
+        <service id="payum" class="Payum\Core\Payum" lazy="true">
             <factory service="payum.builder" method="getPayum" />
         </service>
 
