@@ -4,6 +4,8 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional\app;
 use Payum;
 use Symfony;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernelShared extends Kernel
@@ -17,6 +19,21 @@ class AppKernelShared extends Kernel
         );
 
         return $bundles;
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        if (Kernel::MAJOR_VERSION === 4) {
+            $container->addCompilerPass(new class() implements CompilerPassInterface {
+                public function process(ContainerBuilder $container)
+                {
+                    $container->getDefinition('payum.builder')
+                        ->setPublic(true);
+                }
+            });
+        }
     }
 
     public function getCacheDir(): string
