@@ -30,7 +30,7 @@ abstract class PayumController extends AbstractController
     }
 
     /**
-     * @deprecated since 2.5 and will be removed in 3.0. Use $this->>payum instead.
+     * @deprecated since 2.5 and will be removed in 3.0. Use $this->payum instead.
      */
     protected function getPayum()
     {
