@@ -18,7 +18,7 @@ abstract class PayumController extends AbstractController
         if ($payum === null) {
             @trigger_error(
                 sprintf(
-                    '%s requires an instance of %s asd the first argument. Not passing this object is deprecated and it will be required in payum/payum-bundle 3.0.',
+                    '%s requires an instance of %s as the first argument. Not passing this object is deprecated and it will be required in payum/payum-bundle 3.0.',
                     __METHOD__,
                     Payum::class
                 ),
