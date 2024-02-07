@@ -21,7 +21,7 @@ class AppKernelShared extends Kernel
         return $bundles;
     }
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

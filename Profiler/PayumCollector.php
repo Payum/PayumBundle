@@ -16,10 +16,7 @@ class PayumCollector extends DataCollector implements ExtensionInterface
      */
     private array $contexts = [];
 
-    /**
-     * @var array|Data
-     */
-    protected $data = [];
+    protected array|Data $data = [];
 
     /**
      * {@inheritdoc}
