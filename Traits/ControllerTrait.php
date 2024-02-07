@@ -7,7 +7,7 @@ use Payum\Core\Payum;
 use Symfony\Component\HttpKernel\Kernel;
 use function array_merge;
 
-if (Kernel::MAJOR_VERSION === 6) {
+if (Kernel::MAJOR_VERSION >= 6 ) {
     trait ControllerTrait
     {
         public static function getSubscribedServices(): array
