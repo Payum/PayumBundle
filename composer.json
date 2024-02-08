@@ -48,7 +48,7 @@
     },
     "require-dev": {
         "defuse/php-encryption": "^2",
-        "doctrine/orm": "^2.8",
+        "doctrine/orm": "^2.8 || 3.0",
         "omnipay/common": "^3@dev",
         "omnipay/dummy": "^3@alpha",
         "omnipay/paypal": "^3@dev",
