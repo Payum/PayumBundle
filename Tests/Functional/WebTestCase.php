@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use function get_parent_class;
 use function method_exists;
@@ -30,7 +31,7 @@ abstract class WebTestCase extends BaseWebTestCase
         }
     }
 
-    protected static function getContainer(): ContainerInterface
+    protected static function getContainer(): Container
     {
         if (method_exists(get_parent_class(self::class), 'getContainer')) {
             return parent::getContainer();

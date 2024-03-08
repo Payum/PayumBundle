@@ -29,7 +29,7 @@ class CreditCardExpirationDateTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
-        if (Kernel::MAJOR_VERSION === 6) {
+        if (Kernel::MAJOR_VERSION >= 6) {
             /** @var RequestStack $requestStack */
             $requestStack = self::getContainer()->get(RequestStack::class);
             $request = Request::createFromGlobals();
