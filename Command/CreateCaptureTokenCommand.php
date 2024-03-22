@@ -13,8 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'payum:security:create-capture-token')]
 class CreateCaptureTokenCommand extends Command
 {
-    protected static $defaultName = 'payum:security:create-capture-token';
-
     private Payum $payum;
 
     public function __construct(Payum $payum)
