@@ -1,7 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\EventListener;
 
-use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
+use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
 use Payum\Core\Reply\ReplyInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 

@@ -1,8 +1,8 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
-use Payum\Core\Bridge\Symfony\Security\HttpRequestVerifier;
-use Payum\Core\Bridge\Symfony\Security\TokenFactory;
+use Payum\Bundle\PayumBundle\Security\HttpRequestVerifier;
+use Payum\Bundle\PayumBundle\Security\TokenFactory;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\ArrayObject;
 use Payum\Core\Payum;

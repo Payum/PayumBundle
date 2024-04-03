@@ -1,10 +1,10 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
-use Payum\Core\Bridge\Symfony\Builder\CoreGatewayFactoryBuilder;
-use Payum\Core\Bridge\Symfony\Builder\HttpRequestVerifierBuilder;
-use Payum\Core\Bridge\Symfony\Builder\TokenFactoryBuilder;
-use Payum\Core\Bridge\Symfony\ContainerAwareRegistry;
+use Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder;
+use Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder;
+use Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder;
+use Payum\Bundle\PayumBundle\ContainerAwareRegistry;
 use Payum\Core\PayumBuilder;
 
 class PayumBuilderTest extends WebTestCase

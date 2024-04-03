@@ -56,7 +56,7 @@ Found 1 gateways
 >	Payum\Core\Action\CapturePaymentAction
 >	Payum\Core\Action\NotifyOrderAction
 >	Payum\Core\Action\ExecuteSameRequestWithModelDetailsAction
->	Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction
+>	Payum\Bundle\PayumBundle\Action\GetHttpRequestAction
 >	Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction
 >	Payum\Core\Bridge\Twig\Action\RenderTemplateAction
 >	Payum\Offline\Action\CaptureAction

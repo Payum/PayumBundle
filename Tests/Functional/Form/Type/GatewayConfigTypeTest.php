@@ -2,7 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
-use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
+use Payum\Bundle\PayumBundle\Form\Type\GatewayConfigType;
 use Payum\Core\Model\GatewayConfig;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;

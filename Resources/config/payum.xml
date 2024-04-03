@@ -52,7 +52,7 @@
 
         <service id="Payum\Core\Payum" alias="payum"/>
 
-        <service id="payum.static_registry" class="Payum\Core\Bridge\Symfony\ContainerAwareRegistry">
+        <service id="payum.static_registry" class="Payum\Bundle\PayumBundle\ContainerAwareRegistry">
             <argument type="collection" /> <!-- gateways services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- storages services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- gateways factories services. this should be replaced while container is built -->
@@ -62,7 +62,7 @@
             </call>
         </service>
 
-        <service id="payum.converter.reply_to_http_response" class="Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter" />
+        <service id="payum.converter.reply_to_http_response" class="Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter" />
 
         <service id="payum.listener.reply_to_http_response" class="Payum\Bundle\PayumBundle\EventListener\ReplyToHttpResponseListener">
             <argument type="service" id="payum.converter.reply_to_http_response" />
@@ -86,24 +86,24 @@
         </service>
 
         <!-- Builders -->
-        <service id="payum.token_factory_builder" class="Payum\Core\Bridge\Symfony\Builder\TokenFactoryBuilder" public="false">
+        <service id="payum.token_factory_builder" class="Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder" public="false">
             <argument type="service" id="router" />
         </service>
 
-        <service id="payum.http_request_verifier_builder" class="Payum\Core\Bridge\Symfony\Builder\HttpRequestVerifierBuilder" public="false" />
+        <service id="payum.http_request_verifier_builder" class="Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder" public="false" />
 
-        <service id="payum.core_gateway_factory_builder" class="Payum\Core\Bridge\Symfony\Builder\CoreGatewayFactoryBuilder" public="false">
+        <service id="payum.core_gateway_factory_builder" class="Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder" public="false">
             <call method="setContainer">
                 <argument type="service" id="service_container" />
             </call>
         </service>
 
-        <service id="payum.action.obtain_credit_card_builder" class="Payum\Core\Bridge\Symfony\Builder\ObtainCreditCardActionBuilder">
+        <service id="payum.action.obtain_credit_card_builder" class="Payum\Bundle\PayumBundle\Builder\ObtainCreditCardActionBuilder">
             <argument type="service" id="form.factory" />
             <argument type="service" id="request_stack" />
         </service>
 
-        <service id="payum.action.get_http_request" class="Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction">
+        <service id="payum.action.get_http_request" class="Payum\Bundle\PayumBundle\Action\GetHttpRequestAction">
             <call method="setHttpRequestStack">
                 <argument type="service" id="request_stack" />
             </call>

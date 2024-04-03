@@ -2,7 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Form\Type;
 
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
-use Payum\Core\Bridge\Symfony\Form\Type\CreditCardExpirationDateType;
+use Payum\Bundle\PayumBundle\Form\Type\CreditCardExpirationDateType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
