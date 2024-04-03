@@ -487,7 +487,7 @@ class TokenFactoryTest extends TestCase
     /**
      * @return MockObject|StorageInterface<object>
      */
-    protected function createStorageMock(): StorageInterface | MockObject
+    protected function createStorageMock()
     {
         return $this->createMock(StorageInterface::class);
     }
@@ -495,12 +495,12 @@ class TokenFactoryTest extends TestCase
     /**
      * @return MockObject|StorageRegistryInterface<StorageInterface<object>>
      */
-    protected function createStorageRegistryMock(): MockObject | StorageRegistryInterface
+    protected function createStorageRegistryMock()
     {
         return $this->createMock(StorageRegistryInterface::class);
     }
 
-    protected function createUrlGeneratorStub(): UrlGeneratorInterface | MockObject
+    protected function createUrlGeneratorStub()
     {
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
 

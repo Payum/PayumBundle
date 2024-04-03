@@ -237,7 +237,7 @@ class HttpRequestVerifierTest extends TestCase
     /**
      * @return MockObject|StorageInterface<object>
      */
-    protected function createStorageMock(): StorageInterface | MockObject
+    protected function createStorageMock()
     {
         return $this->createMock(StorageInterface::class);
     }
