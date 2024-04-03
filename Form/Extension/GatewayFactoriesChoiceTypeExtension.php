@@ -1,7 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Form\Extension;
 
-use Payum\Core\Bridge\Symfony\Form\Type\GatewayFactoriesChoiceType;
+use Payum\Bundle\PayumBundle\Form\Type\GatewayFactoriesChoiceType;
 use Payum\Core\Registry\GatewayFactoryRegistryInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;

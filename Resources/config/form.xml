@@ -11,21 +11,21 @@
     <services>
         <defaults public="true" />
 
-        <service id="payum.form.type.credit_card_expiration_date" class="Payum\Core\Bridge\Symfony\Form\Type\CreditCardExpirationDateType">
+        <service id="payum.form.type.credit_card_expiration_date" class="Payum\Bundle\PayumBundle\Form\Type\CreditCardExpirationDateType">
             <tag name="form.type" />
         </service>
 
-        <service id="payum.form.type.credit_card" class="Payum\Core\Bridge\Symfony\Form\Type\CreditCardType">
+        <service id="payum.form.type.credit_card" class="Payum\Bundle\PayumBundle\Form\Type\CreditCardType">
             <tag name="form.type" />
         </service>
 
-        <service id="payum.form.type.gateway_config" class="Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType">
+        <service id="payum.form.type.gateway_config" class="Payum\Bundle\PayumBundle\Form\Type\GatewayConfigType">
             <argument id="payum" type="service" />
 
             <tag name="form.type" />
         </service>
 
-        <service id="payum.form.type.gateway_factories_choice" class="Payum\Core\Bridge\Symfony\Form\Type\GatewayFactoriesChoiceType">
+        <service id="payum.form.type.gateway_factories_choice" class="Payum\Bundle\PayumBundle\Form\Type\GatewayFactoriesChoiceType">
             <argument>%payum.available_gateway_factories%</argument>
 
             <tag name="form.type" />
@@ -34,7 +34,7 @@
         <service id="payum.form.extension.gateway_factories_choice" class="Payum\Bundle\PayumBundle\Form\Extension\GatewayFactoriesChoiceTypeExtension">
             <argument type="service" id="payum" />
 
-            <tag name="form.type_extension" extended_type="Payum\Core\Bridge\Symfony\Form\Type\GatewayFactoriesChoiceType" />
+            <tag name="form.type_extension" extended_type="Payum\Bundle\PayumBundle\Form\Type\GatewayFactoriesChoiceType" />
         </service>
     </services>
 </container>

@@ -3,7 +3,7 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
-use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
+use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;

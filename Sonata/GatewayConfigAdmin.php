@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Payum\Core\Bridge\Symfony\Form\Type\GatewayConfigType;
+use Payum\Bundle\PayumBundle\Form\Type\GatewayConfigType;
 
 class GatewayConfigAdmin extends AbstractAdmin
 {

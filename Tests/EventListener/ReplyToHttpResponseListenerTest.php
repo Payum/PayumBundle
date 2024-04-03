@@ -2,7 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Tests\EventListener;
 
 use Payum\Bundle\PayumBundle\EventListener\ReplyToHttpResponseListener;
-use Payum\Core\Bridge\Symfony\ReplyToSymfonyResponseConverter;
+use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
 use Payum\Core\Reply\HttpRedirect;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

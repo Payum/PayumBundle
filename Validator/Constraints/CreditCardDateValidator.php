@@ -1,0 +1,57 @@
+<?php
+/**
+ * @author Marc Pantel <pantel.m@gmail.com>
+ */
+
+namespace Payum\Bundle\PayumBundle\Validator\Constraints;
+
+use DateTime;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+
+/**
+ * CreditCardDateValidator
+ *
+ * Validate if the Credit Card is not expired
+ */
+class CreditCardDateValidator extends ConstraintValidator
+{
+    public function validate($value, Constraint $constraint): void
+    {
+        if (null === $value) {
+            return;
+        }
+
+        if (! ($value instanceof DateTime)) {
+            if (method_exists($this->context, 'buildViolation')) {
+                $this->context->buildViolation($constraint->invalidMessage, [
+                    '{{ value }}' => $value,
+                ])
+                    ->addViolation();
+
+                return;
+            }
+
+            $this->context->addViolationAt('expireAt', $constraint->invalidMessage, [
+                '{{ value }}' => $value,
+            ]);
+        }
+
+        /**
+         * The Credit Card is not expired until last day of the month
+         */
+        $value->modify('last day of this month');
+
+        if (null !== $constraint->min && $value < $constraint->min) {
+            if (method_exists($this->context, 'buildViolation')) {
+                $this->context->buildViolation($constraint->minMessage)
+                    ->atPath('expireAt')
+                    ->addViolation();
+
+                return;
+            }
+
+            $this->context->addViolationAt('expireAt', $constraint->minMessage);
+        }
+    }
+}
