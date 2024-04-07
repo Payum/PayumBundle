@@ -2,9 +2,9 @@
 
 namespace Payum\Bundle\PayumBundle;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareTrait;
 use Payum\Core\Registry\AbstractRegistry;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * @template T of object

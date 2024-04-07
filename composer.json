@@ -43,7 +43,7 @@
         "symfony/form": "^4.4.20 || ^5.4 || ^6.0 || ^7.0",
         "symfony/validator": "^4.4 || ^5.4 || ^6.0 || ^7.0",
         "symfony/security-csrf": "^4.4 || ^5.4 || ^6.0 || ^7.0",
-        "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.4",
+        "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.4 || ^7.0",
         "symfony/polyfill-php80": "^1.26"
     },
     "require-dev": {
