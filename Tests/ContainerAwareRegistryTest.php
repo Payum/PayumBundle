@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 
 class ContainerAwareRegistryTest extends TestCase
 {

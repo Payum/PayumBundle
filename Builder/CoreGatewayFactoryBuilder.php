@@ -3,9 +3,9 @@
 namespace Payum\Bundle\PayumBundle\Builder;
 
 use Payum\Bundle\PayumBundle\ContainerAwareCoreGatewayFactory;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareTrait;
 use Payum\Core\GatewayFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class CoreGatewayFactoryBuilder implements ContainerAwareInterface
 {

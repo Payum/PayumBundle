@@ -2,12 +2,12 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 
 use Payum\Bundle\PayumBundle\Command\CreateCaptureTokenCommand;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
 use Payum\Core\Registry\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 class CreateCaptureTokenCommandTest extends WebTestCase
 {

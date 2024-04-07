@@ -2,10 +2,10 @@
 
 namespace Payum\Bundle\PayumBundle;
 
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
+use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\CoreGatewayFactory;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class ContainerAwareCoreGatewayFactory extends CoreGatewayFactory implements ContainerAwareInterface
 {
