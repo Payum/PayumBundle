@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Security;
+namespace Payum\Bundle\PayumBundle\Tests\Security;
 
 use Payum\Bundle\PayumBundle\Security\HttpRequestVerifier;
 use Payum\Core\Exception\InvalidArgumentException;

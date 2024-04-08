@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Validator\Constraints;
+namespace Payum\Bundle\PayumBundle\Tests\Validator\Constraints;
 
 use Datetime;
 use Payum\Bundle\PayumBundle\Validator\Constraints\CreditCardDate;

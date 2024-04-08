@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Reply;
+namespace Payum\Bundle\PayumBundle\Tests\Reply;
 
 use Payum\Bundle\PayumBundle\Reply\HttpResponse;
 use Payum\Core\Reply\Base;
