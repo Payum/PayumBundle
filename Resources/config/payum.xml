@@ -56,10 +56,7 @@
             <argument type="collection" /> <!-- gateways services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- storages services. this should be replaced while container is built -->
             <argument type="collection" /> <!-- gateways factories services. this should be replaced while container is built -->
-
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
+            <argument type="service" id="service_container" />
         </service>
 
         <service id="payum.converter.reply_to_http_response" class="Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter" />
@@ -93,9 +90,7 @@
         <service id="payum.http_request_verifier_builder" class="Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder" public="false" />
 
         <service id="payum.core_gateway_factory_builder" class="Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder" public="false">
-            <call method="setContainer">
-                <argument type="service" id="service_container" />
-            </call>
+            <argument type="service" id="service_container" />
         </service>
 
         <service id="payum.action.obtain_credit_card_builder" class="Payum\Bundle\PayumBundle\Builder\ObtainCreditCardActionBuilder">

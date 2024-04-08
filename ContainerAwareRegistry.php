@@ -2,17 +2,23 @@
 
 namespace Payum\Bundle\PayumBundle;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareTrait;
 use Payum\Core\Registry\AbstractRegistry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @template T of object
  * @extends AbstractRegistry<T>
  */
-class ContainerAwareRegistry extends AbstractRegistry implements ContainerAwareInterface
+class ContainerAwareRegistry extends AbstractRegistry
 {
-    use ContainerAwareTrait;
+    private ContainerInterface $container;
+
+    public function __construct(array $gateways, array $storages, array $gatewayFactories, ContainerInterface $container)
+    {
+        parent::__construct($gateways, $storages, $gatewayFactories);
+
+        $this->container = $container;
+    }
 
     protected function getService($id): ?object
     {

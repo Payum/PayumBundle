@@ -2,14 +2,20 @@
 
 namespace Payum\Bundle\PayumBundle;
 
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareTrait;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\CoreGatewayFactory;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ContainerAwareCoreGatewayFactory extends CoreGatewayFactory implements ContainerAwareInterface
+class ContainerAwareCoreGatewayFactory extends CoreGatewayFactory
 {
-    use ContainerAwareTrait;
+    private ContainerInterface $container;
+
+    public function __construct(ContainerInterface $container, array $defaultConfig = [])
+    {
+        $this->container = $container;
+
+        parent::__construct($defaultConfig);
+    }
 
     protected function buildClosures(ArrayObject $config): void
     {

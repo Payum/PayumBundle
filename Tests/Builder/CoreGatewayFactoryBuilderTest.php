@@ -4,20 +4,11 @@ namespace Payum\Bundle\PayumBundle\Tests\Builder;
 
 use Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder;
 use Payum\Bundle\PayumBundle\ContainerAwareCoreGatewayFactory;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\Container;
 
 class CoreGatewayFactoryBuilderTest extends TestCase
 {
-    public function testShouldImplementContainerAwareInterface(): void
-    {
-        $rc = new ReflectionClass(CoreGatewayFactoryBuilder::class);
-
-        $this->assertTrue($rc->implementsInterface(ContainerAwareInterface::class));
-    }
-
     public function testShouldBuildContainerAwareCoreGatewayFactory(): void
     {
         $container = new Container();
@@ -25,8 +16,7 @@ class CoreGatewayFactoryBuilderTest extends TestCase
             'foo' => 'fooVal',
         ];
 
-        $builder = new CoreGatewayFactoryBuilder();
-        $builder->setContainer($container);
+        $builder = new CoreGatewayFactoryBuilder($container);
 
         $gatewayFactory = $builder->build($defaultConfig);
 
@@ -40,8 +30,7 @@ class CoreGatewayFactoryBuilderTest extends TestCase
             'foo' => 'fooVal',
         ];
 
-        $builder = new CoreGatewayFactoryBuilder();
-        $builder->setContainer($container);
+        $builder = new CoreGatewayFactoryBuilder($container);
 
         $gatewayFactory = $builder($defaultConfig);
 

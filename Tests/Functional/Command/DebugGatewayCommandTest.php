@@ -2,7 +2,6 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 
 use Payum\Bundle\PayumBundle\Command\DebugGatewayCommand;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
 use Payum\Core\Registry\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -94,10 +93,6 @@ class DebugGatewayCommandTest extends WebTestCase
     {
         if (!$command->getApplication()) {
             $command->setApplication(new Application($this->client->getKernel()));
-        }
-
-        if ($command instanceof ContainerAwareInterface) {
-            $command->setContainer($this->client->getContainer());
         }
 
         $arguments = array_replace(array(
