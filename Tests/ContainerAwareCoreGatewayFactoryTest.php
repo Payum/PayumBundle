@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\Container;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 
 class ContainerAwareCoreGatewayFactoryTest extends TestCase
 {
@@ -21,21 +20,13 @@ class ContainerAwareCoreGatewayFactoryTest extends TestCase
         $this->assertTrue($rc->isSubclassOf(CoreGatewayFactory::class));
     }
 
-    public function testShouldImplementContainerAwareInterface(): void
-    {
-        $rc = new ReflectionClass(ContainerAwareCoreGatewayFactory::class);
-
-        $this->assertTrue($rc->implementsInterface(ContainerAwareInterface::class));
-    }
-
     public function testShouldResolveContainerParameter(): void
     {
         $container = new Container();
         $container->setParameter('foo', 'fooVal');
         $container->setParameter('bar.baz_ololo', 'barBazOloloVal');
 
-        $factory = new ContainerAwareCoreGatewayFactory();
-        $factory->setContainer($container);
+        $factory = new ContainerAwareCoreGatewayFactory($container);
 
         $called = false;
 
@@ -58,8 +49,7 @@ class ContainerAwareCoreGatewayFactoryTest extends TestCase
         $container = new Container();
         $container->setParameter('a_template_parameter', '@aTemplate');
 
-        $factory = new ContainerAwareCoreGatewayFactory();
-        $factory->setContainer($container);
+        $factory = new ContainerAwareCoreGatewayFactory($container);
 
         $called = false;
 
@@ -79,8 +69,7 @@ class ContainerAwareCoreGatewayFactoryTest extends TestCase
     {
         $container = new Container();
 
-        $factory = new ContainerAwareCoreGatewayFactory();
-        $factory->setContainer($container);
+        $factory = new ContainerAwareCoreGatewayFactory($container);
 
         $called = false;
 
@@ -103,8 +92,7 @@ class ContainerAwareCoreGatewayFactoryTest extends TestCase
         $container = new Container();
         $container->set('anActionService', $service);
 
-        $factory = new ContainerAwareCoreGatewayFactory();
-        $factory->setContainer($container);
+        $factory = new ContainerAwareCoreGatewayFactory($container);
 
         $called = false;
 
@@ -122,8 +110,7 @@ class ContainerAwareCoreGatewayFactoryTest extends TestCase
 
     public function testShouldSkipEmptyStringValue(): void
     {
-        $factory = new ContainerAwareCoreGatewayFactory();
-        $factory->setContainer(new Container());
+        $factory = new ContainerAwareCoreGatewayFactory(new Container());
 
         $this->assertInstanceOf(GatewayInterface::class, $factory->create([
             'foo' => '',

@@ -2,7 +2,6 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 
 use Payum\Bundle\PayumBundle\Command\CreateNotifyTokenCommand;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
 use Payum\Core\Registry\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -61,9 +60,6 @@ class CreateNotifyTokenCommandTest extends WebTestCase
     protected function executeConsole(Command $command, array $arguments = array()): string
     {
         $command->setApplication(new Application($this->client->getKernel()));
-        if ($command instanceof ContainerAwareInterface) {
-            $command->setContainer($this->client->getContainer());
-        }
 
         $arguments = array_replace(array(
             '--env' => 'test',

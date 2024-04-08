@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\Container;
-use Payum\Bundle\PayumBundle\DependencyInjection\ContainerAwareInterface;
 
 class ContainerAwareRegistryTest extends TestCase
 {
@@ -20,13 +19,6 @@ class ContainerAwareRegistryTest extends TestCase
         $rc = new ReflectionClass(ContainerAwareRegistry::class);
 
         $this->assertTrue($rc->isSubclassOf(AbstractRegistry::class));
-    }
-
-    public function testShouldImplementContainerAwareInterface(): void
-    {
-        $rc = new ReflectionClass(ContainerAwareRegistry::class);
-
-        $this->assertTrue($rc->implementsInterface(ContainerAwareInterface::class));
     }
 
     public function testShouldReturnGatewaySetToContainer(): void
@@ -39,8 +31,7 @@ class ContainerAwareRegistryTest extends TestCase
         $container = new Container();
         $container->set('fooGatewayServiceId', $this->createMock(GatewayInterface::class));
 
-        $registry = new ContainerAwareRegistry($gateways, $storages);
-        $registry->setContainer($container);
+        $registry = new ContainerAwareRegistry($gateways, $storages, [], $container);
 
         $this->assertSame(
             $container->get('fooGatewayServiceId'),
@@ -58,8 +49,7 @@ class ContainerAwareRegistryTest extends TestCase
         $container = new Container();
         $container->set('fooStorageServiceId', $this->createMock(StorageInterface::class));
 
-        $registry = new ContainerAwareRegistry($gateways, $storages);
-        $registry->setContainer($container);
+        $registry = new ContainerAwareRegistry($gateways, $storages, [], $container);
 
         $this->assertSame($container->get('fooStorageServiceId'), $registry->getStorage(stdClass::class));
     }
@@ -71,8 +61,7 @@ class ContainerAwareRegistryTest extends TestCase
 
         $registry = new ContainerAwareRegistry([], [], [
             'fooName' => GatewayFactoryInterface::class,
-        ]);
-        $registry->setContainer($container);
+        ], $container);
 
         $this->assertSame($container->get(GatewayFactoryInterface::class), $registry->getGatewayFactory('fooName'));
     }
