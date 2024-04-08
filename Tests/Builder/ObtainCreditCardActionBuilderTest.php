@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Builder;
+namespace Payum\Bundle\PayumBundle\Tests\Builder;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;

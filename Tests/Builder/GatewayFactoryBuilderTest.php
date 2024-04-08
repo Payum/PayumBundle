@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Builder;
+namespace Payum\Bundle\PayumBundle\Tests\Builder;
 
 use Payum\Bundle\PayumBundle\Builder\GatewayFactoryBuilder;
 use Payum\Core\GatewayFactory;

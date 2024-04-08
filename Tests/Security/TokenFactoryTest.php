@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Security;
+namespace Payum\Bundle\PayumBundle\Tests\Security;
 
 use Payum\Bundle\PayumBundle\Security\TokenFactory;
 use Payum\Core\Model\Identity;

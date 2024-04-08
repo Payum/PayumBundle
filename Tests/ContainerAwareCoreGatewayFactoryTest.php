@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony;
+namespace Payum\Bundle\PayumBundle\Tests;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Bundle\PayumBundle\ContainerAwareCoreGatewayFactory;

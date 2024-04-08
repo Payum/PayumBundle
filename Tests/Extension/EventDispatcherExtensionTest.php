@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Extension;
+namespace Payum\Bundle\PayumBundle\Tests\Extension;
 
 use Payum\Bundle\PayumBundle\Event\ExecuteEvent;
 use Payum\Bundle\PayumBundle\Extension\EventDispatcherExtension;

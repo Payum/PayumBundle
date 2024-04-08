@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony;
+namespace Payum\Bundle\PayumBundle\Tests;
 
 use Payum\Bundle\PayumBundle\Reply\HttpResponse as SymfonyHttpResponse;
 use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;

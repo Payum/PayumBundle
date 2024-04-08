@@ -1,6 +1,6 @@
 <?php
 
-namespace Payum\Core\Tests\Bridge\Symfony\Action;
+namespace Payum\Bundle\PayumBundle\Tests\Action;
 
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Bundle\PayumBundle\Form\Type\CreditCardType;
