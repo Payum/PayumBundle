@@ -21,7 +21,7 @@ Provide nice configuration layer, secured capture controller, storages integrati
 ## Resources
 
 * [Site](https://payum.forma-pro.com/)
-* [Documentation](https://github.com/Payum/Payum/blob/master/docs/symfony/get-it-started.md)
+* [Documentation](https://payum.gitbook.io/payum/symfony/get-it-started)
 * [Sandbox](https://github.com/makasim/PayumBundleSandbox)
 * [Questions](https://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumBundle/issues)
