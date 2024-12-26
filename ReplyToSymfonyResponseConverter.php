@@ -3,6 +3,7 @@
 namespace Payum\Bundle\PayumBundle;
 
 use Payum\Bundle\PayumBundle\Reply\HttpResponse as SymfonyHttpResponse;
+use Payum\Core\Bridge\Symfony\Reply\HttpResponse as CoreSymfonyHttpResponse;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Reply\ReplyInterface;
@@ -16,9 +17,11 @@ class ReplyToSymfonyResponseConverter
      */
     public function convert(ReplyInterface $reply)
     {
-        if ($reply instanceof SymfonyHttpResponse) {
+        if ($reply instanceof SymfonyHttpResponse || $reply instanceof CoreSymfonyHttpResponse) {
             return $reply->getResponse();
-        } elseif ($reply instanceof HttpResponse) {
+        }
+
+        if ($reply instanceof HttpResponse) {
             $headers = $reply->getHeaders();
             $headers['X-Status-Code'] = $reply->getStatusCode();
 
