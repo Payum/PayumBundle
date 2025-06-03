@@ -23,12 +23,12 @@ class GetHttpRequestAction implements ActionInterface
     /**
      * @deprecated
      */
-    public function setHttpRequest(Request $httpRequest = null): void
+    public function setHttpRequest(?Request $httpRequest = null): void
     {
         $this->httpRequest = $httpRequest;
     }
 
-    public function setHttpRequestStack(RequestStack $httpRequestStack = null): void
+    public function setHttpRequestStack(?RequestStack $httpRequestStack = null): void
     {
         $this->httpRequestStack = $httpRequestStack;
     }
