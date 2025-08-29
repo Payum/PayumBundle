@@ -20,6 +20,9 @@ if (Kernel::MAJOR_VERSION >= 6 ) {
 } else {
     trait ControllerTrait
     {
+        /**
+         * @return array<string, class-string>
+         */
         public static function getSubscribedServices()
         {
             return array_merge(parent::getSubscribedServices(), [
