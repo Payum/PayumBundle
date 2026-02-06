@@ -1,0 +1,4 @@
+payum_payout_do:
+    path: /payment/payout/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\PayoutController::doAction

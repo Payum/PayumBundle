@@ -1,0 +1,9 @@
+payum_capture_do_session:
+    path: /payment/capture/session-token
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\CaptureController::doSessionTokenAction
+
+payum_capture_do:
+    path: /payment/capture/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\CaptureController::doAction
