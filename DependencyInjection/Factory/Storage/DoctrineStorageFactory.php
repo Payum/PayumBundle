@@ -4,7 +4,7 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 class DoctrineStorageFactory extends AbstractStorageFactory
@@ -32,8 +32,8 @@ class DoctrineStorageFactory extends AbstractStorageFactory
 
     protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
-        $loader->load('doctrine.'.$config['driver'].'.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
+        $loader->load('doctrine.'.$config['driver'].'.php');
 
         $storage = new ChildDefinition(sprintf('payum.storage.doctrine.%s', $config['driver']));
         $storage->setPublic(true);
