@@ -18,7 +18,7 @@ class Propel2StorageFactory  extends AbstractStorageFactory
 
     protected function createStorage(ContainerBuilder $container, string $modelClass, array $config): ChildDefinition
     {
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../../Resources/config/storage'));
+        $loader = new PhpFileLoader($container, new FileLocator(dirname(__DIR__, 3).'/Resources/config/storage'));
         $loader->load('propel2.php');
         
         $storage = new ChildDefinition('payum.storage.propel2');

@@ -52,7 +52,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration($mainConfig, $configs);
 
         // load services
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(dirname(__DIR__).'/Resources/config'));
         $loader->load('payum.php');
         $loader->load('commands.php');
         $loader->load('controller.php');
