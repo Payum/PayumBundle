@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
@@ -52,14 +52,14 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration($mainConfig, $configs);
 
         // load services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('payum.xml');
-        $loader->load('commands.xml');
-        $loader->load('controller.xml');
-        $loader->load('form.xml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('payum.php');
+        $loader->load('commands.php');
+        $loader->load('controller.php');
+        $loader->load('form.php');
 
         if ($container->getParameter('kernel.debug')) {
-            $loader->load('debug.xml');
+            $loader->load('debug.php');
         }
 
         $this->loadStorages($config['storages'], $container);
