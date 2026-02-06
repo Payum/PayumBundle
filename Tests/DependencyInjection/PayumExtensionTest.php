@@ -66,8 +66,8 @@ class PayumExtensionTest extends TestCase
      */
     public function throwIfTryToAddStorageFactoryWithEmptyName(): void
     {
-        $this->expectExceptionMessage("The storage factory Mock_StorageFactoryInterface_");
         $this->expectException(\Payum\Core\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/The storage factory (Mock|MockObject)_StorageFactoryInterface_/');
         $factoryWithEmptyName = $this->createMock(StorageFactoryInterface::class);
         $factoryWithEmptyName
             ->expects($this->once())
