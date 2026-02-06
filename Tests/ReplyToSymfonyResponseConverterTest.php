@@ -96,7 +96,7 @@ class ReplyToSymfonyResponseConverterTest extends TestCase
     public function testShouldChangeReplyToLogicExceptionIfNotSupported(): void
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Cannot convert reply Mock_Base_');
+        $this->expectExceptionMessageMatches('/Cannot convert reply (Mock|MockObject)_Base_/');
         $notSupportedReply = $this->createMock(Base::class);
 
         $listener = new ReplyToSymfonyResponseConverter();

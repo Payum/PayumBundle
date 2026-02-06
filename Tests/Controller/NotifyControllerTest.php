@@ -6,12 +6,8 @@ use Payum\Bundle\PayumBundle\Controller\NotifyController;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Notify;
-use Payum\Core\Security\GenericTokenFactoryInterface;
-use Payum\Core\Security\HttpRequestVerifierInterface;
-use Payum\Core\Storage\StorageInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -33,31 +29,20 @@ class NotifyControllerTest extends TestCase
     public function shouldExecuteNotifyRequestOnDoUnsafe(): void
     {
         $request = Request::create('/');
-        $request->query->set('gateway', 'theGatewayName');
+        $request->attributes->set('gateway', 'theGatewayName');
 
         $gatewayMock = $this->createMock(GatewayInterface::class);
         $gatewayMock
             ->method('execute')
             ->with($this->isInstanceOf(Notify::class));
 
-        $registryMock = $this->createMock(Payum::class);
-        $registryMock
+        $payumMock = $this->createMock(Payum::class);
+        $payumMock
             ->method('getGateway')
             ->with('theGatewayName')
             ->willReturn($gatewayMock);
 
-        $this->httpRequestVerifierMock = $this->createMock(
-            HttpRequestVerifierInterface::class
-        );
-
-        $this->payum = new Payum(
-            $registryMock,
-            $this->httpRequestVerifierMock,
-            $this->createMock(GenericTokenFactoryInterface::class),
-            $this->createMock(StorageInterface::class)
-        );
-
-        $controller = new NotifyController($this->payum);
+        $controller = new NotifyController($payumMock);
 
         $response = $controller->doUnsafeAction($request);
 
