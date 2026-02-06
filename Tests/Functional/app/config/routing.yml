@@ -1,5 +1,5 @@
 payum_all:
-    resource: "@PayumBundle/Resources/config/routing/all.xml"
+    resource: "@PayumBundle/Resources/config/routing/all.yaml"
     prefix:   /
 
 foo:

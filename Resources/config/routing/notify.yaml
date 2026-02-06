@@ -1,0 +1,9 @@
+payum_notify_do_unsafe:
+    path: /payment/notify/unsafe/{gateway}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\NotifyController::doUnsafeAction
+
+payum_notify_do:
+    path: /payment/notify/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\NotifyController::doAction

@@ -1,0 +1,4 @@
+payum_cancel_do:
+    path: /payment/cancel/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\CancelController::doAction

@@ -1,0 +1,20 @@
+_payum_capture:
+    resource: "@PayumBundle/Resources/config/routing/capture.yaml"
+
+_payum_authorize:
+    resource: "@PayumBundle/Resources/config/routing/authorize.yaml"
+
+_payum_notify:
+    resource: "@PayumBundle/Resources/config/routing/notify.yaml"
+
+_payum_payout:
+    resource: "@PayumBundle/Resources/config/routing/payout.yaml"
+
+_payum_refund:
+    resource: "@PayumBundle/Resources/config/routing/refund.yaml"
+
+_payum_sync:
+    resource: "@PayumBundle/Resources/config/routing/sync.yaml"
+
+_payum_cancel:
+    resource: "@PayumBundle/Resources/config/routing/cancel.yaml"

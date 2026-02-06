@@ -1,0 +1,4 @@
+payum_authorize_do:
+    path: /payment/authorize/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\AuthorizeController::doAction

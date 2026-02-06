@@ -1,0 +1,4 @@
+payum_refund_do:
+    path: /payment/refund/{payum_token}
+    defaults:
+        _controller: Payum\Bundle\PayumBundle\Controller\RefundController::doAction
