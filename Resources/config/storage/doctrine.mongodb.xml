@@ -4,22 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="payum.storage.doctrine.mongodb.class">Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage</parameter>
-    </parameters>
+    <!-- BC layer: This XML file imports the new PHP configuration for backward compatibility -->
+    <imports>
+        <import resource="doctrine.mongodb.php" />
+    </imports>
 
-    <services>
-        <service id="payum.storage.doctrine.mongodb" class="%payum.storage.doctrine.mongodb.class%" public="false" abstract="true">
-            <argument type="service" id="payum.document_manager" />
-            <argument><!-- should be set in DoctrineStorageFactory --></argument>
-        </service>
-
-        <service
-            id="payum.document_manager"
-            class="Doctrine\ODM\MongoDB\DocumentManager"
-            public="false"
-        >
-            <factory service="doctrine_mongodb" method="getManager" />
-        </service>
-    </services>
 </container>

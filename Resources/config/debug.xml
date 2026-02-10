@@ -4,21 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <services>
-        <defaults public="true" />
+    <!-- BC layer: This XML file imports the new PHP configuration for backward compatibility -->
+    <imports>
+        <import resource="debug.php" />
+    </imports>
 
-        <!-- Extensions -->
-
-        <service id="payum.extension.log_executed_actions" class="Payum\Core\Bridge\Psr\Log\LogExecutedActionsExtension">
-            <argument type="service" id="logger" on-invalid="ignore" />
-
-            <tag name="monolog.logger" channel="payum"/>
-            <tag name="payum.extension" all="true" alias="log_executed_actions" />
-        </service>
-
-        <service id="payum.profiler.payum_collector" class="Payum\Bundle\PayumBundle\Profiler\PayumCollector">
-            <tag name="payum.extension" all="true" alias="profile_collector" prepend="true" />
-            <tag name="data_collector" template="@Payum/Profiler/payum.html.twig" id="payum" />
-        </service>
-    </services>
 </container>
