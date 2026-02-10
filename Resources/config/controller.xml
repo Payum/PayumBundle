@@ -4,83 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <services>
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\PayumController"
-                class="Payum\Bundle\PayumBundle\Controller\PayumController"
-                abstract="true"
-        >
-            <argument type="service" id="payum" />
-        </service>
+    <!-- BC layer: This XML file imports the new PHP configuration for backward compatibility -->
+    <imports>
+        <import resource="controller.php" />
+    </imports>
 
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\AuthorizeController"
-                class="Payum\Bundle\PayumBundle\Controller\AuthorizeController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\CancelController"
-                class="Payum\Bundle\PayumBundle\Controller\CancelController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\CaptureController"
-                class="Payum\Bundle\PayumBundle\Controller\CaptureController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\NotifyController"
-                class="Payum\Bundle\PayumBundle\Controller\NotifyController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\PayoutController"
-                class="Payum\Bundle\PayumBundle\Controller\PayoutController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\RefundController"
-                class="Payum\Bundle\PayumBundle\Controller\RefundController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-
-        <service
-                id="Payum\Bundle\PayumBundle\Controller\SyncController"
-                class="Payum\Bundle\PayumBundle\Controller\SyncController"
-                parent="Payum\Bundle\PayumBundle\Controller\PayumController"
-                public="true"
-                autowire="true"
-        >
-            <tag name="container.service_subscriber" />
-        </service>
-    </services>
 </container>

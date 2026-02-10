@@ -4,20 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="payum.storage.doctrine.orm.class">Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage</parameter>
-    </parameters>
-    
-    <services>
-        <service id="payum.storage.doctrine.orm" class="%payum.storage.doctrine.orm.class%" public="false" abstract="true">
-            <argument type="service" id="payum.entity_manager" />
-            <argument><!-- should be set in DoctrineStorageFactory --></argument>
-        </service>
+    <!-- BC layer: This XML file imports the new PHP configuration for backward compatibility -->
+    <imports>
+        <import resource="doctrine.orm.php" />
+    </imports>
 
-        <service 
-            id="payum.entity_manager"
-            alias="doctrine.orm.default_entity_manager"
-            public="false"
-        />
-    </services>
 </container>
