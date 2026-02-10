@@ -36,7 +36,12 @@ class HttpRequestVerifier implements HttpRequestVerifierInterface
             ));
         }
 
-        if (! $hash = $httpRequest->attributes->getString('payum_token', $httpRequest->query->getString('payum_token', $httpRequest->request->getString('payum_token')))) {
+        // Use get() for Symfony 5.4+ compatibility (getString() was added in 6.3)
+        $hash = $httpRequest->attributes->get('payum_token')
+            ?? $httpRequest->query->get('payum_token')
+            ?? $httpRequest->request->get('payum_token');
+
+        if (! $hash) {
             throw new NotFoundHttpException('Token parameter not set in request');
         }
 
