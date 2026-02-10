@@ -1,5 +1,90 @@
 # Changelog
 
+## 2.7.1
+
+### Added
+* **Backward Compatibility Layer**: Restored XML service configuration files that were removed in 2.7.0
+  - Added 10 XML service config files (payum.xml, commands.xml, controller.xml, debug.xml, form.xml, and 5 storage files)
+  - Added 8 XML routing files (all.xml, authorize.xml, cancel.xml, capture.xml, notify.xml, payout.xml, refund.xml, sync.xml)
+  - All XML files now import their corresponding PHP/YAML files to maintain backward compatibility
+
+### Deprecated
+* **XML Service Configuration Files**: All XML service configuration files are now deprecated and will be removed in 3.0
+  - Use PHP configuration files instead (e.g., `Resources/config/payum.php` instead of `Resources/config/payum.xml`)
+  - XML files now contain deprecation notices and import the new PHP files
+  - See UPGRADE-3.0.md for migration guide
+
+* **XML Routing Files**: All XML routing files are now deprecated and will be removed in 3.0
+  - Use YAML routing files instead (e.g., `Resources/config/routing/capture.yaml` instead of `Resources/config/routing/capture.xml`)
+  - XML files now contain deprecation notices and import the new YAML files
+  - See UPGRADE-3.0.md for migration guide
+
+### Documentation
+* Added upgrade guide (UPGRADE-3.0.md) with migration instructions
+* Documented all deprecated XML files and their replacement PHP/YAML equivalents
+
+## 2.7.0 (2026-02-10)
+
+### Changed
+* **BREAKING**: Migrated service configuration from XML to PHP format
+  - Service configs now use modern PHP syntax with type safety
+  - Configuration files: payum.php, commands.php, controller.php, debug.php, form.php
+  - Storage configs: doctrine.mongodb.php, doctrine.orm.php, filesystem.php, propel1.php, propel2.php
+  - **Note**: This caused BC break for applications referencing XML files directly (fixed in 2.7.1)
+
+* **BREAKING**: Migrated routing configuration from XML to YAML format
+  - Routing files converted to YAML for better readability and Symfony best practices
+  - Files affected: all.yaml, authorize.yaml, cancel.yaml, capture.yaml, notify.yaml, payout.yaml, refund.yaml, sync.yaml
+  - **Note**: This caused BC break for applications referencing XML files directly (fixed in 2.7.1)
+
+### Added
+* Support for Symfony 8.x
+* Support for PHP 8.5
+* Tests for PHPUnit 10+ compatibility
+
+### Removed
+* **BREAKING**: Dropped support for PHP 7.4
+* **BREAKING**: Dropped support for Symfony 4.4
+
+### Fixed
+* Symfony 8 code compatibility issues
+* PHPUnit 10+ compatibility issues
+* Applied code review suggestions for better code quality
+
+## 2.6.2 (2025-06-03)
+
+### Added
+* Tests for PHP 8.4
+
+### Fixed
+* Explicitly mark null parameters as nullable for PHP 8.4 compatibility
+* Fix deprecated message in Profiler/PayumCollector.php
+* Handle existing responses from Payum\Core\Bridge
+
+## 2.6.1 (2024-12-28)
+
+### Fixed
+* Fix deprecated message in PayumCollector
+* Handle existing responses from Payum\Core\Bridge
+
+## 2.6.0 (2024-05-01)
+
+### Added
+* Support for Symfony 7.x
+* Support for Doctrine ORM 3.x
+
+### Changed
+* Moved classes from Payum\Core\Bridge\Symfony into PayumBundle
+
+### Removed
+* Removed ContainerAwareInterface and ContainerAwareTrait (deprecated in Symfony)
+
+### Fixed
+* Fixed namespace issues in tests
+* Fixed PHP 8 compatibility issues
+* Fixed typos in deprecation notices
+* Fixed CI deprecations
+
 ## 2.5.0 (2022-07-xx)
 
 * Support for Symfony 5.0 - 5.3 dropped

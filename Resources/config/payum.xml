@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!--
+DEPRECATED: This XML configuration file is deprecated as of PayumBundle 2.7.1
+and will be REMOVED in version 3.0.
+
+MIGRATION REQUIRED:
+  Replace this XML file with the PHP equivalent in your configuration:
+
+  Before (deprecated):
+    imports:
+        - { resource: '@PayumBundle/Resources/config/payum.xml' }
+
+  After (recommended):
+    imports:
+        - { resource: '@PayumBundle/Resources/config/payum.php' }
+
+See UPGRADE-3.0.md for complete migration instructions.
+-->
+
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">

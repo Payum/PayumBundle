@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!--
+DEPRECATED: This XML routing file is deprecated as of PayumBundle 2.7.1
+and will be REMOVED in version 3.0.
+
+MIGRATION REQUIRED:
+  Use '@PayumBundle/Resources/config/routing/notify.yaml' instead
+
+See UPGRADE-3.0.md for complete migration instructions.
+-->
+
 <routes xmlns="http://symfony.com/schema/routing"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing https://symfony.com/schema/routing/routing-1.0.xsd">
