@@ -49,12 +49,20 @@ class GatewayConfigType extends AbstractType
         }
 
         $form = $event->getForm();
+        
+        $gatewayFactory = $this->registry->getGatewayFactory($factoryName);
+        $config = $gatewayFactory->createConfig();
+
+        if (isset($config['payum.gateway_config_type'])) {
+            $form->add('config', $config['payum.gateway_config_type']);
+            $event->setData($data);
+
+            return;
+        }
 
         $form->add('config', FormType::class);
         $configForm = $form->get('config');
 
-        $gatewayFactory = $this->registry->getGatewayFactory($factoryName);
-        $config = $gatewayFactory->createConfig();
         $propertyPath = is_array($data) ? '[config]' : 'config';
         $firstTime = ! PropertyAccess::createPropertyAccessor()->getValue($data, $propertyPath);
         foreach ($config['payum.default_options'] as $name => $value) {
