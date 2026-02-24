@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
+use Symfony\Component\DependencyInjection\Reference;
 
 return static function (ContainerConfigurator $container): void {
     $container->parameters()
@@ -18,13 +18,13 @@ return static function (ContainerConfigurator $container): void {
         ->public(false)
         ->abstract()
         ->args([
-            ref('payum.document_manager'),
+            new Reference('payum.document_manager'),
             null, // should be set in DoctrineStorageFactory
         ])
     ;
 
     $services->set('payum.document_manager', DocumentManager::class)
         ->public(false)
-        ->factory([ref('doctrine_mongodb'), 'getManager'])
+        ->factory([new Reference('doctrine_mongodb'), 'getManager'])
     ;
 };
