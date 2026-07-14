@@ -228,7 +228,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $container->setDefinition('payum.dynamic_registry', $registry);
 
         if ($dynamicGatewaysConfig['sonata_admin']) {
-            throw new \LogicException('Not supported. Has to wait till Sonata Admin 4.x will be released.');
+            //throw new \LogicException('Not supported. Has to wait till Sonata Admin 4.x will be released.');
 
             if (false === class_exists(AbstractAdmin::class)) {
                 throw new LogicException('Admin class does not exists. Did you install SonataAdmin bundle?');
@@ -239,7 +239,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 $configClass,
                 null
             ]);
-            $gatewayConfigAdmin->addMethodCall('setFormFactory', [new Reference('form.factory')]);
+            $gatewayConfigAdmin->addMethodCall('setGatewayFactoryRegistry', [new Reference('payum')]);
 
             if ($container->hasDefinition('payum.dynamic_gateways.cypher')) {
                 $gatewayConfigAdmin->addMethodCall('setCypher', [new Reference('payum.dynamic_gateways.cypher')]);
