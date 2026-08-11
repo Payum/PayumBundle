@@ -56,7 +56,7 @@ class PayumCoreGatewayFactoryTest extends TestCase
         $this->assertContains($symfonyAction, $this->actionsOf($gateway));
         $this->assertNotContains(
             GetHttpRequestAction::class,
-            array_map(get_class(...), $this->actionsOf($gateway))
+            array_map('get_class', $this->actionsOf($gateway))
         );
     }
 
@@ -66,7 +66,7 @@ class PayumCoreGatewayFactoryTest extends TestCase
 
         $this->assertContains(
             ObtainCreditCardAction::class,
-            array_map(get_class(...), $this->actionsOf($gateway))
+            array_map('get_class', $this->actionsOf($gateway))
         );
     }
 
