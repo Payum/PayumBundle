@@ -77,7 +77,14 @@ jobs:
         if: matrix.payum == '2.x'
         # the sub packages are part of the payum/payum monorepo from 2.0 on, so they cannot be
         # installed next to it
+        #
+        # 2.x-dev is a branch rather than a release, so the commit behind it moves without the
+        # constraint moving with it. The cache is keyed on composer.json alone - composer.lock is not
+        # committed - so a restored cache holds the branch at whichever commit it resolved to when
+        # that cache was written, and the job silently tests against a payum/core from hours or days
+        # ago. Dropping the cache costs one download and is what keeps the branch current.
         run: |
+          composer clear-cache
           composer remove --dev --no-update payum/offline payum/stripe payum/paypal-express-checkout-nvp payum/omnipay-v3-bridge omnipay/common omnipay/dummy omnipay/paypal
           composer require --dev --no-update payum/payum:2.x-dev
 
