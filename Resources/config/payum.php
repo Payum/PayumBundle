@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 use Payum\Bundle\PayumBundle\Action\GetHttpRequestAction;
-use Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder;
 use Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder;
-use Payum\Bundle\PayumBundle\Builder\ObtainCreditCardActionBuilder;
 use Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder;
 use Payum\Bundle\PayumBundle\ContainerAwareRegistry;
 use Payum\Bundle\PayumBundle\EventListener\ReplyToHttpResponseListener;
@@ -96,19 +94,6 @@ return static function (ContainerBuilder $container): void {
 
     $container->register('payum.http_request_verifier_builder', HttpRequestVerifierBuilder::class)
         ->setPublic(false)
-    ;
-
-    $container->register('payum.core_gateway_factory_builder', CoreGatewayFactoryBuilder::class)
-        ->setPublic(false)
-        ->setArguments([new Reference('service_container')])
-    ;
-
-    $container->register('payum.action.obtain_credit_card_builder', ObtainCreditCardActionBuilder::class)
-        ->setPublic(true)
-        ->setArguments([
-            new Reference('form.factory'),
-            new Reference('request_stack'),
-        ])
     ;
 
     $container->register('payum.action.get_http_request', GetHttpRequestAction::class)

@@ -146,10 +146,12 @@ class PayumExtensionTest extends TestCase
 
         $calls = $builder->getMethodCalls();
 
-        $this->assertEquals('addCoreGatewayFactoryConfig', $calls[6][0]);
+        $this->assertNotEmpty(array_filter($calls, static fn (array $call): bool => 'addCoreGatewayFactoryConfig' === $call[0]));
 
-        $this->assertEquals('setGatewayConfigStorage', $calls[7][0]);
-        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $calls[7][1][0]);
+        $setConfigStorage = array_values(array_filter($calls, static fn (array $call): bool => 'setGatewayConfigStorage' === $call[0]));
+
+        $this->assertCount(1, $setConfigStorage);
+        $this->assertEquals('payum.dynamic_gateways.config_storage', (string) $setConfigStorage[0][1][0]);
     }
 
     /**

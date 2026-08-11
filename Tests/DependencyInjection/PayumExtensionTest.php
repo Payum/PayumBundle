@@ -279,19 +279,19 @@ class PayumExtensionTest extends TestCase
 
         $this->assertTrue($container->hasDefinition('payum.builder'));
 
-        $builder = $container->getDefinition('payum.builder');
-        $calls = $builder->getMethodCalls();
-        $this->assertEquals('addCoreGatewayFactoryConfig', $calls[6][0]);
+        $calls = $container->getDefinition('payum.builder')->getMethodCalls();
 
-        $builder = $container->getDefinition('payum.builder');
-        $calls = $builder->getMethodCalls();
-        $this->assertEquals('addGateway', $calls[7][0]);
-        $this->assertEquals('a_gateway', $calls[7][1][0]);
-        $this->assertEquals(['foo' => 'fooVal'], $calls[7][1][1]);
+        $this->assertNotEmpty(array_filter($calls, static fn (array $call): bool => 'addCoreGatewayFactoryConfig' === $call[0]));
 
-        $this->assertEquals('addGateway', $calls[8][0]);
-        $this->assertEquals('another_gateway', $calls[8][1][0]);
-        $this->assertEquals(['bar' => 'barVal'], $calls[8][1][1]);
+        $addGateway = array_values(array_filter($calls, static fn (array $call): bool => 'addGateway' === $call[0]));
+
+        $this->assertCount(2, $addGateway);
+
+        $this->assertEquals('a_gateway', $addGateway[0][1][0]);
+        $this->assertEquals(['foo' => 'fooVal'], $addGateway[0][1][1]);
+
+        $this->assertEquals('another_gateway', $addGateway[1][1][0]);
+        $this->assertEquals(['bar' => 'barVal'], $addGateway[1][1][1]);
     }
 }
 
