@@ -36,7 +36,7 @@ class PayumV2Test extends WebTestCase
     {
         $actions = $this->actionsOf($this->getPayum()->getGateway('diGateway'));
 
-        $this->assertContains(ObtainCreditCardAction::class, array_map(get_class(...), $actions));
+        $this->assertContains(ObtainCreditCardAction::class, array_map('get_class', $actions));
     }
 
     public function testShouldRegisterTheHttpRequestActionOfTheBundleOnIt(): void
@@ -45,7 +45,7 @@ class PayumV2Test extends WebTestCase
 
         $this->assertContains(
             \Payum\Bundle\PayumBundle\Action\GetHttpRequestAction::class,
-            array_map(get_class(...), $actions)
+            array_map('get_class', $actions)
         );
     }
 
@@ -53,14 +53,14 @@ class PayumV2Test extends WebTestCase
     {
         $actions = $this->actionsOf($this->getPayum()->getGateway('diGateway'));
 
-        $this->assertContains(TaggedCaptureAction::class, array_map(get_class(...), $actions));
+        $this->assertContains(TaggedCaptureAction::class, array_map('get_class', $actions));
     }
 
     public function testShouldNotRegisterAServiceTaggedForTheGatewayOnAnotherOne(): void
     {
         $actions = $this->actionsOf($this->getPayum()->getGateway('fooGateway'));
 
-        $this->assertNotContains(TaggedCaptureAction::class, array_map(get_class(...), $actions));
+        $this->assertNotContains(TaggedCaptureAction::class, array_map('get_class', $actions));
     }
 
     public function testShouldShareTheTaggedServicesOfTheApplicationWithPayum(): void
