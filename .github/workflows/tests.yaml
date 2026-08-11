@@ -7,7 +7,7 @@ env:
 
 jobs:
   unit-test:
-    name: Unit ( PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }} )
+    name: Unit ( PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, Payum ${{ matrix.payum || '1.x' }} )
     runs-on: ubuntu-latest
 
     strategy:
@@ -36,6 +36,13 @@ jobs:
             symfony: 7.0.*
           - php: 8.5
             symfony: 8.0.*
+          # payum/core 2.x, where a gateway is built with a dependency injection container
+          - php: 8.2
+            symfony: 6.4.*
+            payum: 2.x
+          - php: 8.4
+            symfony: 7.0.*
+            payum: 2.x
 
     steps:
       - name: Checkout
@@ -65,6 +72,14 @@ jobs:
         run: |
           composer config --no-plugins allow-plugins.symfony/flex true
           composer require symfony/flex:"^1|^2" --no-update
+
+      - name: Install Payum 2.x
+        if: matrix.payum == '2.x'
+        # the sub packages are part of the payum/payum monorepo from 2.0 on, so they cannot be
+        # installed next to it
+        run: |
+          composer remove --dev --no-update payum/offline payum/stripe payum/paypal-express-checkout-nvp payum/omnipay-v3-bridge omnipay/common omnipay/dummy omnipay/paypal
+          composer require --dev --no-update payum/payum:2.x-dev
 
       - name: Install dependencies
         run: composer update --prefer-source

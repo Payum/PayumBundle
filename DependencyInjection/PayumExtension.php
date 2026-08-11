@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
+use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
 use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
@@ -12,6 +13,8 @@ use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -54,6 +57,7 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         // load services
         $loader = new PhpFileLoader($container, new FileLocator(dirname(__DIR__).'/Resources/config'));
         $loader->load('payum.php');
+        $loader->load(PayumVersion::supportsDependencyInjection() ? 'payum_v2.php' : 'payum_v1.php');
         $loader->load('commands.php');
         $loader->load('controller.php');
         $loader->load('form.php');
@@ -127,8 +131,16 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             ],
 
             'payum.action.get_http_request' => new Reference('payum.action.get_http_request'),
-            'payum.action.obtain_credit_card' => new Reference('payum.action.obtain_credit_card_builder'),
         ];
+
+        if (PayumVersion::supportsDependencyInjection()) {
+            // The action is built by PayumCoreGatewayFactory, which takes the template from the
+            // configuration of the gateway it builds rather than from a single service.
+            $defaultConfig[FormFactoryInterface::class] = new Reference('form.factory');
+            $defaultConfig[RequestStack::class] = new Reference('request_stack');
+        } else {
+            $defaultConfig['payum.action.obtain_credit_card'] = new Reference('payum.action.obtain_credit_card_builder');
+        }
 
         $config = array_replace_recursive($defaultConfig, $config);
 

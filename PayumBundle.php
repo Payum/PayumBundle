@@ -3,6 +3,7 @@ namespace Payum\Bundle\PayumBundle;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildConfigsPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesBuilderPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGlobalContainerPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewaysPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildStoragesPass;
@@ -20,5 +21,6 @@ class PayumBundle extends Bundle
         $container->addCompilerPass(new BuildStoragesPass);
         $container->addCompilerPass(new BuildGatewayFactoriesPass);
         $container->addCompilerPass(new BuildGatewayFactoriesBuilderPass());
+        $container->addCompilerPass(new BuildGlobalContainerPass());
     }
 }

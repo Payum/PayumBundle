@@ -2,9 +2,11 @@
 namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
 use Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder;
+use Payum\Bundle\PayumBundle\Builder\PayumCoreGatewayFactoryBuilder;
 use Payum\Bundle\PayumBundle\Builder\HttpRequestVerifierBuilder;
 use Payum\Bundle\PayumBundle\Builder\TokenFactoryBuilder;
 use Payum\Bundle\PayumBundle\ContainerAwareRegistry;
+use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Core\PayumBuilder;
 
 class PayumBuilderTest extends WebTestCase
@@ -26,7 +28,11 @@ class PayumBuilderTest extends WebTestCase
         $reflectedConstraint = (new \ReflectionObject($builder))->getProperty('coreGatewayFactory');
         $reflectedConstraint->setAccessible(true);
         $constraint = $reflectedConstraint->getValue($builder);
-        $this->assertInstanceOf(CoreGatewayFactoryBuilder::class, $constraint);
+
+        $this->assertInstanceOf(
+            PayumVersion::supportsDependencyInjection() ? PayumCoreGatewayFactoryBuilder::class : CoreGatewayFactoryBuilder::class,
+            $constraint
+        );
     }
 
     public function testShouldContainHttpRequestVerifierBuilder(): void
