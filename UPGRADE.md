@@ -2,6 +2,43 @@
 
 Library [upgrades](https://github.com/Payum/Payum/blob/master/UPGRADE.md).
 
+## Payum 2.0
+
+The bundle works with both payum/core 1.x and payum/core 2.0. Which one is installed is detected at
+compile time, and the services which differ between the two are loaded from
+`Resources/config/payum_v1.php` or `Resources/config/payum_v2.php` accordingly. Nothing has to be
+changed in an application to keep running on 1.x.
+
+What changes when payum/core 2.0 is installed:
+
+* Payum builds every gateway with a dependency injection container. The bundle hands it the services of
+  the application as its global container (`payum.di.global_container`), so that a gateway can resolve
+  them and, when payum/core is able to be told a container lists its entries, inject them into the
+  constructor of an action.
+* Any service tagged `payum.global_service` is shared with Payum this way. The tag takes an optional
+  `id` attribute for the name Payum should know it under, which is how a service is shared under the
+  interface an action type-hints:
+
+  ```yaml
+  services:
+      App\Payment\ExchangeRates:
+          tags:
+              - { name: payum.global_service, id: App\Payment\ExchangeRatesInterface }
+  ```
+
+* The `payum.action`, `payum.api` and `payum.extension` tags keep working and keep the same attributes.
+  A tagged service now reaches a gateway as an entry of its container rather than as an `"@id"` string
+  resolved at runtime, which means the `alias` attribute no longer names anything and is ignored.
+* `Payum\Bundle\PayumBundle\ContainerAwareCoreGatewayFactory` and
+  `Payum\Bundle\PayumBundle\Builder\CoreGatewayFactoryBuilder` are only used with payum/core 1.x.
+  `Payum\Bundle\PayumBundle\PayumCoreGatewayFactory` takes their place, built by
+  `Payum\Bundle\PayumBundle\Builder\PayumCoreGatewayFactoryBuilder`. Replacing
+  `payum.core_gateway_factory_builder` with a factory of your own still works, it now has to build a
+  factory implementing `Payum\Core\DI\ContainerConfiguration`.
+* A gateway factory which does not implement `Payum\Core\DI\ContainerConfiguration` - which is still
+  every gateway factory payum/core ships - is built the way it was in 1.x, and payum/core triggers a
+  deprecation for it.
+
 ## 2.0 to 2.1
 
 * `payum.http_client` service was removed. Use gateway's config to overwrite it.

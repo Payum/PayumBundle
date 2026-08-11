@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\Tests\Functional\Command;
 
+use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Command\DebugGatewayCommand;
 use Payum\Bundle\PayumBundle\Tests\Functional\WebTestCase;
 use Payum\Core\Registry\RegistryInterface;
@@ -45,7 +46,11 @@ class DebugGatewayCommandTest extends WebTestCase
 
         $output = $this->executeConsole(new DebugGatewayCommand($payum));
 
-        $this->assertStringContainsString('Found 2 gateways', $output);
+        // config_payum_v2.yml adds a third gateway built through the container
+        $this->assertStringContainsString(
+            PayumVersion::supportsDependencyInjection() ? 'Found 3 gateways' : 'Found 2 gateways',
+            $output
+        );
         $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);
         $this->assertStringContainsString('barGateway (Payum\Core\Gateway):', $output);
     }
