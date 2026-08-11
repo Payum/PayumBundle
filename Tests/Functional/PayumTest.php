@@ -5,6 +5,7 @@ use Payum\Bundle\PayumBundle\Security\HttpRequestVerifier;
 use Payum\Bundle\PayumBundle\Security\TokenFactory;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\ArrayObject;
+use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Core\Payum;
 use Payum\Core\Security\GenericTokenFactory;
 use Payum\Core\Storage\StorageInterface;
@@ -69,7 +70,8 @@ class PayumTest extends WebTestCase
 
         $gateways = $payum->getGateways();
         $this->assertIsArray($gateways);
-        $this->assertCount(2, $gateways);
+        // config_payum_v2.yml adds a third gateway built through the container
+        $this->assertCount(PayumVersion::supportsDependencyInjection() ? 3 : 2, $gateways);
     }
 
     public function testShouldReturnGatewaysFactories(): void

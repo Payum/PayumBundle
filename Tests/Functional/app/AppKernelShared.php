@@ -51,5 +51,9 @@ class AppKernelShared extends Kernel
         $loader->load(__DIR__ . '/config/config.yml');
 
         $loader->load(__DIR__ . '/config/config_sf' . Kernel::MAJOR_VERSION . '.yml');
+
+        if (Payum\Bundle\PayumBundle\PayumVersion::supportsDependencyInjection()) {
+            $loader->load(__DIR__ . '/config/config_payum_v2.yml');
+        }
     }
 }

@@ -1,0 +1,13 @@
+services:
+    Payum\Bundle\PayumBundle\Tests\Functional\Fixture\ExchangeRates:
+        tags:
+            - { name: payum.global_service }
+
+    Payum\Bundle\PayumBundle\Tests\Functional\Fixture\TaggedCaptureAction:
+        tags:
+            - { name: payum.action, gateway: diGateway }
+
+payum:
+    gateways:
+        diGateway:
+            factory: 'core'

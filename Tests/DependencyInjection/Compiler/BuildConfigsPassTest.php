@@ -2,9 +2,12 @@
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildConfigsPass;
+use Payum\Bundle\PayumBundle\PayumCoreGatewayFactory;
+use Payum\Bundle\PayumBundle\PayumVersion;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
 {
@@ -190,9 +193,84 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * The tagged services of payum/core 2.0 and later, as entries of the gateway containers.
+     */
+    public function provideContainerTags(): array
+    {
+        $entry = static fn (bool $prepend = false): array => [[
+            'service' => new Reference('aservice'),
+            'prepend' => $prepend,
+        ]];
+
+        $keys = [
+            'payum.action' => [PayumCoreGatewayFactory::SHARED_ACTIONS, PayumCoreGatewayFactory::ACTIONS],
+            'payum.api' => [PayumCoreGatewayFactory::SHARED_APIS, PayumCoreGatewayFactory::APIS],
+            'payum.extension' => [PayumCoreGatewayFactory::SHARED_EXTENSIONS, PayumCoreGatewayFactory::EXTENSIONS],
+        ];
+
+        $sets = [];
+
+        foreach ($keys as $tag => [$sharedKey, $scopedKey]) {
+            $sets[$tag . ' untagged scope'] = [['name' => $tag], []];
+            $sets[$tag . ' all'] = [['name' => $tag, 'all' => true], [[
+                'addCoreGatewayFactoryConfig',
+                [[$sharedKey => $entry()]],
+            ]]];
+            // an alias no longer names anything: a service is an entry of a list, not a config key
+            $sets[$tag . ' all with alias'] = [['name' => $tag, 'alias' => 'foo', 'all' => true], [[
+                'addCoreGatewayFactoryConfig',
+                [[$sharedKey => $entry()]],
+            ]]];
+            $sets[$tag . ' all prepended'] = [['name' => $tag, 'prepend' => true, 'all' => true], [[
+                'addCoreGatewayFactoryConfig',
+                [[$sharedKey => $entry(true)]],
+            ]]];
+            $sets[$tag . ' for a factory'] = [['name' => $tag, 'factory' => 'fooFactory'], [[
+                'addGatewayFactoryConfig',
+                ['fooFactory', [$scopedKey => $entry()]],
+            ]]];
+            $sets[$tag . ' for a factory prepended'] = [['name' => $tag, 'prepend' => true, 'factory' => 'fooFactory'], [[
+                'addGatewayFactoryConfig',
+                ['fooFactory', [$scopedKey => $entry(true)]],
+            ]]];
+            $sets[$tag . ' for a gateway'] = [['name' => $tag, 'gateway' => 'fooGateway'], [[
+                'addGateway',
+                ['fooGateway', [$scopedKey => $entry()]],
+            ]]];
+            $sets[$tag . ' for a gateway prepended'] = [['name' => $tag, 'prepend' => true, 'gateway' => 'fooGateway'], [[
+                'addGateway',
+                ['fooGateway', [$scopedKey => $entry(true)]],
+            ]]];
+        }
+
+        return $sets;
+    }
+
+    /**
      * @dataProvider provideTags
      */
     public function testShouldAddConfig(array $tagAttributes, $expected): void
+    {
+        if (PayumVersion::supportsDependencyInjection()) {
+            $this->markTestSkipped('The configuration of payum/core 1.x only.');
+        }
+
+        $this->assertSame($expected, $this->processTag($tagAttributes));
+    }
+
+    /**
+     * @dataProvider provideContainerTags
+     */
+    public function testShouldAddContainerEntries(array $tagAttributes, $expected): void
+    {
+        if (! PayumVersion::supportsDependencyInjection()) {
+            $this->markTestSkipped('The configuration of payum/core 2.0 and later only.');
+        }
+
+        $this->assertEquals($expected, $this->processTag($tagAttributes));
+    }
+
+    private function processTag(array $tagAttributes): array
     {
         $tagName = $tagAttributes['name'];
         unset($tagAttributes['name']);
@@ -206,10 +284,8 @@ class BuildConfigsPassTest extends \PHPUnit\Framework\TestCase
         $container->setDefinition('payum.builder', $builder);
         $container->setDefinition('aservice', $service);
 
-        $pass = new BuildConfigsPass();
+        (new BuildConfigsPass())->process($container);
 
-        $pass->process($container);
-
-        $this->assertEquals($expected, $builder->getMethodCalls());
+        return $builder->getMethodCalls();
     }
 }
