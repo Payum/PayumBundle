@@ -13,6 +13,7 @@ use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\PlainPhp\Action\GetHttpRequestAction;
 use Payum\Core\DI\ContainerConfiguration;
+use Payum\Core\DI\ListableContainerInterface;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Extension\Context;
 use Payum\Core\Gateway;
@@ -172,6 +173,10 @@ class PayumCoreGatewayFactoryTest extends TestCase
      */
     public function testShouldInjectAServiceOfTheApplicationIntoAnAction(): void
     {
+        if (! interface_exists(ListableContainerInterface::class)) {
+            $this->markTestSkipped('The installed payum/core cannot be told a container lists its entries.');
+        }
+
         $exchangeRates = new ExchangeRates();
         $formFactory = $this->createMock(FormFactoryInterface::class);
 
