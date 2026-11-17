@@ -6,15 +6,15 @@
                                         https://symfony.com/schema/dic/services/constraint-mapping-1.0.xsd">
 
     <class name="Payum\Core\Model\CreditCard">
-        <property name="number">
+        <getter property="number">
             <constraint name="NotBlank">
                 <option name="groups">Payum</option>
             </constraint>
             <constraint name="Luhn">
                 <option name="groups">Payum</option>
             </constraint>
-        </property>
-        <property name="holder">
+        </getter>
+        <getter property="holder">
             <constraint name="NotBlank">
                 <option name="groups">Payum</option>
             </constraint>
@@ -22,8 +22,8 @@
                 <option name="min">4</option>
                 <option name="groups">Payum</option>
             </constraint>
-        </property>
-        <property name="securityCode">
+        </getter>
+        <getter property="securityCode">
             <constraint name="NotBlank">
                 <option name="groups">Payum</option>
             </constraint>
@@ -32,8 +32,8 @@
                 <option name="max">4</option>
                 <option name="groups">Payum</option>
             </constraint>
-        </property>
-        <property name="expireAt">
+        </getter>
+        <getter property="expireAt">
             <constraint name="NotBlank">
                 <option name="groups">Payum</option>
             </constraint>
@@ -45,7 +45,7 @@
                 <option name="min">today</option>
                 <option name="groups">Payum</option>
             </constraint>
-        </property>
+        </getter>
     </class>
 
 </constraint-mapping>
