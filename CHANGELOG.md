@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Removed
-* **BREAKING**: Dropped support for PHP 8.0. Twig releases that still install on PHP 8.0 (<= 3.26.0) have open security advisories, so Composer refuses to install them.
+* **BREAKING**: Dropped support for PHP 8.0.
 
 ## 2.7.1
 
