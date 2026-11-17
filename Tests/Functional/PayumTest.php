@@ -70,8 +70,8 @@ class PayumTest extends WebTestCase
 
         $gateways = $payum->getGateways();
         $this->assertIsArray($gateways);
-        // config_payum_v2.yml adds a third gateway built through the container
-        $this->assertCount(PayumVersion::supportsDependencyInjection() ? 3 : 2, $gateways);
+        // config_payum_v2.yml adds three gateways: one of the core factory and two registered by their config class
+        $this->assertCount(PayumVersion::supportsDependencyInjection() ? 5 : 2, $gateways);
     }
 
     public function testShouldReturnGatewaysFactories(): void

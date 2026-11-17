@@ -43,6 +43,28 @@ payum:
             payum.extension.foo: "@aServiceId"
 ```
 
+## Gateways by config class (payum/core 2.0)
+
+With payum/core 2.0, configure a gateway by its config class to use its handlers. Each entry takes only
+`config` and `arguments`, and the arguments are passed to the config's constructor by name. Register the
+same class as often as you need, under different names:
+
+```yaml
+payum:
+    gateways:
+        offline:
+            config: Payum\Offline\OfflineConfig
+            arguments:
+                paid: '%env(bool:OFFLINE_PAID)%'
+
+        offline_unpaid:
+            config: Payum\Offline\OfflineConfig
+            arguments:
+                paid: false
+```
+
+To build the config as a service instead, tag it `payum.gateway_config`. See [Container tags](container_tags.md).
+
 ## Doctrine storage:
 
 ```yaml

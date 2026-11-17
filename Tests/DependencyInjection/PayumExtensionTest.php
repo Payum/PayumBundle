@@ -2,6 +2,10 @@
 namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
+use Payum\Bundle\PayumBundle\PayumVersion;
+use Payum\Core\Exception\InvalidArgumentException;
+use Payum\Offline\OfflineConfig;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -292,6 +296,74 @@ class PayumExtensionTest extends TestCase
 
         $this->assertEquals('another_gateway', $addGateway[1][1][0]);
         $this->assertEquals(['bar' => 'barVal'], $addGateway[1][1][1]);
+    }
+
+    public function testShouldRegisterAGatewayByItsConfigClassWithNamedArguments(): void
+    {
+        $this->skipUnlessPayumSupportsDependencyInjection();
+
+        $container = $this->loadGateways([
+            'offline' => [
+                'config' => OfflineConfig::class,
+                'arguments' => ['paid' => '%env(bool:OFFLINE_PAID)%'],
+            ],
+        ]);
+
+        $register = array_values(array_filter(
+            $container->getDefinition('payum.builder')->getMethodCalls(),
+            static fn (array $call): bool => 'registerGateway' === $call[0]
+        ));
+
+        $this->assertCount(1, $register);
+        $this->assertSame('offline', $register[0][1][0]);
+        $this->assertEquals(
+            new Definition(OfflineConfig::class, ['$paid' => '%env(bool:OFFLINE_PAID)%']),
+            $register[0][1][1]
+        );
+    }
+
+    public function testThrowIfAGatewaySetsConfigAlongsideOtherOptions(): void
+    {
+        $this->skipUnlessPayumSupportsDependencyInjection();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The gateway "offline" sets "config", so it only takes "config" and "arguments", but "factory" was given.');
+
+        $this->loadGateways(['offline' => ['config' => OfflineConfig::class, 'factory' => 'offline']]);
+    }
+
+    public function testThrowIfTheConfigIsNotAGatewayConfig(): void
+    {
+        $this->skipUnlessPayumSupportsDependencyInjection();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "config" of gateway "offline" must be a class implementing');
+
+        $this->loadGateways(['offline' => ['config' => \stdClass::class]]);
+    }
+
+    private function loadGateways(array $gateways): ContainerBuilder
+    {
+        $extension = new PayumExtension;
+        $extension->addStorageFactory(new FeeStorageFactory());
+
+        $container = new ContainerBuilder;
+        $container->setParameter('kernel.debug', false);
+        $container->setParameter('kernel.bundles', []);
+
+        $extension->load([[
+            'security' => ['token_storage' => ['Payum\Core\Model\Token' => ['bar_storage' => ['bar_opt' => 'val']]]],
+            'gateways' => $gateways,
+        ]], $container);
+
+        return $container;
+    }
+
+    private function skipUnlessPayumSupportsDependencyInjection(): void
+    {
+        if (! PayumVersion::supportsDependencyInjection()) {
+            $this->markTestSkipped('Needs payum/core 2.0 or later.');
+        }
     }
 }
 

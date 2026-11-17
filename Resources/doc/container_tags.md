@@ -1,7 +1,30 @@
 # Container tags
 
 The bundle supports\reuse several Symfony container tags. You may find them useful too.
- 
+
+## Gateway config tag (payum/core 2.0)
+
+The tag `payum.gateway_config` registers a gateway from a service implementing
+`Payum\Core\Config\GatewayConfig`. The `gateway` attribute is the gateway name, and it must not also be
+used under `payum.gateways`. Two services of the same class register two gateways:
+
+```yaml
+# config/services.yaml
+
+services:
+    app.payum.offline_eu:
+        class: Payum\Offline\OfflineConfig
+        arguments: { $paid: '%env(bool:OFFLINE_EU_PAID)%' }
+        tags:
+            - { name: payum.gateway_config, gateway: offline_eu }
+
+    app.payum.offline_us:
+        class: Payum\Offline\OfflineConfig
+        arguments: { $paid: false }
+        tags:
+            - { name: payum.gateway_config, gateway: offline_us }
+```
+
 ## Gateway tag
 
 The tag `payum.gateway` could be used if you want to register your service as a gateway gateway. 

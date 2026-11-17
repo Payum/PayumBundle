@@ -7,7 +7,24 @@ services:
         tags:
             - { name: payum.action, gateway: diGateway }
 
+    Payum\Bundle\PayumBundle\Tests\Functional\Fixture\StatusListener:
+        tags:
+            - { name: kernel.event_listener, event: Payum\Core\Event\StatusChanged, method: __invoke }
+
+    payum.test.offline_tagged_config:
+        class: Payum\Offline\OfflineConfig
+        arguments: { $paid: true }
+        tags:
+            - { name: payum.gateway_config, gateway: offlineFromTag }
+
 payum:
     gateways:
         diGateway:
             factory: 'core'
+        offlineFromConfig:
+            config: Payum\Offline\OfflineConfig
+            arguments:
+                paid: '%env(bool:OFFLINE_PAID)%'
+
+parameters:
+    env(OFFLINE_PAID): 'false'
