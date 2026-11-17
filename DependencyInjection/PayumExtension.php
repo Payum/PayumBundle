@@ -4,6 +4,7 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
+use Payum\Core\Config\GatewayConfig;
 use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
@@ -115,8 +116,45 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         $builder = $container->getDefinition('payum.builder');
 
         foreach ($config as $gatewayName => $gatewayConfig) {
+            if (isset($gatewayConfig['config'])) {
+                $builder->addMethodCall('registerGateway', [$gatewayName, $this->createGatewayConfigDefinition($gatewayName, $gatewayConfig)]);
+
+                continue;
+            }
+
             $builder->addMethodCall('addGateway', [$gatewayName, $gatewayConfig]);
         }
+    }
+
+    /**
+     * Arguments are passed to the config's constructor by name, so `%env()%` placeholders resolve at runtime.
+     */
+    private function createGatewayConfigDefinition(string $gatewayName, array $gatewayConfig): Definition
+    {
+        if (false === PayumVersion::supportsDependencyInjection()) {
+            throw new LogicException(sprintf('The gateway "%s" sets "config", which needs payum/core 2.0 or later. Use "factory" with payum/core 1.x.', $gatewayName));
+        }
+
+        $unknown = array_diff(array_keys($gatewayConfig), ['config', 'arguments']);
+        if ([] !== $unknown) {
+            throw new InvalidArgumentException(sprintf(
+                'The gateway "%s" sets "config", so it only takes "config" and "arguments", but %s given. Pass constructor values under "arguments".',
+                $gatewayName,
+                '"'.implode('", "', $unknown).'" '.(1 === count($unknown) ? 'was' : 'were')
+            ));
+        }
+
+        $class = $gatewayConfig['config'];
+        if (false === is_string($class) || false === is_a($class, GatewayConfig::class, true)) {
+            throw new InvalidArgumentException(sprintf('The "config" of gateway "%s" must be a class implementing %s.', $gatewayName, GatewayConfig::class));
+        }
+
+        $arguments = [];
+        foreach ($gatewayConfig['arguments'] ?? [] as $name => $value) {
+            $arguments[is_string($name) && '$' !== $name[0] ? '$'.$name : $name] = $value;
+        }
+
+        return new Definition($class, $arguments);
     }
 
     protected function loadCoreGateway(array $config, ContainerBuilder $container): void

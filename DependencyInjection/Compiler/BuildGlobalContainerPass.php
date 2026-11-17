@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 
 use Payum\Bundle\PayumBundle\PayumVersion;
+use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -39,6 +40,8 @@ class BuildGlobalContainerPass implements CompilerPassInterface
         LoggerInterface::class => 'logger',
         UrlGeneratorInterface::class => 'router',
         EventDispatcherInterface::class => 'event_dispatcher',
+        // the interface Payum dispatches its events through
+        PsrEventDispatcherInterface::class => 'event_dispatcher',
         Environment::class => 'twig',
     ];
 

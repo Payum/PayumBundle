@@ -46,9 +46,9 @@ class DebugGatewayCommandTest extends WebTestCase
 
         $output = $this->executeConsole(new DebugGatewayCommand($payum));
 
-        // config_payum_v2.yml adds a third gateway built through the container
+        // config_payum_v2.yml adds three gateways: one of the core factory and two registered by their config class
         $this->assertStringContainsString(
-            PayumVersion::supportsDependencyInjection() ? 'Found 3 gateways' : 'Found 2 gateways',
+            PayumVersion::supportsDependencyInjection() ? 'Found 5 gateways' : 'Found 2 gateways',
             $output
         );
         $this->assertStringContainsString('fooGateway (Payum\Core\Gateway):', $output);

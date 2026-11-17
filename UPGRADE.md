@@ -35,9 +35,22 @@ What changes when payum/core 2.0 is installed:
   `Payum\Bundle\PayumBundle\Builder\PayumCoreGatewayFactoryBuilder`. Replacing
   `payum.core_gateway_factory_builder` with a factory of your own still works, it now has to build a
   factory implementing `Payum\Core\DI\ContainerConfiguration`.
-* A gateway factory which does not implement `Payum\Core\DI\ContainerConfiguration` - which is still
-  every gateway factory payum/core ships - is built the way it was in 1.x, and payum/core triggers a
-  deprecation for it.
+* A gateway configured with `factory` is built the 1.x way, from its gateway factory and its actions, and
+  payum/core triggers a deprecation for it. To use a gateway's 2.0 handlers, configure it by its config
+  class instead. The `arguments` go to the config's constructor by name, so `%env()%` works:
+
+  ```yaml
+  payum:
+      gateways:
+          offline:
+              config: Payum\Offline\OfflineConfig
+              arguments:
+                  paid: '%env(bool:OFFLINE_PAID)%'
+  ```
+
+  A gateway config can also be registered as a service tagged `payum.gateway_config`, with the gateway
+  name in its `gateway` attribute. A config class can be registered any number of times under different
+  names, each with its own arguments.
 
 ## 2.0 to 2.1
 

@@ -8,8 +8,13 @@ use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\ExchangeRates;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\TaggedCaptureAction;
+use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\StatusListener;
+use Payum\Core\Command\CaptureCommand;
+use Payum\Core\Event\StatusChanged;
 use Payum\Core\Gateway;
+use Payum\Core\Model\Payment;
 use Payum\Core\Payum;
+use Payum\Core\Result\PaymentStatus;
 use ReflectionObject;
 
 /**
@@ -78,6 +83,32 @@ class PayumV2Test extends WebTestCase
 
         $this->assertInstanceOf(Gateway::class, $payum->getGateway('fooGateway'));
         $this->assertInstanceOf(Gateway::class, $payum->getGateway('barGateway'));
+    }
+
+    public function testShouldRunTheHandlersOfAGatewayRegisteredInTheBundleConfig(): void
+    {
+        $result = $this->getPayum()->getGateway('offlineFromConfig')->execute(CaptureCommand::forPayment(new Payment()));
+
+        // OFFLINE_PAID is false, so a capture stays pending.
+        $this->assertSame(PaymentStatus::Pending, $result->status);
+    }
+
+    public function testShouldRunTheHandlersOfAGatewayRegisteredByATaggedConfig(): void
+    {
+        $result = $this->getPayum()->getGateway('offlineFromTag')->execute(CaptureCommand::forPayment(new Payment()));
+
+        $this->assertSame(PaymentStatus::Captured, $result->status);
+    }
+
+    public function testShouldDispatchPayumEventsToTheListenersOfTheApplication(): void
+    {
+        StatusListener::$events = [];
+
+        $this->getPayum()->getGateway('offlineFromTag')->execute(CaptureCommand::forPayment(new Payment()));
+
+        $this->assertCount(1, StatusListener::$events);
+        $this->assertInstanceOf(StatusChanged::class, StatusListener::$events[0]);
+        $this->assertSame(PaymentStatus::Captured, StatusListener::$events[0]->to);
     }
 
     private function getPayum(): Payum
