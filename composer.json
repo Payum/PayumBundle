@@ -37,7 +37,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "payum/core": "^1.7.2",
         "symfony/framework-bundle": "^5.4 || ^6.0 || ^7.0 || ^8.0",
         "symfony/form": "^5.4 || ^6.0 || ^7.0 || ^8.0",
