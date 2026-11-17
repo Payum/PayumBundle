@@ -134,6 +134,6 @@ class ReplyToHttpResponseListenerTest extends TestCase
             return HttpKernelInterface::MAIN_REQUEST;
         }
 
-        return HttpKernelInterface::MASTER_REQUEST;
+        return HttpKernelInterface::MAIN_REQUEST;
     }
 }

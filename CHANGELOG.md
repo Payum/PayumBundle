@@ -3,7 +3,8 @@
 ## Unreleased
 
 ### Removed
-* **BREAKING**: Dropped support for PHP 8.0.
+* **BREAKING**: Dropped support for Symfony 5.4. The minimum supported version is now Symfony 6.4.
+* **BREAKING**: Dropped support for PHP 8.0. The minimum supported version is now PHP 8.1.
 
 ## 2.7.1
 
