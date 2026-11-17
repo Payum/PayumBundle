@@ -6,7 +6,7 @@ namespace Payum\Bundle\PayumBundle;
 
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Core\Action\PrependActionInterface;
-use Payum\Core\Bridge\PlainPhp\Action\GetHttpRequestAction;
+use Payum\Core\Action\GetHttpRequestAction;
 use Payum\Core\CoreGatewayFactory;
 use Payum\Core\Extension\PrependExtensionInterface;
 use Payum\Core\Gateway;

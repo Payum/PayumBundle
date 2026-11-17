@@ -11,7 +11,7 @@ use Payum\Bundle\PayumBundle\DI\SymfonyContainerAdapter;
 use Payum\Bundle\PayumBundle\PayumCoreGatewayFactory;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\Bridge\PlainPhp\Action\GetHttpRequestAction;
+use Payum\Core\Action\GetHttpRequestAction;
 use Payum\Core\DI\ContainerConfiguration;
 use Payum\Core\DI\ListableContainerInterface;
 use Payum\Core\Extension\ExtensionInterface;
