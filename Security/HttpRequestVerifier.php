@@ -36,7 +36,7 @@ class HttpRequestVerifier implements HttpRequestVerifierInterface
             ));
         }
 
-        // Use get() for Symfony 5.4+ compatibility (getString() was added in 6.3)
+        // Use get(): the payum_token attribute may be a TokenInterface instance, which getString() rejects
         $hash = $httpRequest->attributes->get('payum_token')
             ?? $httpRequest->query->get('payum_token')
             ?? $httpRequest->request->get('payum_token');

@@ -51,7 +51,7 @@ payum:
             factory: offline
 ```
 
-_note_ if you're using Symfony 4+ then create `config/packages/payum.yaml` file with contents described above.
+_note_ put the configuration above in `config/packages/payum.yaml`.
 
 ### Purchase
 

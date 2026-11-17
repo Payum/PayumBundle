@@ -23,18 +23,12 @@ class CreditCardDateValidator extends ConstraintValidator
         }
 
         if (! ($value instanceof DateTime)) {
-            if (method_exists($this->context, 'buildViolation')) {
-                $this->context->buildViolation($constraint->invalidMessage, [
-                    '{{ value }}' => $value,
-                ])
-                    ->addViolation();
-
-                return;
-            }
-
-            $this->context->addViolationAt('expireAt', $constraint->invalidMessage, [
+            $this->context->buildViolation($constraint->invalidMessage, [
                 '{{ value }}' => $value,
-            ]);
+            ])
+                ->addViolation();
+
+            return;
         }
 
         /**
@@ -43,15 +37,9 @@ class CreditCardDateValidator extends ConstraintValidator
         $value->modify('last day of this month');
 
         if (null !== $constraint->min && $value < $constraint->min) {
-            if (method_exists($this->context, 'buildViolation')) {
-                $this->context->buildViolation($constraint->minMessage)
-                    ->atPath('expireAt')
-                    ->addViolation();
-
-                return;
-            }
-
-            $this->context->addViolationAt('expireAt', $constraint->minMessage);
+            $this->context->buildViolation($constraint->minMessage)
+                ->atPath('expireAt')
+                ->addViolation();
         }
     }
 }

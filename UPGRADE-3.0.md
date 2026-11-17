@@ -1,5 +1,10 @@
 # Upgrade to 3.0
 
+## Minimum Requirements
+
+* PHP 8.1 or higher is required.
+* Symfony 6.4 or higher is required. Symfony 5.4 is no longer supported.
+
 ## XML Configuration Removed
 
 All XML configuration files have been removed in version 3.0. You must migrate to PHP/YAML formats.

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Symfony\Component\HttpKernel\Kernel;
 
 class CreditCardTypeTest extends WebTestCase
 {
@@ -29,13 +28,11 @@ class CreditCardTypeTest extends WebTestCase
      */
     public function couldBeCreatedByFormFactory(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) {
-            /** @var RequestStack $requestStack */
-            $requestStack = self::getContainer()->get(RequestStack::class);
-            $request = Request::createFromGlobals();
-            $request->setSession(new Session(new MockArraySessionStorage()));
-            $requestStack->push($request);
-        }
+        /** @var RequestStack $requestStack */
+        $requestStack = self::getContainer()->get(RequestStack::class);
+        $request = Request::createFromGlobals();
+        $request->setSession(new Session(new MockArraySessionStorage()));
+        $requestStack->push($request);
 
         $form = $this->formFactory->create(CreditCardType::class);
         $view = $form->createView();
