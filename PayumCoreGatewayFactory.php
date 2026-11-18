@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Payum\Bundle\PayumBundle;
 
+use Payum\Bundle\PayumBundle\Action\GetHttpRequestAction as SymfonyGetHttpRequestAction;
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Core\Action\PrependActionInterface;
 use Payum\Core\Action\GetHttpRequestAction;
@@ -60,6 +61,15 @@ class PayumCoreGatewayFactory extends CoreGatewayFactory
                 // payum/core looks its actions up by class name. Point the ones the bundle replaces at
                 // the Symfony implementation, so that a gateway gets that one instead.
                 GetHttpRequestAction::class => get('payum.action.get_http_request'),
+
+                // payum/core aliases this id to the class above, which would make the two a loop. The
+                // bundle builds it instead; the extension passes the Symfony service under the same id.
+                'payum.action.get_http_request' => static function (ContainerInterface $container): SymfonyGetHttpRequestAction {
+                    $action = new SymfonyGetHttpRequestAction();
+                    $action->setHttpRequestStack($container->get(RequestStack::class));
+
+                    return $action;
+                },
 
                 'payum.template.obtain_credit_card' => '@PayumSymfonyBridge\\obtainCreditCard.html.twig',
 
