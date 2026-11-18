@@ -7,36 +7,23 @@ env:
 
 jobs:
   unit-test:
-    name: Unit ( PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, Payum ${{ matrix.payum || '1.x' }} )
+    name: Unit ( PHP ${{ matrix.versions.php }}, Symfony ${{ matrix.versions.symfony }}, Payum ${{ matrix.payum }} )
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - php: 8.1
-            symfony: 6.4.*
-          - php: 8.2
-            symfony: 6.4.*
-          - php: 8.2
-            symfony: 7.0.*
-          - php: 8.3
-            symfony: 7.0.*
-          - php: 8.4
-            symfony: 7.0.*
-          - php: 8.4
-            symfony: 8.0.*
-          - php: 8.5
-            symfony: 7.0.*
-          - php: 8.5
-            symfony: 8.0.*
-          # payum/core 2.x, where a gateway is built with a dependency injection container
-          - php: 8.2
-            symfony: 6.4.*
-            payum: 2.x
-          - php: 8.4
-            symfony: 7.0.*
-            payum: 2.x
+        # every PHP and Symfony pair runs against both payum/core 1.x and 2.x
+        payum: [ '1.x', '2.x' ]
+        versions:
+          - { php: '8.1', symfony: '6.4.*' }
+          - { php: '8.2', symfony: '6.4.*' }
+          - { php: '8.2', symfony: '7.0.*' }
+          - { php: '8.3', symfony: '7.0.*' }
+          - { php: '8.4', symfony: '7.0.*' }
+          - { php: '8.4', symfony: '8.0.*' }
+          - { php: '8.5', symfony: '7.0.*' }
+          - { php: '8.5', symfony: '8.0.*' }
 
     steps:
       - name: Checkout
@@ -45,7 +32,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: ${{ matrix.versions.php }}
           extensions: intl, opcache, mysql, pdo_mysql, :xdebug
 
       - name: Get composer cache directory
@@ -56,11 +43,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
-          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-composer-
+          key: ${{ runner.os }}-php-${{ matrix.versions.php }}-composer-${{ hashFiles('composer.json composer.lock') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.versions.php }}-composer-
 
-      - name: Install Symfony ${{ matrix.symfony }}
-        run: composer config extra.symfony.require ${{ matrix.symfony }}
+      - name: Install Symfony ${{ matrix.versions.symfony }}
+        run: composer config extra.symfony.require ${{ matrix.versions.symfony }}
 
       - name: Install Symfony Flex
         run: |
