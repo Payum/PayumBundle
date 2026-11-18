@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+* `dynamic_gateways.encryption.halite_key` encrypts stored gateway configs with paragonie/halite. It needs payum/core 2.0 or newer; `defuse_secret_key` keeps working, and setting both is refused.
+* `payum:security:reencrypt-gateway-configs` saves every stored gateway config again with the configured key. It encrypts configs stored as plain text, and moves configs to a new key or library when the old one is set under `dynamic_gateways.encryption.previous`. A run that stops part-way can be started again.
+
 ### Removed
 * **BREAKING**: Dropped support for Symfony 5.4. The minimum supported version is now Symfony 6.4.
 * **BREAKING**: Dropped support for PHP 8.0. The minimum supported version is now PHP 8.1.

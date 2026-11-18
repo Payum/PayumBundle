@@ -3,7 +3,10 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional\DependencyInjection;
 
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\PayumExtension;
+use ParagonIE\Halite\KeyFactory;
+use Payum\Bundle\PayumBundle\Command\ReencryptGatewayConfigsCommand;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
+use Payum\Core\Bridge\Halite\Security\HaliteCypher;
 use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use PHPUnit\Framework\TestCase;
@@ -360,6 +363,109 @@ class PayumExtensionTest extends TestCase
 
         $this->assertFalse($containerBuilder->hasDefinition('payum.dynamic_gateways.gateway_config_admin'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldUseHaliteCypherWhenHaliteKeyIsSet(): void
+    {
+        if (! class_exists(HaliteCypher::class) || ! class_exists(KeyFactory::class)) {
+            $this->markTestSkipped('Needs payum/core 2.0 and paragonie/halite.');
+        }
+
+        $container = $this->loadWithEncryption(['halite_key' => 'aHaliteKey']);
+
+        $cypher = $container->getDefinition('payum.dynamic_gateways.cypher');
+        $this->assertSame(HaliteCypher::class, $cypher->getClass());
+        $this->assertSame('aHaliteKey', $cypher->getArgument(0));
+        $this->assertSame('payum.dynamic_gateways.cypher', (string) $container->getDefinition('payum.dynamic_gateways.encrypted_config_storage')->getArgument(1));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRefuseHaliteKeyWithoutHaliteCypher(): void
+    {
+        if (class_exists(HaliteCypher::class) && class_exists(KeyFactory::class)) {
+            $this->markTestSkipped('Halite is installed.');
+        }
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('"halite_key"');
+
+        $this->loadWithEncryption(['halite_key' => 'aHaliteKey']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRegisterReencryptCommandWithThePreviousCypher(): void
+    {
+        $container = $this->loadWithEncryption([
+            'defuse_secret_key' => 'aNewKey',
+            'previous' => ['defuse_secret_key' => 'anOldKey'],
+        ]);
+
+        $previous = $container->getDefinition('payum.dynamic_gateways.previous_cypher');
+        $this->assertSame(DefuseCypher::class, $previous->getClass());
+        $this->assertSame('anOldKey', $previous->getArgument(0));
+
+        $command = $container->getDefinition('payum.command.reencrypt_gateway_configs');
+        $this->assertSame(ReencryptGatewayConfigsCommand::class, $command->getClass());
+        $this->assertTrue($command->hasTag('console.command'));
+        $this->assertSame('payum.dynamic_gateways.encrypted_config_storage.inner', (string) $command->getArgument(0));
+        $this->assertSame('payum.dynamic_gateways.cypher', (string) $command->getArgument(1));
+        $this->assertSame('payum.dynamic_gateways.previous_cypher', (string) $command->getArgument(2));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldRegisterReencryptCommandWithoutAPreviousCypher(): void
+    {
+        $container = $this->loadWithEncryption(['defuse_secret_key' => 'aKey']);
+
+        $this->assertFalse($container->hasDefinition('payum.dynamic_gateways.previous_cypher'));
+        $this->assertNull($container->getDefinition('payum.command.reencrypt_gateway_configs')->getArgument(2));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotRegisterReencryptCommandWithoutEncryption(): void
+    {
+        $container = $this->loadWithEncryption([]);
+
+        $this->assertFalse($container->hasDefinition('payum.dynamic_gateways.cypher'));
+        $this->assertFalse($container->hasDefinition('payum.command.reencrypt_gateway_configs'));
+    }
+
+    private function loadWithEncryption(array $encryption): ContainerBuilder
+    {
+        $container = new ContainerBuilder();
+        $container->setParameter('kernel.debug', false);
+
+        (new PayumExtension())->load([[
+            'dynamic_gateways' => [
+                'encryption' => $encryption,
+                'config_storage' => [
+                    'Payum\Core\Model\GatewayConfig' => [
+                        'filesystem' => ['storage_dir' => sys_get_temp_dir(), 'id_property' => 'hash'],
+                    ],
+                ],
+            ],
+            'security' => [
+                'token_storage' => [
+                    'Payum\Core\Model\Token' => [
+                        'filesystem' => ['storage_dir' => sys_get_temp_dir(), 'id_property' => 'hash'],
+                    ],
+                ],
+            ],
+            'gateways' => [],
+        ]], $container);
+
+        return $container;
+    }
 }
 
 class TestGatewayConfig implements GatewayConfigInterface
@@ -388,3 +494,4 @@ class TestGatewayConfig implements GatewayConfigInterface
     {
     }
 }
+

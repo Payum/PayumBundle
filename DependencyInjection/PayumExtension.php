@@ -4,6 +4,9 @@ namespace Payum\Bundle\PayumBundle\DependencyInjection;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
+use Payum\Core\Bridge\Halite\Security\HaliteCypher;
+use ParagonIE\Halite\KeyFactory;
+use Payum\Bundle\PayumBundle\Command\ReencryptGatewayConfigsCommand;
 use Payum\Core\Config\GatewayConfig;
 use Payum\Bundle\PayumBundle\ReplyToSymfonyResponseConverter;
 use Payum\Core\Exception\InvalidArgumentException;
@@ -237,6 +240,27 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         }
     }
 
+    private function createCypherDefinition(array $keys): ?Definition
+    {
+        if (isset($keys['defuse_secret_key'])) {
+            return new Definition(DefuseCypher::class, [$keys['defuse_secret_key']]);
+        }
+
+        if (isset($keys['halite_key'])) {
+            if (! class_exists(HaliteCypher::class)) {
+                throw new LogicException('Encrypting gateway configs with "halite_key" needs payum/core 2.0 or newer.');
+            }
+
+            if (! class_exists(KeyFactory::class)) {
+                throw new LogicException('Encrypting gateway configs with "halite_key" needs paragonie/halite. Run "composer require paragonie/halite".');
+            }
+
+            return new Definition(HaliteCypher::class, [$keys['halite_key']]);
+        }
+
+        return null;
+    }
+
     protected function loadDynamicGateways(array $dynamicGatewaysConfig, ContainerBuilder $container): void
     {
         $configClass = null;
@@ -254,10 +278,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         }
 
 
-        if (isset($dynamicGatewaysConfig['encryption']['defuse_secret_key'])) {
-            $container->register('payum.dynamic_gateways.cypher', DefuseCypher::class)
-                ->addArgument($dynamicGatewaysConfig['encryption']['defuse_secret_key'])
-            ;
+        $encryption = $dynamicGatewaysConfig['encryption'] ?? [];
+        if ($cypher = $this->createCypherDefinition($encryption)) {
+            $container->setDefinition('payum.dynamic_gateways.cypher', $cypher);
             $container->register('payum.dynamic_gateways.encrypted_config_storage', CryptoStorageDecorator::class)
                 ->setPublic(false)
                 ->setDecoratedService('payum.dynamic_gateways.config_storage')
@@ -265,7 +288,20 @@ class PayumExtension extends Extension implements PrependExtensionInterface
                 ->addArgument(new Reference('payum.dynamic_gateways.cypher'))
             ;
 
+            $previousCypher = null;
+            if ($previous = $this->createCypherDefinition($encryption['previous'] ?? [])) {
+                $container->setDefinition('payum.dynamic_gateways.previous_cypher', $previous);
+                $previousCypher = new Reference('payum.dynamic_gateways.previous_cypher');
+            }
 
+            $container->register('payum.command.reencrypt_gateway_configs', ReencryptGatewayConfigsCommand::class)
+                ->setArguments([
+                    new Reference('payum.dynamic_gateways.encrypted_config_storage.inner'),
+                    new Reference('payum.dynamic_gateways.cypher'),
+                    $previousCypher,
+                ])
+                ->addTag('console.command')
+            ;
         }
 
         //deprecated
