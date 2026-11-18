@@ -235,10 +235,18 @@ class MainConfiguration implements ConfigurationInterface
             ->end()
         ;
 
-        $dynamicGatewaysNode->children()
-            ->arrayNode('encryption')
-                ->children()
-                    ->scalarNode('defuse_secret_key')->cannotBeEmpty()->end()
+        $encryptionNode = $dynamicGatewaysNode->children()->arrayNode('encryption');
+        $this->addCypherKeys($encryptionNode);
+        $encryptionNode->validate()
+            ->ifTrue(static fn (array $v): bool => isset($v['previous']) && ! isset($v['defuse_secret_key']) && ! isset($v['halite_key']))
+            ->thenInvalid('"previous" needs a "defuse_secret_key" or "halite_key" to re-encrypt the gateway configs with.')
+        ;
+
+        $previousNode = $encryptionNode->children()->arrayNode('previous');
+        $this->addCypherKeys($previousNode);
+        $previousNode->validate()
+            ->ifTrue(static fn (array $v): bool => ! isset($v['defuse_secret_key']) && ! isset($v['halite_key']))
+            ->thenInvalid('Set "defuse_secret_key" or "halite_key" in "previous".')
         ;
 
         foreach ($this->storageFactories as $factory) {
@@ -246,5 +254,18 @@ class MainConfiguration implements ConfigurationInterface
                 $storageNode->children()->arrayNode($factory->getName())
             );
         }
+    }
+
+    private function addCypherKeys(ArrayNodeDefinition $node): void
+    {
+        $node
+            ->children()
+                ->scalarNode('defuse_secret_key')->cannotBeEmpty()->end()
+                ->scalarNode('halite_key')->cannotBeEmpty()->end()
+            ->end()
+            ->validate()
+                ->ifTrue(static fn (array $v): bool => isset($v['defuse_secret_key'], $v['halite_key']))
+                ->thenInvalid('Set either "defuse_secret_key" or "halite_key", not both.')
+        ;
     }
 }

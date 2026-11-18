@@ -6,6 +6,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\MainConfiguration;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\DoctrineStorageFactory;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\FilesystemStorageFactory;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class MainConfigurationTest extends TestCase
 {
@@ -313,5 +314,75 @@ class MainConfigurationTest extends TestCase
                 )
             )
         ));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPassConfigurationProcessingWithHaliteKeyAndPreviousDefuseKey(): void
+    {
+        $config = $this->processEncryption([
+            'halite_key' => 'aHaliteKey',
+            'previous' => ['defuse_secret_key' => 'aDefuseKey'],
+        ]);
+
+        $this->assertSame('aHaliteKey', $config['dynamic_gateways']['encryption']['halite_key']);
+        $this->assertSame('aDefuseKey', $config['dynamic_gateways']['encryption']['previous']['defuse_secret_key']);
+    }
+
+    /**
+     * @test
+     */
+    public function throwIfBothEncryptionKeysAreSet(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Set either "defuse_secret_key" or "halite_key", not both.');
+
+        $this->processEncryption(['halite_key' => 'aHaliteKey', 'defuse_secret_key' => 'aDefuseKey']);
+    }
+
+    /**
+     * @test
+     */
+    public function throwIfPreviousKeyIsSetWithoutACurrentKey(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('"previous" needs a "defuse_secret_key" or "halite_key"');
+
+        $this->processEncryption(['previous' => ['defuse_secret_key' => 'aDefuseKey']]);
+    }
+
+    /**
+     * @test
+     */
+    public function throwIfPreviousHasNoKey(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Set "defuse_secret_key" or "halite_key" in "previous".');
+
+        $this->processEncryption(['halite_key' => 'aHaliteKey', 'previous' => []]);
+    }
+
+    private function processEncryption(array $encryption): array
+    {
+        return (new Processor())->processConfiguration(new MainConfiguration($this->storageFactories), [
+            'payum' => [
+                'security' => [
+                    'token_storage' => [
+                        'Payum\Core\Model\Token' => [
+                            'filesystem' => ['storage_dir' => sys_get_temp_dir(), 'id_property' => 'hash'],
+                        ],
+                    ],
+                ],
+                'dynamic_gateways' => [
+                    'encryption' => $encryption,
+                    'config_storage' => [
+                        'Payum\Core\Model\GatewayConfig' => [
+                            'doctrine' => ['driver' => 'aDriver'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
     }
 }

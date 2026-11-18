@@ -47,6 +47,7 @@
     },
     "require-dev": {
         "defuse/php-encryption": "^2",
+        "paragonie/halite": "^5.1",
         "doctrine/orm": "^2.8 || ^3.0",
         "omnipay/common": "^3@dev",
         "omnipay/dummy": "^3@alpha",
@@ -72,7 +73,9 @@
         "twig/twig": "^2.0 || ^3.0"
     },
     "suggest": {
-        "sonata-project/admin-bundle": "^3 If you want to configure payments in the backend."
+        "sonata-project/admin-bundle": "^3 If you want to configure payments in the backend.",
+        "paragonie/halite": "^5.1 If you want to encrypt stored gateway configs (needs payum/core 2.0)",
+        "defuse/php-encryption": "^2 If you want to encrypt stored gateway configs"
     },
     "autoload": {
         "psr-4": { "Payum\\Bundle\\PayumBundle\\": "" }
