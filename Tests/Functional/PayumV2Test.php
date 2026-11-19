@@ -6,6 +6,7 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Bundle\PayumBundle\PayumVersion;
+use Payum\Bundle\PayumBundle\Profiler\PayumCollector;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\AttributedMiddleware;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\ExchangeRates;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\RecordingMiddleware;
@@ -16,7 +17,12 @@ use Payum\Core\Event\StatusChanged;
 use Payum\Core\Gateway;
 use Payum\Core\Idempotency\CacheIdempotencyStore;
 use Payum\Core\Idempotency\IdempotencyStoreInterface;
+use Payum\Core\Middleware\IdempotencyMiddleware;
+use Payum\Core\Middleware\LockingMiddleware;
 use Payum\Core\Middleware\SubjectIdentity;
+use Payum\Offline\OfflineConfig;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Payum\Core\Security\TokenInterface;
 use Psr\Http\Client\ClientInterface;
 use Payum\Core\Model\Payment;
@@ -186,6 +192,41 @@ class PayumV2Test extends WebTestCase
         $this->assertInstanceOf(CacheIdempotencyStore::class, $container->get(IdempotencyStoreInterface::class));
         $this->assertTrue($container->has(ClientInterface::class));
         $this->assertTrue($container->has(\Symfony\Component\Lock\LockFactory::class));
+    }
+
+    public function testShouldShowTheCommandsInTheProfiler(): void
+    {
+        /** @var PayumCollector $collector */
+        $collector = static::getContainer()->get('payum.profiler.payum_collector');
+        $collector->reset();
+
+        $capture = CaptureCommand::forPayment($this->storePayment(), idempotencyKey: 'key-1');
+        $this->getPayum()->getGateway('offlineFromTag')->execute($capture);
+        $this->getPayum()->getGateway('offlineFromTag')->execute($capture);
+        $collector->collect(new Request(), new Response());
+
+        $command = $collector->getCommands()[0];
+        $this->assertSame('offlineFromTag', $command['gateway']);
+        $this->assertSame(CaptureCommand::class, $command['command_class']);
+        $this->assertSame('key-1', $command['idempotency_key']);
+        $this->assertNotNull($command['handler_class']);
+        $this->assertSame(PaymentStatus::Captured->value, $command['result']['status']);
+        $this->assertSame(PaymentStatus::Captured->value, $command['status_changes'][0]['to']);
+        $this->assertFalse($command['replayed']);
+
+        $repeat = $collector->getCommands()[1];
+        $this->assertTrue($repeat['replayed']);
+        $this->assertNull($repeat['handler_class']);
+        $this->assertSame(PaymentStatus::Captured->value, $repeat['result']['status']);
+        $this->assertSame(0, $collector->getFailureCount());
+
+        $this->assertContains(LockingMiddleware::class, $collector->getPipelines()['offlineFromTag']);
+        $this->assertContains(IdempotencyMiddleware::class, $collector->getPipelines()['offlineFromTag']);
+
+        $this->assertSame(['registered_by' => 'config', 'factory' => OfflineConfig::class], $collector->getGateways()['offlineFromTag']);
+        $this->assertSame('factory', $collector->getGateways()['diGateway']['registered_by']);
+        $this->assertTrue($collector->getConfiguration()['locking']['enabled']);
+        $this->assertSame(['store' => 'cache pool', 'id' => 'cache.app'], $collector->getConfiguration()['idempotency']);
     }
 
     private function storePayment(): Payment

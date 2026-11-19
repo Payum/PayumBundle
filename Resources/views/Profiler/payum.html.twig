@@ -1,39 +1,323 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% if collector.dump|length %}
+    {% set config = collector.configuration %}
+    {% set commands = collector.commands %}
+    {% if commands|length or collector.actions|length %}
+        {% set failures = collector.failureCount %}
         {% set icon %}
-             {{ include('@Payum/Icon/payum.svg') }}
-            <span class="sf-toolbar-value">Payum</span>
+            {{ include('@Payum/Icon/payum.svg') }}
+            <span class="sf-toolbar-value">{{ commands|length ?: collector.actions|length }}</span>
+            {% if commands|length %}
+                <span class="sf-toolbar-info-piece-additional-detail">
+                    <span class="sf-toolbar-label">in</span>
+                    <span class="sf-toolbar-value">{{ '%0.1f'|format(collector.duration) }}</span>
+                    <span class="sf-toolbar-label">ms</span>
+                </span>
+            {% endif %}
         {% endset %}
 
-        {#{% set text %}
+        {% set text %}
+            {% if commands|length %}
+                <div class="sf-toolbar-info-piece">
+                    <b>Commands</b>
+                    <span class="sf-toolbar-status">{{ commands|length }}</span>
+                </div>
+                <div class="sf-toolbar-info-piece">
+                    <b>Failed</b>
+                    <span class="sf-toolbar-status {{ failures ? 'sf-toolbar-status-red' }}">{{ failures }}</span>
+                </div>
+                <div class="sf-toolbar-info-piece">
+                    <b>Gateways</b>
+                    <span>{{ collector.pipelines|keys|join(', ') }}</span>
+                </div>
+                {% set last = commands|filter(c => c.depth == 0)|last %}
+                {% if last and last.result %}
+                    <div class="sf-toolbar-info-piece">
+                        <b>Last status</b>
+                        <span>{{ last.result.status ?? 'n/a' }}{{ last.result.next ? ' → ' ~ last.result.next }}</span>
+                    </div>
+                {% endif %}
+            {% endif %}
+            {% if collector.actions|length %}
+                <div class="sf-toolbar-info-piece">
+                    <b>1.x requests</b>
+                    <span class="sf-toolbar-status">{{ collector.actions|length }}</span>
+                </div>
+            {% endif %}
             <div class="sf-toolbar-info-piece">
-                  ...
+                <b>Locking</b>
+                <span>{{ config.locking.enabled|default(false) ? 'on' : 'off' }}</span>
             </div>
-        {% endset %}#}
+            <div class="sf-toolbar-info-piece">
+                <b>Idempotency</b>
+                <span>{{ config.idempotency ? config.idempotency.store : (config.payum_v2|default(false) ? 'in memory' : 'n/a') }}</span>
+            </div>
+        {% endset %}
 
-        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: profiler_url, status: failures ? 'red' : '' }) }}
     {% endif %}
 {% endblock %}
 
 {% block menu %}
-    {# This left-hand menu appears when using the full-screen profiler. #}
-    <span class="label{{ collector.dump|length == 0 ? ' disabled' }}">
-        <span class="icon">
-            {{ include('@Payum/Icon/payum.svg') }}
-        </span>
+    <span class="label{{ collector.commands|length == 0 and collector.actions|length == 0 ? ' disabled' }}{{ collector.failureCount ? ' label-status-error' }}">
+        <span class="icon">{{ include('@Payum/Icon/payum.svg') }}</span>
         <strong>Payum</strong>
+        {% if collector.failureCount %}
+            <span class="count"><span>{{ collector.failureCount }}</span></span>
+        {% endif %}
     </span>
 {% endblock %}
 
 {% block panel %}
-    <h2>Gateway execution graph</h2>
-    {% if collector.dump|length %}
-        <pre>{{ collector.dump|raw }}</pre>
-    {% else %}
-        <div class="empty">
-            <p>No data was collected by Payum.</p>
+    {% set config = collector.configuration %}
+    <h2>Payum</h2>
+
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.commands|length }}</span>
+            <span class="label">Commands</span>
         </div>
-    {% endif %}
+        <div class="metric">
+            <span class="value">{{ collector.failureCount }}</span>
+            <span class="label">Failed</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ '%0.2f'|format(collector.duration) }} <span class="unit">ms</span></span>
+            <span class="label">Time in commands</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.actions|length }}</span>
+            <span class="label">1.x requests</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.gateways|length + collector.dynamicGateways|length }}</span>
+            <span class="label">Gateways</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ config.payum_v2|default(false) ? '2.x' : '1.x' }}</span>
+            <span class="label">payum/core</span>
+        </div>
+    </div>
+
+    <div class="sf-tabs">
+        <div class="tab">
+            <h3 class="tab-title">Commands <span class="badge">{{ collector.commands|length }}</span></h3>
+            <div class="tab-content">
+                {% if collector.commands is empty %}
+                    <div class="empty"><p>No command was dispatched{{ config.payum_v2|default(false) ? '' : ' (commands need payum/core 2.0 or later)' }}.</p></div>
+                {% else %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Command</th>
+                                <th>Gateway</th>
+                                <th>Handler</th>
+                                <th>Result</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for command in collector.commands %}
+                                {% set failed = command.exception or command.result.failed|default(false) %}
+                                <tr class="{{ failed ? 'status-error' : (command.result.successful|default(false) ? 'status-success') }}">
+                                    <td class="font-normal text-muted">{{ loop.index }}</td>
+                                    <td>
+                                        <span style="padding-left: {{ command.depth * 16 }}px">{{ command.depth ? '└ ' }}<abbr title="{{ command.command_class }}">{{ command.command_short_class }}</abbr></span>
+                                        {% if command.subject_class %}<br><small class="text-muted">on {{ command.subject_class }}</small>{% endif %}
+                                    </td>
+                                    <td>
+                                        {{ command.gateway ?? '(unnamed)' }}
+                                        {% if command.source == 'dynamic' %}<span class="badge">dynamic</span>{% endif %}
+                                    </td>
+                                    <td>
+                                        {% if command.handler_class %}
+                                            {{ command.handler_class|abbr_class }}
+                                        {% elseif command.replayed %}
+                                            <span class="badge">replayed</span> <span class="text-muted">stored result for this idempotency key</span>
+                                        {% elseif command.result %}
+                                            <span class="text-muted">none: answered by middleware</span>
+                                        {% else %}
+                                            <span class="text-muted">not reached</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if command.exception %}
+                                            <span class="badge status-error">{{ command.exception.short_class }}</span>
+                                            <br><small>{{ command.exception.message }}</small>
+                                        {% elseif command.result %}
+                                            <span class="badge {{ command.result.failed ? 'status-error' : (command.result.successful ? 'status-success' : 'status-warning') }}">{{ command.result.status ?? 'no status' }}</span>
+                                            {% if command.result.next %}<br><small>next: {{ command.result.next }}</small>{% endif %}
+                                            {% if command.result.transaction_id %}<br><small>txn: {{ command.result.transaction_id }}</small>{% endif %}
+                                        {% else %}
+                                            <span class="text-muted">still running</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="nowrap">{{ command.duration is not null ? '%0.2f ms'|format(command.duration) : '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="5">
+                                        <table>
+                                            {% if command.idempotency_key %}
+                                                <tr><th style="width: 160px">Idempotency key</th><td>{{ command.idempotency_key }}</td></tr>
+                                            {% endif %}
+                                            {% if command.token %}
+                                                <tr><th style="width: 160px">Token</th><td>
+                                                    {{ command.token.hash }}<br>
+                                                    <small>target: {{ command.token.target_url }}</small><br>
+                                                    <small>after: {{ command.token.after_url }}</small>
+                                                </td></tr>
+                                            {% endif %}
+                                            {% for change in command.status_changes %}
+                                                <tr><th style="width: 160px">Status changed</th><td>{{ change.from ?? '(none)' }} → <strong>{{ change.to }}</strong> <small class="text-muted">on {{ change.subject_class }}</small></td></tr>
+                                            {% endfor %}
+                                            <tr><th style="width: 160px">Command</th><td>{{ profiler_dump(command.command, maxDepth=1) }}</td></tr>
+                                            {% if command.webhook %}
+                                                <tr><th>Webhook</th><td>{{ profiler_dump(command.webhook, maxDepth=1) }}</td></tr>
+                                            {% endif %}
+                                            {% if command.result %}
+                                                <tr><th>Result</th><td>{{ profiler_dump(command.result.dump, maxDepth=1) }}</td></tr>
+                                            {% endif %}
+                                            {% if command.failure %}
+                                                <tr><th>Failure</th><td>{{ profiler_dump(command.failure, maxDepth=1) }}</td></tr>
+                                            {% endif %}
+                                            {% if command.exception %}
+                                                <tr><th>Exception</th><td>{{ profiler_dump(command.exception.dump, maxDepth=1) }}</td></tr>
+                                            {% endif %}
+                                        </table>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tab {{ collector.pipelines is empty ? 'disabled' }}">
+            <h3 class="tab-title">Middleware</h3>
+            <div class="tab-content">
+                {% if collector.pipelines is empty %}
+                    <div class="empty"><p>No gateway ran a command, so no middleware ran.</p></div>
+                {% else %}
+                    <p class="help">Every command runs through these, outermost first. A command answered without a handler was answered by one of them.</p>
+                    {% for gateway, pipeline in collector.pipelines %}
+                        <h4>{{ gateway }}</h4>
+                        {% if pipeline is null %}
+                            <div class="empty"><p>The pipeline of this gateway could not be read.</p></div>
+                        {% else %}
+                            <table>
+                                <thead><tr><th>#</th><th>Middleware</th></tr></thead>
+                                <tbody>
+                                    {% for middleware in pipeline %}
+                                        <tr><td class="font-normal text-muted">{{ loop.index }}</td><td>{{ middleware|abbr_class }}</td></tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tab">
+            <h3 class="tab-title">Gateways <span class="badge">{{ collector.gateways|length + collector.dynamicGateways|length }}</span></h3>
+            <div class="tab-content">
+                {% set used = collector.commands|map(c => c.gateway) %}
+                <table>
+                    <thead><tr><th>Name</th><th>Factory / config</th><th>Registered by</th><th>Used in this request</th></tr></thead>
+                    <tbody>
+                        {% for name, gateway in collector.gateways %}
+                            <tr>
+                                <td>{{ name }}</td>
+                                <td>{{ gateway.factory ? gateway.factory|abbr_class : '-' }}</td>
+                                <td>{{ gateway.registered_by }}</td>
+                                <td>{{ name in used ? 'yes' : 'no' }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% for name, factory in collector.dynamicGateways %}
+                            <tr>
+                                <td>{{ name }} <span class="badge">dynamic</span></td>
+                                <td>{{ factory }}</td>
+                                <td>dynamic gateway config</td>
+                                <td>{{ name in used ? 'yes' : 'no' }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% if collector.gateways is empty and collector.dynamicGateways is empty %}
+                            <tr><td colspan="4" class="text-muted">No gateway is registered.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                {% if collector.dynamicGatewaysError %}
+                    <p class="help">The dynamic gateway configs could not be read: {{ collector.dynamicGatewaysError }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tab">
+            <h3 class="tab-title">Configuration</h3>
+            <div class="tab-content">
+                <h4>Locking</h4>
+                <table>
+                    <tr><th style="width: 200px">Enabled</th><td>{{ config.locking.enabled|default(false) ? 'yes' : 'no' }}</td></tr>
+                    {% if config.locking.enabled|default(false) %}
+                        <tr><th>Lock factory</th><td>{{ config.locking.lock_factory }}</td></tr>
+                        <tr><th>Timeout</th><td>{{ config.locking.timeout }} s</td></tr>
+                        <tr><th>TTL</th><td>{{ config.locking.ttl }} s</td></tr>
+                    {% endif %}
+                </table>
+
+                <h4>Idempotency</h4>
+                <table>
+                    {% if config.idempotency %}
+                        <tr><th style="width: 200px">Store</th><td>{{ config.idempotency.store }}</td></tr>
+                        <tr><th>Service / connection</th><td>{{ config.idempotency.id ?? 'default' }}</td></tr>
+                        {% if config.idempotency.table is defined %}<tr><th>Table</th><td>{{ config.idempotency.table }}</td></tr>{% endif %}
+                    {% else %}
+                        <tr><th style="width: 200px">Store</th><td>{{ config.payum_v2|default(false) ? 'in memory: a key is only recognised within one PHP process' : 'needs payum/core 2.0 or later' }}</td></tr>
+                    {% endif %}
+                </table>
+
+                <h4>Dynamic gateways</h4>
+                <table>
+                    {% if config.dynamic_gateways %}
+                        {% for class, type in config.dynamic_gateways.config_storage %}
+                            <tr><th style="width: 200px">Config storage</th><td>{{ class|abbr_class }} ({{ type }})</td></tr>
+                        {% endfor %}
+                        <tr><th>Encryption</th><td>{{ config.dynamic_gateways.encryption ?? 'none' }}{{ config.dynamic_gateways.previous_key ? ', with a previous key to re-encrypt from' }}</td></tr>
+                    {% else %}
+                        <tr><th style="width: 200px">Enabled</th><td>no</td></tr>
+                    {% endif %}
+                </table>
+
+                <h4>Storages</h4>
+                <table>
+                    <thead><tr><th>Model</th><th>Storage</th></tr></thead>
+                    <tbody>
+                        {% for class, type in config.storages|default([]) %}
+                            <tr><td>{{ class|abbr_class }}</td><td>{{ type }}</td></tr>
+                        {% else %}
+                            <tr><td colspan="2" class="text-muted">None</td></tr>
+                        {% endfor %}
+                        {% for class, type in config.token_storage|default([]) %}
+                            <tr><td>{{ class|abbr_class }} <span class="badge">token</span></td><td>{{ type }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab {{ collector.actions is empty ? 'disabled' }}">
+            <h3 class="tab-title">1.x actions <span class="badge">{{ collector.actions|length }}</span></h3>
+            <div class="tab-content">
+                {% if collector.actions is empty %}
+                    <div class="empty"><p>No 1.x request was executed.</p></div>
+                {% else %}
+                    <pre>{{ collector.dump }}</pre>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
