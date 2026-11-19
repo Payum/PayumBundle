@@ -8,6 +8,7 @@ use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayFactoriesP
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewayConfigsPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGatewaysPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildMiddlewaresPass;
+use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildProfilerPass;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildStoragesPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,5 +27,6 @@ class PayumBundle extends Bundle
         $container->addCompilerPass(new BuildGatewayFactoriesBuilderPass());
         $container->addCompilerPass(new BuildGlobalContainerPass());
         $container->addCompilerPass(new BuildMiddlewaresPass());
+        $container->addCompilerPass(new BuildProfilerPass());
     }
 }

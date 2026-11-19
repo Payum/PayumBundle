@@ -96,12 +96,62 @@ class PayumExtension extends Extension implements PrependExtensionInterface
             $this->loadIdempotency($config['idempotency'], $container);
         }
 
+        if ($container->hasDefinition('payum.profiler.payum_collector')) {
+            $container->getDefinition('payum.profiler.payum_collector')->replaceArgument(0, $this->profilerSummary($config));
+        }
+
         if (interface_exists(MiddlewareInterface::class)) {
             $container->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('payum.middleware');
             $container->registerAttributeForAutoconfiguration(AsPayumMiddleware::class, static function (ChildDefinition $definition, AsPayumMiddleware $attribute): void {
                 $definition->addTag('payum.middleware', ['priority' => $attribute->priority]);
             });
         }
+    }
+
+    /**
+     * What the profiler shows of the configuration. Never a gateway option or a key: those are secrets.
+     */
+    private function profilerSummary(array $config): array
+    {
+        $storageTypes = fn (array $storages): array => array_map(
+            fn (array $storageConfig): string => $this->findSelectedStorageFactoryNameInStorageConfig($storageConfig),
+            $storages
+        );
+
+        $dynamic = null;
+        if (isset($config['dynamic_gateways'])) {
+            $encryption = $config['dynamic_gateways']['encryption'] ?? [];
+
+            $dynamic = [
+                'config_storage' => $storageTypes($config['dynamic_gateways']['config_storage']),
+                'encryption' => match (true) {
+                    isset($encryption['halite_key']) => 'halite',
+                    isset($encryption['defuse_secret_key']) => 'defuse',
+                    default => null,
+                },
+                'previous_key' => isset($encryption['previous']),
+            ];
+        }
+
+        $idempotency = null;
+        if (isset($config['idempotency'])) {
+            $idempotency = match (true) {
+                null !== $config['idempotency']['service'] => ['store' => 'service', 'id' => $config['idempotency']['service']],
+                null !== $config['idempotency']['cache_pool'] => ['store' => 'cache pool', 'id' => $config['idempotency']['cache_pool']],
+                default => ['store' => 'DBAL', 'id' => $config['idempotency']['dbal_connection'], 'table' => $config['idempotency']['table']],
+            };
+        }
+
+        return [
+            'payum_v2' => PayumVersion::supportsDependencyInjection(),
+            // filled in by BuildProfilerPass, which sees the gateways registered by tags too
+            'gateways' => [],
+            'storages' => $storageTypes($config['storages']),
+            'token_storage' => $storageTypes($config['security']['token_storage']),
+            'dynamic_gateways' => $dynamic,
+            'locking' => $config['locking'],
+            'idempotency' => $idempotency,
+        ];
     }
 
     protected function loadLocking(array $config, ContainerBuilder $container): void
