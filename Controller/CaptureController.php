@@ -2,6 +2,7 @@
 namespace Payum\Bundle\PayumBundle\Controller;
 
 use Payum\Core\Reply\HttpPostRedirect;
+use Payum\Core\Exception\ConcurrentOperationException;
 use Payum\Core\Request\Capture;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,14 @@ class CaptureController extends PayumController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
         $gateway = $this->getPayum()->getGateway($token->getGatewayName());
-        $gateway->execute(new Capture($token));
+
+        try {
+            $gateway->execute(new Capture($token));
+        } catch (ConcurrentOperationException) {
+            // payum/core 2.x locking: another request is already finishing this payment, and will
+            // invalidate the token. Nothing was sent to the PSP, so show the customer the outcome.
+            return $this->redirect($token->getAfterUrl());
+        }
 
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 

@@ -13,6 +13,11 @@ use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Bundle\PayumBundle\DependencyInjection\Factory\Storage\StorageFactoryInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Gateway;
+use Payum\Core\Bridge\Doctrine\Idempotency\DbalIdempotencyStore;
+use Payum\Core\Idempotency\CacheIdempotencyStore;
+use Payum\Core\Middleware\LockingMiddleware;
+use Payum\Core\Middleware\MiddlewareInterface;
+use Symfony\Component\Lock\LockFactory;
 use Payum\Core\Registry\DynamicRegistry;
 use Payum\Core\Storage\CryptoStorageDecorator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -81,6 +86,63 @@ class PayumExtension extends Extension implements PrependExtensionInterface
         if (isset($config['dynamic_gateways'])) {
             $this->loadDynamicGateways($config['dynamic_gateways'], $container);
         }
+
+        if ($config['locking']['enabled']) {
+            $this->loadLocking($config['locking'], $container);
+        }
+
+        if (isset($config['idempotency'])) {
+            $this->loadIdempotency($config['idempotency'], $container);
+        }
+
+        if (interface_exists(MiddlewareInterface::class)) {
+            $container->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('payum.middleware');
+        }
+    }
+
+    protected function loadLocking(array $config, ContainerBuilder $container): void
+    {
+        if (false === PayumVersion::supportsDependencyInjection()) {
+            throw new LogicException('"payum.locking" needs payum/core 2.0 or later.');
+        }
+
+        if (false === class_exists(LockFactory::class)) {
+            throw new LogicException('"payum.locking" needs Symfony Lock. Run "composer require symfony/lock".');
+        }
+
+        $container->register('payum.middleware.locking', LockingMiddleware::class)
+            ->setArguments([
+                new Reference($config['lock_factory']),
+                new Reference('payum.static_registry'),
+                $config['timeout'],
+                $config['ttl'],
+            ])
+            // no priority on the tag: the middleware's own 900 applies
+            ->addTag('payum.middleware')
+        ;
+    }
+
+    protected function loadIdempotency(array $config, ContainerBuilder $container): void
+    {
+        if (false === PayumVersion::supportsDependencyInjection()) {
+            throw new LogicException('"payum.idempotency" needs payum/core 2.0 or later.');
+        }
+
+        if ($config['service']) {
+            $container->setAlias('payum.idempotency_store', $config['service']);
+
+            return;
+        }
+
+        if ($config['cache_pool']) {
+            $container->register('payum.idempotency_store', CacheIdempotencyStore::class)
+                ->setArguments([new Reference($config['cache_pool'])]);
+
+            return;
+        }
+
+        $container->register('payum.idempotency_store', DbalIdempotencyStore::class)
+            ->setArguments([new Reference($config['dbal_connection']), $config['table']]);
     }
 
     /**

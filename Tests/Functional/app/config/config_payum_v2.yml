@@ -11,13 +11,31 @@ services:
         tags:
             - { name: kernel.event_listener, event: Payum\Core\Event\StatusChanged, method: __invoke }
 
+    # tagged payum.middleware by autoconfiguration
+    Payum\Bundle\PayumBundle\Tests\Functional\Fixture\RecordingMiddleware:
+        autoconfigure: true
+
     payum.test.offline_tagged_config:
         class: Payum\Offline\OfflineConfig
         arguments: { $paid: true }
         tags:
             - { name: payum.gateway_config, gateway: offlineFromTag }
 
+framework:
+    lock: 'flock'
+    http_client: ~
+
 payum:
+    locking:
+        enabled: true
+        timeout: 0.1
+    idempotency:
+        cache_pool: cache.app
+    storages:
+        Payum\Core\Model\Payment:
+            filesystem:
+                storage_dir: '%kernel.cache_dir%'
+                id_property: number
     gateways:
         diGateway:
             factory: 'core'
