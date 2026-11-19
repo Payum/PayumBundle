@@ -29,6 +29,36 @@ class MainConfigurationTest extends TestCase
         new MainConfiguration($this->storageFactories);
     }
 
+    public function testShouldLeaveLockingOffByDefault(): void
+    {
+        $config = $this->process([]);
+
+        $this->assertFalse($config['locking']['enabled']);
+        $this->assertArrayNotHasKey('idempotency', $config);
+    }
+
+    public function testShouldTurnLockingOnWithTheDefaultsOfPayum(): void
+    {
+        $config = $this->process(['locking' => true]);
+
+        $this->assertSame(['enabled' => true, 'lock_factory' => 'lock.factory', 'timeout' => 10.0, 'ttl' => 300.0], $config['locking']);
+    }
+
+    public function testThrowIfIdempotencyNamesMoreThanOneStore(): void
+    {
+        $this->expectException(\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Set exactly one of "cache_pool", "dbal_connection" or "service".');
+
+        $this->process(['idempotency' => ['cache_pool' => 'cache.app', 'service' => 'app.store']]);
+    }
+
+    private function process(array $config): array
+    {
+        return (new Processor())->processConfiguration(new MainConfiguration($this->storageFactories), [$config + [
+            'security' => ['token_storage' => ['Payum\Core\Model\Token' => ['foo_storage' => ['foo_opt' => 'foo']]]],
+        ]]);
+    }
+
     /**
      * @test
      */

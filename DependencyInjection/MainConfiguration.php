@@ -53,8 +53,49 @@ class MainConfiguration implements ConfigurationInterface
         ;
         
         $this->addStoragesSection($rootNode);
+        $this->addLockingSection($rootNode);
+        $this->addIdempotencySection($rootNode);
 
         return $tb;
+    }
+
+    /**
+     * payum/core 2.x: lets one command at a time work on a payment, with Symfony Lock.
+     */
+    protected function addLockingSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode->children()
+            ->arrayNode('locking')
+                ->canBeEnabled()
+                ->children()
+                    ->scalarNode('lock_factory')->defaultValue('lock.factory')->cannotBeEmpty()->end()
+                    ->floatNode('timeout')->defaultValue(10.0)->end()
+                    ->floatNode('ttl')->defaultValue(300.0)->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * payum/core 2.x: where idempotency records are kept. Without it Payum keeps them in memory, so a key
+     * is only recognised within one PHP process.
+     */
+    protected function addIdempotencySection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode->children()
+            ->arrayNode('idempotency')
+                ->children()
+                    ->scalarNode('cache_pool')->defaultNull()->end()
+                    ->scalarNode('dbal_connection')->defaultNull()->end()
+                    ->scalarNode('table')->defaultValue('payum_idempotency_record')->cannotBeEmpty()->end()
+                    ->scalarNode('service')->defaultNull()->end()
+                ->end()
+                ->validate()
+                    ->ifTrue(static fn (array $v): bool => 1 !== count(array_filter([$v['cache_pool'], $v['dbal_connection'], $v['service']])))
+                    ->thenInvalid('Set exactly one of "cache_pool", "dbal_connection" or "service".')
+                ->end()
+            ->end()
+        ;
     }
 
     protected function addStoragesSection(ArrayNodeDefinition $rootPrototypeNode): void

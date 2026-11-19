@@ -43,7 +43,8 @@
         "symfony/form": "^6.4 || ^7.0 || ^8.0",
         "symfony/validator": "^6.4 || ^7.0 || ^8.0",
         "symfony/security-csrf": "^6.4 || ^7.0 || ^8.0",
-        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0"
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/psr-http-message-bridge": "^6.4 || ^7.0 || ^8.0"
     },
     "require-dev": {
         "defuse/php-encryption": "^2",
@@ -70,12 +71,14 @@
         "symfony/twig-bundle": "^6.4 || ^7.0 || ^8.0",
         "symfony/web-profiler-bundle": "^6.4 || ^7.0 || ^8.0",
         "symfony/yaml": "^6.4 || ^7.0 || ^8.0",
-        "twig/twig": "^2.0 || ^3.0"
+        "twig/twig": "^2.0 || ^3.0",
+        "symfony/lock": "^6.4 || ^7.0 || ^8.0"
     },
     "suggest": {
         "sonata-project/admin-bundle": "^3 If you want to configure payments in the backend.",
         "paragonie/halite": "^5.1 If you want to encrypt stored gateway configs (needs payum/core 2.0)",
-        "defuse/php-encryption": "^2 If you want to encrypt stored gateway configs"
+        "defuse/php-encryption": "^2 If you want to encrypt stored gateway configs",
+        "symfony/lock": "^6.4 To let one request at a time work on a payment with payum.locking (needs payum/core 2.0)"
     },
     "autoload": {
         "psr-4": { "Payum\\Bundle\\PayumBundle\\": "" }

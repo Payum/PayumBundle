@@ -7,11 +7,17 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional;
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\ExchangeRates;
+use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\RecordingMiddleware;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\TaggedCaptureAction;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\StatusListener;
 use Payum\Core\Command\CaptureCommand;
 use Payum\Core\Event\StatusChanged;
 use Payum\Core\Gateway;
+use Payum\Core\Idempotency\CacheIdempotencyStore;
+use Payum\Core\Idempotency\IdempotencyStoreInterface;
+use Payum\Core\Middleware\SubjectIdentity;
+use Payum\Core\Security\TokenInterface;
+use Psr\Http\Client\ClientInterface;
 use Payum\Core\Model\Payment;
 use Payum\Core\Payum;
 use Payum\Core\Result\PaymentStatus;
@@ -109,6 +115,81 @@ class PayumV2Test extends WebTestCase
         $this->assertCount(1, StatusListener::$events);
         $this->assertInstanceOf(StatusChanged::class, StatusListener::$events[0]);
         $this->assertSame(PaymentStatus::Captured, StatusListener::$events[0]->to);
+    }
+
+    public function testShouldRunTheMiddlewareOfTheApplicationWithTheRequestSymfonyServes(): void
+    {
+        RecordingMiddleware::$requests = [];
+        $token = $this->createCaptureToken($this->storePayment());
+
+        $this->client->request('GET', $token->getTargetUrl(), ['foo' => 'bar']);
+
+        $this->assertStringStartsWith('http://localhost/after?payum_token=', (string) $this->client->getResponse()->headers->get('Location'));
+        $this->assertNotEmpty(RecordingMiddleware::$requests);
+        $this->assertSame(parse_url($token->getTargetUrl(), PHP_URL_PATH), RecordingMiddleware::$requests[0]['path']);
+        $this->assertSame('bar', RecordingMiddleware::$requests[0]['query']['foo'] ?? null);
+    }
+
+    public function testShouldGiveHandlersEachRequestWhenTheKernelServesSeveral(): void
+    {
+        // what a worker runtime does: the same services serve one request after the other
+        $this->client->disableReboot();
+        $first = $this->createCaptureToken($this->storePayment());
+        $second = $this->createCaptureToken($this->storePayment());
+
+        RecordingMiddleware::$requests = [];
+        $this->client->request('GET', $first->getTargetUrl());
+        $this->client->request('GET', $second->getTargetUrl(), ['second' => '1']);
+
+        $last = end(RecordingMiddleware::$requests);
+        $this->assertSame(parse_url($second->getTargetUrl(), PHP_URL_PATH), $last['path']);
+        $this->assertSame('1', $last['query']['second'] ?? null);
+    }
+
+    public function testShouldSendTheCustomerToTheAfterUrlWhileAnotherRequestHoldsThePayment(): void
+    {
+        $payment = $this->storePayment();
+        $token = $this->createCaptureToken($payment);
+
+        $lock = static::getContainer()->get('lock.factory')->createLock(
+            'payum:' . SubjectIdentity::of(CaptureCommand::forPayment($payment), $this->getPayum())
+        );
+        $this->assertTrue($lock->acquire());
+
+        try {
+            $this->client->request('GET', $token->getTargetUrl());
+        } finally {
+            $lock->release();
+        }
+
+        $this->assertStringStartsWith('http://localhost/after?payum_token=', (string) $this->client->getResponse()->headers->get('Location'));
+        // left for the request holding the payment to invalidate
+        $this->assertNotNull($this->getPayum()->getTokenStorage()->find($token->getHash()));
+    }
+
+    public function testShouldShareTheServicesOfTheFrameworkWithPayum(): void
+    {
+        $container = static::getContainer()->get('payum.di.global_container');
+
+        $this->assertInstanceOf(CacheIdempotencyStore::class, $container->get(IdempotencyStoreInterface::class));
+        $this->assertTrue($container->has(ClientInterface::class));
+        $this->assertTrue($container->has(\Symfony\Component\Lock\LockFactory::class));
+    }
+
+    private function storePayment(): Payment
+    {
+        $payment = new Payment();
+        $payment->setNumber(uniqid('order-', true));
+        $payment->setCurrencyCode('EUR');
+        $payment->setTotalAmount(100);
+        $this->getPayum()->getStorage(Payment::class)->update($payment);
+
+        return $payment;
+    }
+
+    private function createCaptureToken(Payment $payment): TokenInterface
+    {
+        return $this->getPayum()->getTokenFactory()->createCaptureToken('offlineFromTag', $payment, 'http://localhost/after');
     }
 
     private function getPayum(): Payum

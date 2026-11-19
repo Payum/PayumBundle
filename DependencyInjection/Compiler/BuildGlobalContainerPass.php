@@ -5,12 +5,21 @@ declare(strict_types=1);
 namespace Payum\Bundle\PayumBundle\DependencyInjection\Compiler;
 
 use Payum\Bundle\PayumBundle\PayumVersion;
+use Payum\Core\Idempotency\IdempotencyStoreInterface;
+use Psr\Clock\ClockInterface;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UriFactoryInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
@@ -43,6 +52,17 @@ class BuildGlobalContainerPass implements CompilerPassInterface
         // the interface Payum dispatches its events through
         PsrEventDispatcherInterface::class => 'event_dispatcher',
         Environment::class => 'twig',
+        // the client, factories and clock the application configured, rather than ones Payum discovers
+        ClientInterface::class => ClientInterface::class,
+        RequestFactoryInterface::class => RequestFactoryInterface::class,
+        ResponseFactoryInterface::class => ResponseFactoryInterface::class,
+        StreamFactoryInterface::class => StreamFactoryInterface::class,
+        UriFactoryInterface::class => UriFactoryInterface::class,
+        ClockInterface::class => ClockInterface::class,
+        LockFactory::class => 'lock.factory',
+        IdempotencyStoreInterface::class => 'payum.idempotency_store',
+        // registered by the bundle: the request Symfony is serving, as PSR-7
+        ServerRequestInterface::class => 'payum.http.server_request',
     ];
 
     public function process(ContainerBuilder $container): void

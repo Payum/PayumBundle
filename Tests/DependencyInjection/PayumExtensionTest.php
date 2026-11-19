@@ -6,6 +6,7 @@ use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Offline\OfflineConfig;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -340,6 +341,47 @@ class PayumExtensionTest extends TestCase
         $this->expectExceptionMessage('The "config" of gateway "offline" must be a class implementing');
 
         $this->loadGateways(['offline' => ['config' => \stdClass::class]]);
+    }
+
+    public function testShouldRegisterTheLockingMiddlewareWhenLockingIsOn(): void
+    {
+        $this->skipUnlessPayumSupportsDependencyInjection();
+
+        $container = $this->loadConfig(['locking' => ['enabled' => true, 'timeout' => 2.0]]);
+
+        $definition = $container->getDefinition('payum.middleware.locking');
+
+        $this->assertSame(\Payum\Core\Middleware\LockingMiddleware::class, $definition->getClass());
+        $this->assertEquals([new Reference('lock.factory'), new Reference('payum.static_registry'), 2.0, 300.0], $definition->getArguments());
+        $this->assertTrue($definition->hasTag('payum.middleware'));
+    }
+
+    public function testShouldRegisterTheIdempotencyStoreOfTheGivenCachePool(): void
+    {
+        $this->skipUnlessPayumSupportsDependencyInjection();
+
+        $container = $this->loadConfig(['idempotency' => ['cache_pool' => 'cache.app']]);
+
+        $definition = $container->getDefinition('payum.idempotency_store');
+
+        $this->assertSame(\Payum\Core\Idempotency\CacheIdempotencyStore::class, $definition->getClass());
+        $this->assertEquals([new Reference('cache.app')], $definition->getArguments());
+    }
+
+    private function loadConfig(array $config): ContainerBuilder
+    {
+        $extension = new PayumExtension;
+        $extension->addStorageFactory(new FeeStorageFactory());
+
+        $container = new ContainerBuilder;
+        $container->setParameter('kernel.debug', false);
+        $container->setParameter('kernel.bundles', []);
+
+        $extension->load([$config + [
+            'security' => ['token_storage' => ['Payum\Core\Model\Token' => ['bar_storage' => ['bar_opt' => 'val']]]],
+        ]], $container);
+
+        return $container;
     }
 
     private function loadGateways(array $gateways): ContainerBuilder

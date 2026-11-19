@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use Payum\Bundle\PayumBundle\Builder\PayumCoreGatewayFactoryBuilder;
 use Payum\Bundle\PayumBundle\DI\SymfonyContainerAdapter;
+use Payum\Bundle\PayumBundle\Http\CurrentServerRequest;
+use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -24,6 +27,17 @@ return static function (ContainerBuilder $container): void {
         ->setArguments([
             null, // service locator - replaced while the container is built
         ])
+    ;
+
+    // the request Symfony is serving, shared with Payum by BuildGlobalContainerPass
+    $container->register('payum.http.server_request', CurrentServerRequest::class)
+        ->setPublic(false)
+        ->setArguments([
+            new Reference('request_stack'),
+            // the application's own converter if it has one, else one finding the PSR-17 factories itself
+            new Reference(HttpMessageFactoryInterface::class, ContainerInterface::NULL_ON_INVALID_REFERENCE),
+        ])
+        ->addTag('kernel.reset', ['method' => 'reset'])
     ;
 
     $container->register('payum.core_gateway_factory_builder', PayumCoreGatewayFactoryBuilder::class)

@@ -7,7 +7,10 @@ namespace Payum\Bundle\PayumBundle\Tests\DependencyInjection\Compiler;
 use Payum\Bundle\PayumBundle\DependencyInjection\Compiler\BuildGlobalContainerPass;
 use Payum\Bundle\PayumBundle\DI\SymfonyContainerAdapter;
 use Payum\Bundle\PayumBundle\PayumVersion;
+use Payum\Core\Idempotency\IdempotencyStoreInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Clock\ClockInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use ReflectionClass;
@@ -15,6 +18,7 @@ use stdClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\Lock\LockFactory;
 
 class BuildGlobalContainerPassTest extends TestCase
 {
@@ -84,6 +88,37 @@ class BuildGlobalContainerPassTest extends TestCase
 
         $this->assertArrayHasKey('Acme\\ServiceInterface', $services);
         $this->assertArrayNotHasKey('acme.service', $services);
+    }
+
+    public function testShouldShareTheServicesOfTheFrameworkUnderTheirPayumIds(): void
+    {
+        $this->skipWithoutDependencyInjection();
+
+        $container = $this->buildContainer();
+        $container->setDefinition('clock', new Definition(stdClass::class));
+        $container->setAlias(ClockInterface::class, 'clock');
+        $container->setDefinition('lock.factory', new Definition(stdClass::class));
+        $container->setDefinition('payum.idempotency_store', new Definition(stdClass::class));
+
+        (new BuildGlobalContainerPass())->process($container);
+
+        $services = $this->providedServices($container);
+
+        $this->assertArrayHasKey(ClockInterface::class, $services);
+        $this->assertArrayHasKey(LockFactory::class, $services);
+        $this->assertArrayHasKey(IdempotencyStoreInterface::class, $services);
+    }
+
+    public function testShouldShareTheRequestSymfonyServes(): void
+    {
+        $this->skipWithoutDependencyInjection();
+
+        $container = $this->buildContainer();
+        $container->setDefinition('payum.http.server_request', new Definition(stdClass::class));
+
+        (new BuildGlobalContainerPass())->process($container);
+
+        $this->assertArrayHasKey(ServerRequestInterface::class, $this->providedServices($container));
     }
 
     private function skipWithoutDependencyInjection(): void

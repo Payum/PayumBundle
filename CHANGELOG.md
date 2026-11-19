@@ -5,6 +5,11 @@
 ### Added
 * `dynamic_gateways.encryption.halite_key` encrypts stored gateway configs with paragonie/halite. It needs payum/core 2.0 or newer; `defuse_secret_key` keeps working, and setting both is refused.
 * `payum:security:reencrypt-gateway-configs` saves every stored gateway config again with the configured key. It encrypts configs stored as plain text, and moves configs to a new key or library when the old one is set under `dynamic_gateways.encryption.previous`. A run that stops part-way can be started again.
+* With payum/core 2.x, gateways now use the application's PSR-18 HTTP client, PSR-17 factories, clock and lock factory when it has them, instead of ones Payum discovers.
+* With payum/core 2.x, handlers get the request Symfony is serving as PSR-7, instead of one Payum builds from PHP's globals. It always reads the current main request, so a worker runtime (FrankenPHP, RoadRunner) gives each request its own. symfony/psr-http-message-bridge is now a required dependency.
+* Services tagged `payum.middleware` wrap every command on every gateway. Services implementing `Payum\Core\Middleware\MiddlewareInterface` get the tag by autoconfiguration. The tag takes an optional `priority`.
+* `payum.locking` turns on Payum's `LockingMiddleware` with Symfony Lock, so a double click or a webhook racing the customer's return cannot capture a payment twice. It is off by default and takes `lock_factory`, `timeout` and `ttl`. The capture and authorize controllers send the customer to the after URL when another request holds the payment.
+* `payum.idempotency` keeps idempotency records in a cache pool (`cache_pool`), a Doctrine DBAL table (`dbal_connection`, `table`) or a store of your own (`service`), so a repeated key is recognised across requests.
 
 ### Removed
 * **BREAKING**: Dropped support for Symfony 5.4. The minimum supported version is now Symfony 6.4.
