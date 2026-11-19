@@ -1,6 +1,7 @@
 <?php
 namespace Payum\Bundle\PayumBundle\DependencyInjection;
 
+use Payum\Bundle\PayumBundle\Attribute\AsPayumMiddleware;
 use Payum\Bundle\PayumBundle\PayumVersion;
 use Payum\Bundle\PayumBundle\Sonata\GatewayConfigAdmin;
 use Payum\Core\Bridge\Defuse\Security\DefuseCypher;
@@ -97,6 +98,9 @@ class PayumExtension extends Extension implements PrependExtensionInterface
 
         if (interface_exists(MiddlewareInterface::class)) {
             $container->registerForAutoconfiguration(MiddlewareInterface::class)->addTag('payum.middleware');
+            $container->registerAttributeForAutoconfiguration(AsPayumMiddleware::class, static function (ChildDefinition $definition, AsPayumMiddleware $attribute): void {
+                $definition->addTag('payum.middleware', ['priority' => $attribute->priority]);
+            });
         }
     }
 

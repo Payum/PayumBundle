@@ -15,6 +15,10 @@ services:
     Payum\Bundle\PayumBundle\Tests\Functional\Fixture\RecordingMiddleware:
         autoconfigure: true
 
+    # tagged payum.middleware by #[AsPayumMiddleware], and again for implementing MiddlewareInterface
+    Payum\Bundle\PayumBundle\Tests\Functional\Fixture\AttributedMiddleware:
+        autoconfigure: true
+
     payum.test.offline_tagged_config:
         class: Payum\Offline\OfflineConfig
         arguments: { $paid: true }

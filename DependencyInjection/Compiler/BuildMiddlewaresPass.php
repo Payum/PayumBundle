@@ -11,7 +11,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Registers every service tagged payum.middleware on the builder, so it wraps every command on every
- * gateway. Services implementing Payum\Core\Middleware\MiddlewareInterface are tagged automatically.
+ * gateway. Services implementing Payum\Core\Middleware\MiddlewareInterface are tagged automatically, and
+ * so are classes with #[AsPayumMiddleware], which also sets the priority.
  *
  * The tag takes an optional priority. Without one, the middleware's own HasPriority applies, else 0:
  *
@@ -32,9 +33,11 @@ class BuildMiddlewaresPass implements CompilerPassInterface
         $builder = $container->getDefinition('payum.builder');
 
         foreach ($container->findTaggedServiceIds('payum.middleware') as $serviceId => $tagAttributes) {
-            foreach ($tagAttributes as $attributes) {
-                $builder->addMethodCall('addMiddleware', [new Reference($serviceId), $attributes['priority'] ?? null]);
-            }
+            // once per service: a class with #[AsPayumMiddleware] is also tagged for implementing
+            // MiddlewareInterface, and must not wrap every command twice
+            $priorities = array_filter(array_column($tagAttributes, 'priority'), static fn ($priority): bool => null !== $priority);
+
+            $builder->addMethodCall('addMiddleware', [new Reference($serviceId), $priorities ? (int) reset($priorities) : null]);
         }
     }
 }
