@@ -33,4 +33,24 @@ class BuildMiddlewaresPassTest extends TestCase
             ['addMiddleware', [new Reference('acme.default'), null]],
         ], $container->getDefinition('payum.builder')->getMethodCalls());
     }
+
+    public function testShouldAddAMiddlewareTaggedTwiceOnceWithThePriorityOneTagGives(): void
+    {
+        if (! PayumVersion::supportsDependencyInjection()) {
+            $this->markTestSkipped('Middleware needs payum/core 2.0 or later.');
+        }
+
+        // what autoconfiguration does to a MiddlewareInterface class with #[AsPayumMiddleware(priority: 1500)]
+        $container = new ContainerBuilder();
+        $container->setDefinition('payum.builder', new Definition(PayumBuilder::class));
+        $container->setDefinition('acme.middleware', (new Definition(stdClass::class))
+            ->addTag('payum.middleware')
+            ->addTag('payum.middleware', ['priority' => 1500]));
+
+        (new BuildMiddlewaresPass())->process($container);
+
+        $this->assertEquals([
+            ['addMiddleware', [new Reference('acme.middleware'), 1500]],
+        ], $container->getDefinition('payum.builder')->getMethodCalls());
+    }
 }

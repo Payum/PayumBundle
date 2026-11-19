@@ -6,6 +6,7 @@ namespace Payum\Bundle\PayumBundle\Tests\Functional;
 
 use Payum\Bundle\PayumBundle\Action\ObtainCreditCardAction;
 use Payum\Bundle\PayumBundle\PayumVersion;
+use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\AttributedMiddleware;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\ExchangeRates;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\RecordingMiddleware;
 use Payum\Bundle\PayumBundle\Tests\Functional\Fixture\TaggedCaptureAction;
@@ -144,6 +145,17 @@ class PayumV2Test extends WebTestCase
         $last = end(RecordingMiddleware::$requests);
         $this->assertSame(parse_url($second->getTargetUrl(), PHP_URL_PATH), $last['path']);
         $this->assertSame('1', $last['query']['second'] ?? null);
+    }
+
+    public function testShouldRunAMiddlewareRegisteredByItsAttributeOncePerCommand(): void
+    {
+        RecordingMiddleware::$requests = [];
+        AttributedMiddleware::$calls = 0;
+
+        $this->getPayum()->getGateway('offlineFromTag')->execute(CaptureCommand::forPayment(new Payment()));
+
+        $this->assertGreaterThan(0, AttributedMiddleware::$calls);
+        $this->assertSame(count(RecordingMiddleware::$requests), AttributedMiddleware::$calls);
     }
 
     public function testShouldSendTheCustomerToTheAfterUrlWhileAnotherRequestHoldsThePayment(): void
